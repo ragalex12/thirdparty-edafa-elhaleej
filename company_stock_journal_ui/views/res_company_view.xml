@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Expose Stock Journal on company form (after currency, accounting-related) -->
+        <record id="view_company_form_stock_journal" model="ir.ui.view">
+            <field name="name">res.company.form.stock.journal</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='currency_id']" position="after">
+                    <field name="account_stock_journal_id"
+                           string="Stock Journal"
+                           options="{'no_create': True}"
+                           domain="[('company_id', '=', id), ('type', '=', 'general')]"
+                           groups="base.group_system"
+                           help="Journal used for automated inventory valuation entries (e.g. when completing a Manufacturing Order or processing stock moves with perpetual valuation)."/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

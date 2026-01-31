@@ -1,0 +1,19 @@
+# Byte-compiled
+*.py[cod]
+*$py.class
+__pycache__/
+*.pyc
+
+# IDE / editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Odoo
+*.pyc
+
+# Local / env
+.env
+*.log
