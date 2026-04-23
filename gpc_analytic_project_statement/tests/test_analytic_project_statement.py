@@ -1,0 +1,419 @@
+# Copyright 2026
+# License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl-3.0.html).
+
+from odoo import fields
+from odoo.tests import tagged
+
+from odoo.addons.account.tests.common import AccountTestInvoicingCommon
+
+
+def _create_analytic_account(env, company, name):
+    """Create an analytic account; attach a plan when the field exists (Odoo 17+)."""
+    vals = {
+        "name": name,
+        "company_id": company.id,
+    }
+    if "plan_id" in env["account.analytic.account"]._fields:
+        Plan = env["account.analytic.plan"]
+        plan = Plan.search(
+            [("company_id", "in", [False, company.id])],
+            limit=1,
+        )
+        if not plan:
+            plan = Plan.create(
+                {
+                    "name": "GPC Test Analytic Plan",
+                    "company_id": company.id,
+                }
+            )
+        vals["plan_id"] = plan.id
+    return env["account.analytic.account"].create(vals)
+
+
+@tagged("post_install", "-at_install")
+class TestAnalyticProjectStatementPhase1(AccountTestInvoicingCommon):
+    """Phase 1 tests for wizard domain, row builder, and XLSX wiring."""
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.env = cls.env(
+            context=dict(
+                cls.env.context,
+                mail_create_nolog=True,
+                mail_create_nosubscribe=True,
+                mail_notrack=True,
+                no_reset_password=True,
+                tracking_disable=True,
+            )
+        )
+        cls.company = cls.company_data["company"]
+        cls.expense = cls.company_data["default_account_expense"]
+        cls.revenue = cls.company_data["default_account_revenue"]
+        cls.journal_misc = cls.env["account.journal"].search(
+            [
+                ("type", "=", "general"),
+                ("company_id", "=", cls.company.id),
+            ],
+            limit=1,
+        )
+        cls.journal_a = cls.env["account.journal"].create(
+            {
+                "name": "GPC Test Journal A",
+                "code": "GPCA",
+                "type": "general",
+                "company_id": cls.company.id,
+            }
+        )
+        cls.journal_b = cls.env["account.journal"].create(
+            {
+                "name": "GPC Test Journal B",
+                "code": "GPCB",
+                "type": "general",
+                "company_id": cls.company.id,
+            }
+        )
+        cls.analytic_aa = _create_analytic_account(cls.env, cls.company, "GPC Proj A")
+        cls.analytic_bb = _create_analytic_account(cls.env, cls.company, "GPC Proj B")
+
+    def _wizard(self, **kwargs):
+        vals = {
+            "company_id": self.company.id,
+            "date_from": fields.Date.from_string("2020-01-01"),
+            "date_to": fields.Date.from_string("2020-12-31"),
+            "target_move": "posted",
+            "journal_ids": [(6, 0, [self.journal_a.id, self.journal_b.id])],
+        }
+        vals.update(kwargs)
+        return self.env["analytic.project.statement.wizard"].create(vals)
+
+    def _post_balanced_move(
+        self,
+        journal,
+        move_date,
+        expense_line_debit,
+        analytic_distribution,
+        line_date=None,
+        skip_analytic_on_expense=False,
+    ):
+        """Create a posted misc entry: debit expense, credit revenue."""
+        exp_vals = {
+            "name": "gpc test expense",
+            "account_id": self.expense.id,
+            "debit": expense_line_debit,
+            "credit": 0.0,
+        }
+        if not skip_analytic_on_expense and analytic_distribution is not None:
+            exp_vals["analytic_distribution"] = analytic_distribution
+        if line_date and "date" in self.env["account.move.line"]._fields:
+            exp_vals["date"] = line_date
+        move = self.env["account.move"].create(
+            {
+                "move_type": "entry",
+                "journal_id": journal.id,
+                "date": move_date,
+                "line_ids": [
+                    (0, 0, exp_vals),
+                    (
+                        0,
+                        0,
+                        {
+                            "name": "gpc test revenue",
+                            "account_id": self.revenue.id,
+                            "debit": 0.0,
+                            "credit": expense_line_debit,
+                        },
+                    ),
+                ],
+            }
+        )
+        move.action_post()
+        return move
+
+    # ── Registration / smoke ─────────────────────────────────────────────────
+
+    def test_wizard_model_registered(self):
+        self.env["analytic.project.statement.wizard"]
+
+    def test_xlsx_report_model_registered(self):
+        self.env["report.gpc_aps.proj_stmt_xlsx"]
+
+    # ── Domain / source ───────────────────────────────────────────────────────
+
+    def test_domain_includes_company_and_date_and_posted(self):
+        self._post_balanced_move(
+            self.journal_a,
+            fields.Date.from_string("2020-06-15"),
+            100.0,
+            {str(self.analytic_aa.id): 100.0},
+        )
+        w = self._wizard(
+            date_from=fields.Date.from_string("2020-06-01"),
+            date_to=fields.Date.from_string("2020-06-30"),
+            target_move="posted",
+        )
+        dom = w._get_aml_domain()
+        self.assertIn(("company_id", "=", self.company.id), dom)
+        self.assertIn(("date", ">=", w.date_from), dom)
+        self.assertIn(("date", "<=", w.date_to), dom)
+        self.assertIn(("move_id.state", "=", "posted"), dom)
+        aml = w._get_aml_source_recordset()
+        self.assertTrue(aml)
+        for line in aml:
+            self.assertEqual(line.company_id, self.company)
+            self.assertTrue(line.date >= w.date_from)
+            self.assertTrue(line.date <= w.date_to)
+            self.assertEqual(line.move_id.state, "posted")
+
+    def test_date_range_excludes_outside_lines(self):
+        self._post_balanced_move(
+            self.journal_a,
+            fields.Date.from_string("2020-03-10"),
+            50.0,
+            {str(self.analytic_aa.id): 100.0},
+        )
+        w = self._wizard(
+            date_from=fields.Date.from_string("2020-01-01"),
+            date_to=fields.Date.from_string("2020-02-29"),
+        )
+        self.assertFalse(w._get_aml_source_recordset())
+
+    def test_target_move_posted_excludes_draft(self):
+        move = self._post_balanced_move(
+            self.journal_a,
+            fields.Date.from_string("2020-05-01"),
+            80.0,
+            {str(self.analytic_aa.id): 100.0},
+        )
+        move.button_draft()
+        w = self._wizard(target_move="posted")
+        self.assertFalse(w._get_aml_source_recordset())
+
+    def test_target_move_all_includes_draft(self):
+        move = self._post_balanced_move(
+            self.journal_a,
+            fields.Date.from_string("2020-05-01"),
+            80.0,
+            {str(self.analytic_aa.id): 100.0},
+        )
+        move.button_draft()
+        w = self._wizard(target_move="all")
+        aml = w._get_aml_source_recordset()
+        self.assertTrue(aml.filtered(lambda l: l.move_id.id == move.id))
+
+    def test_journal_filter(self):
+        self._post_balanced_move(
+            self.journal_a,
+            fields.Date.from_string("2020-04-01"),
+            10.0,
+            {str(self.analytic_aa.id): 100.0},
+        )
+        self._post_balanced_move(
+            self.journal_b,
+            fields.Date.from_string("2020-04-01"),
+            20.0,
+            {str(self.analytic_aa.id): 100.0},
+        )
+        w = self._wizard(journal_ids=[(6, 0, [self.journal_b.id])])
+        aml = w._get_aml_source_recordset()
+        self.assertTrue(aml)
+        self.assertEqual(set(aml.mapped("journal_id")), {self.journal_b})
+
+    def test_account_filter(self):
+        self._post_balanced_move(
+            self.journal_a,
+            fields.Date.from_string("2020-04-01"),
+            10.0,
+            {str(self.analytic_aa.id): 100.0},
+        )
+        w = self._wizard(account_ids=[(6, 0, [self.revenue.id])])
+        self.assertFalse(w._get_aml_source_recordset())
+        w2 = self._wizard(account_ids=[(6, 0, [self.expense.id])])
+        self.assertTrue(w2._get_aml_source_recordset())
+
+    def test_excludes_lines_without_analytic_distribution(self):
+        self._post_balanced_move(
+            self.journal_a,
+            fields.Date.from_string("2020-07-01"),
+            33.0,
+            None,
+            skip_analytic_on_expense=True,
+        )
+        w = self._wizard()
+        self.assertFalse(w._get_aml_source_recordset())
+
+    def test_supplementary_rows_from_standalone_analytic_lines(self):
+        """AML without analytic_distribution still exports rows when AAL exist (training DB case)."""
+        self._post_balanced_move(
+            self.journal_a,
+            fields.Date.from_string("2020-06-10"),
+            40.0,
+            None,
+            skip_analytic_on_expense=True,
+        )
+        self.env["account.analytic.line"].create(
+            {
+                "name": "gpc standalone aal",
+                "account_id": self.analytic_aa.id,
+                "amount": -50.0,
+                "company_id": self.company.id,
+                "date": fields.Date.from_string("2020-06-10"),
+            }
+        )
+        w = self._wizard(
+            date_from=fields.Date.from_string("2020-06-01"),
+            date_to=fields.Date.from_string("2020-06-30"),
+            journal_ids=[(5, 0, 0)],
+        )
+        rows = w._get_report_phase1_rows()
+        self.assertTrue(
+            any(r.get("move_name") == "gpc standalone aal" for r in rows),
+            "Standalone analytic lines must appear when journal items have no distribution",
+        )
+        self.assertAlmostEqual(
+            sum(r["debit"] for r in rows if r.get("move_name") == "gpc standalone aal"),
+            50.0,
+            places=2,
+            msg="Negative analytic amount is shown as debit (cost)",
+        )
+
+    def test_analytic_filter_lines_and_slices(self):
+        self._post_balanced_move(
+            self.journal_a,
+            fields.Date.from_string("2020-08-01"),
+            100.0,
+            {
+                str(self.analytic_aa.id): 40.0,
+                str(self.analytic_bb.id): 60.0,
+            },
+        )
+        w_all = self._wizard()
+        rows_all = w_all._get_report_phase1_rows()
+        self.assertEqual(len(rows_all), 2)
+
+        w_aa = self._wizard(
+            analytic_account_ids=[(6, 0, [self.analytic_aa.id])],
+        )
+        aml_aa = w_aa._get_aml_source_recordset()
+        self.assertTrue(aml_aa)
+        rows_aa = w_aa._get_report_phase1_rows()
+        self.assertEqual(len(rows_aa), 1)
+        self.assertAlmostEqual(rows_aa[0]["debit"], 40.0, places=2)
+
+    # ── Row builder ───────────────────────────────────────────────────────────
+
+    def test_one_key_one_row(self):
+        self._post_balanced_move(
+            self.journal_a,
+            fields.Date.from_string("2020-09-01"),
+            25.0,
+            {str(self.analytic_aa.id): 100.0},
+        )
+        rows = self._wizard()._get_report_phase1_rows()
+        self.assertEqual(len(rows), 1)
+
+    def test_multiple_keys_multiple_rows(self):
+        self._post_balanced_move(
+            self.journal_a,
+            fields.Date.from_string("2020-09-02"),
+            100.0,
+            {
+                str(self.analytic_aa.id): 50.0,
+                str(self.analytic_bb.id): 50.0,
+            },
+        )
+        rows = self._wizard()._get_report_phase1_rows()
+        self.assertEqual(len(rows), 2)
+
+    def test_fractional_weights_sum_to_one_not_treated_as_one_percent(self):
+        """0.5+0.5 are proportions; must not be read as 0.5%% and 0.5%% (→ all zeros)."""
+        self._post_balanced_move(
+            self.journal_a,
+            fields.Date.from_string("2020-09-21"),
+            200.0,
+            {
+                str(self.analytic_aa.id): 0.5,
+                str(self.analytic_bb.id): 0.5,
+            },
+        )
+        rows = self._wizard()._get_report_phase1_rows()
+        self.assertEqual(len(rows), 2)
+        self.assertAlmostEqual(
+            sum(r["debit"] for r in rows), 200.0, places=2
+        )
+        for r in rows:
+            self.assertAlmostEqual(r["debit"], 100.0, places=2)
+            self.assertEqual(r["credit"], 0.0)
+
+    def test_allocated_debit_credit_sum_matches_line(self):
+        move = self._post_balanced_move(
+            self.journal_a,
+            fields.Date.from_string("2020-09-03"),
+            123.45,
+            {
+                str(self.analytic_aa.id): 30.0,
+                str(self.analytic_bb.id): 70.0,
+            },
+        )
+        exp_line = move.line_ids.filtered(lambda l: l.account_id == self.expense)
+        self.assertEqual(len(exp_line), 1)
+        currency = self.company.currency_id
+        rows = self._wizard()._get_report_phase1_rows()
+        self.assertEqual(len(rows), 2)
+        total_debit = currency.round(sum(r["debit"] for r in rows))
+        total_credit = currency.round(sum(r["credit"] for r in rows))
+        self.assertEqual(total_debit, currency.round(exp_line.debit))
+        self.assertEqual(total_credit, currency.round(exp_line.credit))
+
+    def test_row_move_name_and_line_date(self):
+        move = self._post_balanced_move(
+            self.journal_a,
+            fields.Date.from_string("2020-10-01"),
+            15.0,
+            {str(self.analytic_aa.id): 100.0},
+        )
+        exp_line = move.line_ids.filtered(lambda l: l.account_id == self.expense)
+        rows = self._wizard()._get_report_phase1_rows()
+        self.assertEqual(rows[0]["move_name"], move.name)
+        self.assertEqual(rows[0]["date"], exp_line.date)
+
+    def test_line_specific_date_when_supported(self):
+        line_date = fields.Date.from_string("2020-11-20")
+        move_date = fields.Date.from_string("2020-11-01")
+        if "date" not in self.env["account.move.line"]._fields:
+            self.skipTest("AML has no independent date field in this Odoo version")
+        move = self._post_balanced_move(
+            self.journal_a,
+            move_date,
+            12.0,
+            {str(self.analytic_aa.id): 100.0},
+            line_date=line_date,
+        )
+        exp_line = move.line_ids.filtered(lambda l: l.account_id == self.expense)
+        rows = self._wizard(
+            date_from=line_date,
+            date_to=line_date,
+        )._get_report_phase1_rows()
+        self.assertTrue(rows)
+        self.assertEqual(rows[0]["date"], exp_line.date)
+
+    # ── XLSX ─────────────────────────────────────────────────────────────────
+
+    def test_xlsx_render_from_wizard_without_error(self):
+        self._post_balanced_move(
+            self.journal_a,
+            fields.Date.from_string("2020-12-01"),
+            9.0,
+            {str(self.analytic_aa.id): 100.0},
+        )
+        wizard = self._wizard()
+        self.env.ref(
+            "gpc_analytic_project_statement.action_report_analytic_project_statement_xlsx"
+        )
+        xlsx_model = self.env[
+            "report.gpc_aps.proj_stmt_xlsx"
+        ].with_context(active_model="analytic.project.statement.wizard")
+        content, ext = xlsx_model.create_xlsx_report(wizard.ids, {})
+        self.assertEqual(ext, "xlsx")
+        self.assertTrue(content)
+        self.assertGreater(len(content), 500)

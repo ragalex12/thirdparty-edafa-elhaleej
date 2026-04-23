@@ -80,4 +80,16 @@ This document summarizes the custom Odoo modules and changes added to this works
 
 ---
 
+## M0 / WP2 — Repository standards (2026-04)
+
+Canonical conventions for module layout, naming (`gpc_*` prefix for new first-party code), Git branches, and manifest versioning are documented in **`REPOSITORY_STANDARDS.md`** at the root of this repository. New Phase 1 modules should follow that file.
+
+---
+
+## M0 — Phase 1 execution order revised (2026-04)
+
+Backend-first implementation: **M2 → M1 → M3**, then **M4 → M5 → M6**. The **full security groups matrix** is deferred to a **pre-UAT hardening** step (not the next milestone after M0). See **`docs/phase1/PHASE1_EXECUTION_PLAN.md`**. OpenProject update instructions: **`openproject_outputs/M0_EXECUTION_ORDER_REVISED.md`**.
+
+---
+
 *Document maintained in the workspace root. Author: Sabry Youssef.*

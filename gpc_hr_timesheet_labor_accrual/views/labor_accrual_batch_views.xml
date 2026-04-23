@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_labor_accrual_batch_tree" model="ir.ui.view">
+        <field name="name">labor.accrual.batch.list</field>
+        <field name="model">labor.accrual.batch</field>
+        <field name="arch" type="xml">
+            <list string="Labor Accrual Batches">
+                <field name="name" />
+                <field name="company_id" groups="base.group_multi_company" />
+                <field name="period_key" optional="show" />
+                <field name="period_start" />
+                <field name="period_end" />
+                <field name="state" widget="badge" />
+                <field name="move_id" optional="hide" />
+            </list>
+        </field>
+    </record>
+
+    <record id="view_labor_accrual_batch_form" model="ir.ui.view">
+        <field name="name">labor.accrual.batch.form</field>
+        <field name="model">labor.accrual.batch</field>
+        <field name="arch" type="xml">
+            <form string="Labor Accrual Batch">
+                <header>
+                    <button
+                        name="action_populate_lines"
+                        type="object"
+                        string="Populate lines"
+                        class="btn-primary"
+                        invisible="state != 'draft'"
+                        groups="account.group_account_user"
+                    />
+                    <button
+                        name="action_generate_draft_move"
+                        type="object"
+                        string="Generate draft entry"
+                        invisible="state != 'draft'"
+                        groups="account.group_account_user"
+                    />
+                    <button
+                        name="action_post_move"
+                        type="object"
+                        string="Post"
+                        class="btn-primary"
+                        invisible="state != 'draft' or not move_id"
+                        groups="account.group_account_user"
+                    />
+                    <button
+                        name="action_reverse_for_regeneration"
+                        type="object"
+                        string="Reverse &amp; release period"
+                        invisible="state != 'posted' or reversal_move_id"
+                        groups="account.group_account_user"
+                    />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,posted,cancelled" />
+                </header>
+                <sheet>
+                    <group name="main">
+                        <group string="Period">
+                            <field name="name" />
+                            <field name="company_id" options="{'no_create': True}" />
+                            <field name="period_key" placeholder="e.g. 2025-06" />
+                            <field name="period_start" />
+                            <field name="period_end" />
+                        </group>
+                        <group string="Journal entry">
+                            <field name="move_id" />
+                            <field name="reversal_move_id" />
+                            <field name="reversed_by" />
+                            <field name="reversed_at" />
+                            <field name="posted_by" />
+                            <field name="posted_at" />
+                            <field name="currency_id" invisible="1" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Lines" name="lines">
+                            <field name="line_ids" nolabel="1" readonly="1">
+                                <list>
+                                    <field name="timesheet_line_id" />
+                                    <field name="line_date" />
+                                    <field name="employee_id" optional="show" />
+                                    <field name="project_id" optional="show" />
+                                    <field name="amount" />
+                                    <field name="currency_id" column_invisible="1" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_labor_accrual_batch" model="ir.actions.act_window">
+        <field name="name">Labor Accrual Batches</field>
+        <field name="res_model">labor.accrual.batch</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

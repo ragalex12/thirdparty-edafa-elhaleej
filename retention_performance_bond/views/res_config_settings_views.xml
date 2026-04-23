@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="res_config_settings_view_form_inherit_retention_performance_bond" model="ir.ui.view">
+            <field name="name">res.config.settings.form.inherit.retention.performance.bond</field>
+            <field name="model">res.config.settings</field>
+            <field name="priority" eval="40"/>
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//app[@name='account']" position="inside">
+                    <h2>Retention &amp; Performance Bond Accounts</h2>
+                    <div class="row mt16 o_settings_container" id="deduction_accounts_id">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                            </div>
+                            <div class="o_setting_right_pane" id="retention_account">
+                                <label for="retention_receivable_account_id"/>
+                                <field name="retention_receivable_account_id" string="Retention Account"/>
+                                <div class="text-muted">
+                                    Select Retention Receivable Account...
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                            </div>
+                            <div class="o_setting_right_pane" id="performance_bond_account">
+                                <label for="performance_bonds_account_id"/>
+                                <field name="performance_bonds_account_id" string="Performance Bonds Account"/>
+                                <div class="text-muted">
+                                    Select Performance Bonds Receivable Account...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt16 o_settings_container" id="balance_account_id">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                            </div>
+                            <div class="o_setting_right_pane" id="balance_account">
+                                <label for="deduction_balance_account_id"/>
+                                <field name="deduction_balance_account_id" string="Balance Account for Journal Entry"/>
+                                <div class="text-muted">
+                                    Select account used as credit side (balance account) in deduction journal entries. Can be receivable, revenue, or any other account type.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

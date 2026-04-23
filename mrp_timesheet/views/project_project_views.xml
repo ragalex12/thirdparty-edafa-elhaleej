@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Task 49 – generate_labor_je toggle + account overrides on Project settings page -->
+        <record id="view_project_form_labor_je" model="ir.ui.view">
+            <field name="name">project.project.form.labor.je</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='settings']//group[@name='extra_settings']" position="inside">
+                    <separator string="Labor Cost Accounting"
+                               groups="account.group_account_manager"/>
+                    <field name="generate_labor_je"
+                           groups="account.group_account_manager"/>
+                    <field name="labor_wip_account_id"
+                           string="Labor WIP Account (Override)"
+                           options="{'no_create': True}"
+                           invisible="not generate_labor_je"
+                           groups="account.group_account_manager"/>
+                    <field name="labor_clearing_account_id"
+                           string="Labor Clearing Account (Override)"
+                           options="{'no_create': True}"
+                           invisible="not generate_labor_je"
+                           groups="account.group_account_manager"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

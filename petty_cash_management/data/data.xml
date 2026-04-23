@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+		<record id="seq_hr_petty_seq" model="ir.sequence">
+            <field name="name">Petty Code</field>
+            <field name="code">hr.petty</field>
+            <field name="prefix">PETTY/</field>
+            <field eval="4" name="padding"/>
+            <field eval="False" name="company_id"/>
+        </record>
+		<record id="product_petty_cash_reconcile1" model="product.product">
+			<field name="name">petty cash Reconcile</field>
+			<field name="type">consu</field>
+ 			<field name="default_code">Petty</field>
+			<field name="uom_id" ref="uom.product_uom_unit"/>
+			<field name="can_be_expensed" eval="True"/>
+			<field name="description">Petty cash Reconcile product.</field>
+		</record>
+
+        <record id="account_employee_advance" model="account.account">
+            <field name="code">111500</field>
+            <field name="name">Employee Advance Payment</field>
+            <field name="account_type">asset_cash</field>
+            <field name="reconcile" eval="False"/>
+		</record>
+		<record id="account_employee_advance_current" model="account.account">
+            <field name="code">111501</field>
+            <field name="name">Employee Advance</field>
+            <field name="account_type">asset_current</field>
+            <field name="reconcile" eval="False"/>
+		</record>
+		<record id="journal_employee_advance" model="account.journal">
+			<field name="name">Employee Advance Payment</field>
+			<field name="code">EADV</field>
+			<field name="type">cash</field>
+			<field name="default_account_id" ref="account_employee_advance"/>
+            <field name="suspense_account_id" ref="account_employee_advance_current"/>
+		</record>
+		<record id="journal_employee_advance_general" model="account.journal">
+            <field name="name">Emp Advance Journal</field>
+            <field name="code">EADV-G</field>
+            <field name="type">general</field>
+            <field name="default_account_id" ref="account_employee_advance_current"/>
+        </record>
+
+    </data>
+</odoo>

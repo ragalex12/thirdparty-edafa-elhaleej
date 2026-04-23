@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="petty_email_notification_template" model="mail.template">
+            <field name="name">Petty e-mail template</field>
+            <field name="email_from">${object.company_id and object.company_id.email or ''}</field>
+            <field name="subject">Notification to Petty -${object.petty_name.name}</field>
+            <field name="email_to">${object.email|safe}</field>
+            <field name="lang">${object.lang}</field>
+            <field name="model_id" ref="petty_cash_management.model_hr_petty"/>
+            <field name="auto_delete" eval="True"/>
+            <field name="body_html">
+                    <![CDATA[
+                          <p>Dear ${(object.employee.name)},<br/><br/>
+                          You are in request <strong>"${(object.petty_name.name)}"</strong>
+                          since <strong>${(object.return_date)}.</strong><br/><br/>
+                          Please kindly reconsile the petty cash as soon as possible.<br/><br/></p>
+                          Regards,<br/><br/>
+                          ${(object.company_id.name)}]]>
+            </field>
+        </record>
+    </data>
+</odoo>

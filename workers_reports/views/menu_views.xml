@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Reports Menu -->
+        <menuitem id="menu_workers_reports"
+                  name="Workers Reports"
+                  parent="workers_project_sheets.menu_workers_project_sheets"
+                  sequence="50"/>
+        
+        <!-- Worker Reports -->
+        <menuitem id="menu_worker_reports"
+                  name="Worker Reports"
+                  parent="menu_workers_reports"
+                  action="action_workers_report_wizard"
+                  sequence="10"/>
+        
+        <!-- Project Reports -->
+        <menuitem id="menu_project_reports"
+                  name="Project Reports"
+                  parent="menu_workers_reports"
+                  action="action_workers_project_report_wizard"
+                  sequence="20"/>
+        
+        <!-- Timesheet Reports -->
+        <menuitem id="menu_timesheet_reports"
+                  name="Timesheet Reports"
+                  parent="menu_workers_reports"
+                  action="action_workers_timesheet_report_wizard"
+                  sequence="30"/>
+        
+        <!-- Payroll Reports -->
+        <menuitem id="menu_payroll_reports"
+                  name="Payroll Reports"
+                  parent="menu_workers_reports"
+                  action="action_workers_payroll_report_wizard"
+                  sequence="40"/>
+    </data>
+</odoo>
+

@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_labor_clearing_wizard_user,mrp.labor.clearing.check.wizard user,model_mrp_labor_clearing_check_wizard,base.group_user,1,1,1,1
+access_labor_clearing_wizard_line_user,mrp.labor.clearing.check.line user,model_mrp_labor_clearing_check_line,base.group_user,1,1,1,1

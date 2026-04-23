@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_labor_accrual_batch_wizard" model="ir.ui.view">
+        <field name="name">labor.accrual.batch.wizard.form</field>
+        <field name="model">labor.accrual.batch.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Labor Accrual Batch">
+                <group>
+                    <field name="company_id" options="{'no_create': True}" />
+                    <field name="period_start" />
+                    <field name="period_end" />
+                </group>
+                <footer>
+                    <button
+                        name="action_create_batch_and_populate_lines"
+                        type="object"
+                        string="Create batch and populate lines"
+                        class="btn-primary"
+                    />
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_labor_accrual_batch_wizard" model="ir.actions.act_window">
+        <field name="name">Labor Accrual Batch</field>
+        <field name="res_model">labor.accrual.batch.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

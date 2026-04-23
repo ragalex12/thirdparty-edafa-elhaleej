@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_project">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <h2>Project Report</h2>
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>Project</th>
+                                        <th>Workers</th>
+                                        <th>Total Hours</th>
+                                        <th>Payroll Hours</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="projects" t-value="doc._get_projects()"/>
+                                    <t t-foreach="projects" t-as="project">
+                                        <tr>
+                                            <td><t t-esc="project.name"/></td>
+                                            <td><t t-esc="project.payroll_workers_count"/></td>
+                                            <td><t t-esc="project.total_hours"/></td>
+                                            <td><t t-esc="project.payroll_hours"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
+

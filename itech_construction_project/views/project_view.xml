@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<!--Inherit the sale order form view--> 
+<!-- 	<record id="view_sale_order_custom" model="ir.ui.view"> 
+	<field name="name">sale.order.custom.form.inherited</field>
+		 <field name="model">sale.order</field> 
+		 <field name="inherit_id" ref="sale.view_order_form"/> 
+		 <field name="arch" type="xml"> 
+			  <xpath expr="//field[@name='partner_id']" position="after"> 
+				   <field name="project_r_id"/>
+			  </xpath> 
+		 </field> 
+	</record> -->
+	<!--Inherit the Purchase order form view--> 
+	<record id="view_purchase_order_custom" model="ir.ui.view"> 
+	<field name="name">purchase.order.custom.form.inherited</field>
+		 <field name="model">purchase.order</field> 
+		 <field name="inherit_id" ref="purchase.purchase_order_form"/> 
+		 <field name="arch" type="xml"> 
+			  <xpath expr="//field[@name='partner_id']" position="after"> 
+				   <field name="project_id"/>
+			  </xpath> 
+		 </field> 
+	</record>
+
+	<!--Inherit the invoice form view--> 
+	<record id="view_invoice_custom" model="ir.ui.view"> 
+	<field name="name">invoice.custom.form.inherited</field>
+		 <field name="model">account.move</field> 
+		 <field name="inherit_id" ref="account.view_move_form"/> 
+		 <field name="arch" type="xml"> 
+			  <xpath expr="//field[@name='partner_id']" position="after"> 
+				   <field name="project_id"/>
+                   <field name="approved_pg" groups="project.group_project_user,project.group_project_manager" readonly="state != 'draft'"/>
+
+			  </xpath> 
+		 </field> 
+	</record>
+	<!--Inherit the HR Advance form view--> 
+<!-- 	<record id="view_advance_custom" model="ir.ui.view"> 
+	<field name="name">hr.advance.form.inherited</field>
+		 <field name="model">hr.advance</field> 
+		 <field name="inherit_id" ref="hr_advance_wo_bill.hr_advance_form_view"/> 
+		 <field name="arch" type="xml"> 
+			  <xpath expr="//field[@name='purpose']" position="after"> 
+				   <field name="project_id"/>
+			  </xpath> 
+		 </field> 
+	</record>	
+ -->	
+    <record id="view_partner_code_modification" model="ir.ui.view">
+        <field name="name">add_code_main_fields</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <data>
+				<xpath expr="//field[@name='category_id']" position="after">
+					<field name="aec" groups="project.group_project_user"/>
+                </xpath>
+            </data>
+        </field>
+    </record>
+
+	    <record id="view_partner_form_agent" model="ir.ui.view">
+        <field name="name">res.partner.form.agent</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="priority" eval="18" />
+<!--         <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]" />
+ -->        <field name="arch" type="xml">
+            <xpath
+                expr="//page[@name='sales_purchases']//group[@name='purchase']"
+                position="inside"
+            >
+                <field name="is_vendor"/>
+                <field name="agent" string="Agent" />
+            </xpath>
+            <xpath
+                expr="//page[@name='sales_purchases']//group[@name='sale']"
+                position="inside"
+            >
+                <field name="is_customer"/>
+            </xpath>
+            <page name="sales_purchases" position="after">
+                <page
+                    name="agent_information"
+                    string="Agent information"
+                    groups="sales_team.group_sale_manager"
+                    invisible="agent == False"
+                >
+                    <group>
+                        <group>
+                            <field
+                                name="agent_type"
+                                required="agent == True" 
+                            />
+                        </group>
+                        <group>
+                            <field
+                                name="settlement"
+                                required="agent == True" 
+                            />
+                        </group>
+
+                    </group>
+                </page>
+            </page>
+        </field>
+    </record>
+    <record id="res_partner_view_search" model="ir.ui.view">
+        <field name="name">res.partner.select</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="account.res_partner_view_search" />
+        <field name="arch" type="xml">
+            <!-- Add search fields for partner ref and partner code -->
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="ref" string="Partner Reference"/>
+                <field name="aec" string="Partner Code"/>
+            </xpath>
+            <filter name="supplier" position="after">
+                <filter
+                    string="Agents"
+                    name="agent"
+                    domain="[('agent', '=', 1)]"
+                    help="Agent Partners"
+                />
+            </filter>
+        </field>
+    </record>
+
+    <record id="action_agent_form" model="ir.actions.act_window">
+        <field name="name">Agents</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.partner</field>
+        <field name="binding_view_types">form,kanban,list</field>
+        <field
+            name="context"
+        >{"search_default_agent": 1, 'default_agent': 1, 'default_customer': 0, 'default_supplier': 1}</field>
+        <field name="search_view_id" ref="res_partner_view_search" />
+    </record>
+
+    <record id="action_customers_form" model="ir.actions.act_window">
+        <field name="name">Customers</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">list,form,kanban</field>
+        <field name="domain">[('is_customer', '=', True)]</field>
+        <field name="context">{'default_is_customer': True, 'default_customer_rank': 1}</field>
+        <field name="search_view_id" ref="res_partner_view_search" />
+    </record>
+
+
+    <!-- List View-->
+    <record id="project_tags_view_inherit_list" model="ir.ui.view">
+        <field name="name">project.tags.list</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project" />
+        <field name="type">list</field>
+        <field name="arch" type="xml">
+			<xpath expr="//field[@name='partner_id']" position="attributes">
+				<attribute name="string">Account(Customer)</attribute>
+			</xpath>
+			<xpath expr="//field[@name='last_update_status']" position="before">
+				<field name="state" options="{'color_field': 'color'}"/>
+			</xpath>
+			<xpath expr="//field[@name='last_update_status']" position="replace"/>
+			<xpath expr="//field[@name='partner_id']" position="before">
+                <field name="project_code"/>
+                <field
+                    name="tag_ids"
+                    widget="many2many_tags"
+                    options="{'color_field': 'color'}"
+                />
+            </xpath>
+        </field>
+    </record>
+    <!-- Form View -->
+    <record id="project_details_view_inherit_form" model="ir.ui.view">
+        <field name="name">project.form</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project" />
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+			<header>
+				<button string="Assign" name="action_assign" invisible="state != 'draft'" type="object" class="oe_highlight" groups="project.group_project_user"/>
+				<button string="Approve" name="action_validate" invisible="state != 'assigned'" type="object" class="oe_highlight" groups="project.group_project_user"/>
+				<button string="In Progress" name="action_inprogress" invisible="state != 'approve'" class="oe_highlight" type="object" groups="project.group_project_manager"/>
+				<button string="Finish Project" confirm="Are you sure you want to finish the project?" name="action_done" invisible="state != 'inprogress'" class="oe_highlight" type="object" groups="project.group_project_manager"/>
+				<button string="Cancel Project" name="action_cancel" invisible="state != 'draft'" type="object" groups="project.group_project_user"/>
+				<field name="state" widget="statusbar" statusbar_visible="draft,assigned,approve,inprogress, finished"/>
+			</header>
+			<div class="oe_button_box" position="inside">
+				<button class="oe_stat_button" name="timesheets_view" type="object" icon="fa-calendar" invisible="state not in ['approve','inprogress']" groups="project.group_project_manager">
+					<field string="Timesheets" name="timesheets_count" widget="statinfo" />
+				</button>
+				<button class="oe_stat_button" name="invoice_view" type="object" icon="fa-dollar" groups="project.group_project_manager" invisible="state not in ['approve','inprogress']">
+					<field string="Create Invoice" name="invoices_count" widget="statinfo" />
+				</button>
+				<button class="oe_stat_button" name="vendor_bills_view" type="object" icon="fa-file-text-o" groups="project.group_project_manager" invisible="state not in ['approve','inprogress']">
+					<field string="Vendor Bills" name="vendor_bills_count" widget="statinfo" />
+				</button>
+				<button class="oe_stat_button" name="purchase_view" type="object" icon="fa-pencil-square-o" invisible="state not in ['approve','inprogress']">
+					<field string="Purchase orders" name="purchase_count" widget="statinfo"/>
+				</button>
+				<button class="oe_stat_button" name="sales_view" type="object" icon="fa-money" invisible="state not in ['approve','inprogress']" groups="project.group_project_manager">
+					<field string="Sales orders" name="sales_count" widget="statinfo" />
+				</button>
+				<button class="oe_stat_button" name="snag_list_view" type="object" icon="fa-clipboard-list" groups="project.group_project_manager">
+					<span class="o_stat_text">Snag List</span>
+				</button>
+<!--  				<button class="oe_stat_button" name="advance_view" type="object" icon="fa-money" attrs="{'invisible':[('state','!=','approve'),('state','!=','inprogress')]}" groups="project.group_project_manager">
+					<field string="T/P Advance" name="advance_count" widget="statinfo" />
+				</button>
+ -->			</div> 
+
+			<xpath expr="//field[@name='partner_id']" position="attributes">
+				<attribute name="string">Account(Customer)</attribute>
+				<attribute name="domain">[('is_customer','=',True)]</attribute>
+				<attribute name="required">state == 'draft'</attribute>
+				<attribute name="readonly">state != 'draft'</attribute>
+
+			</xpath>
+			<xpath expr="//field[@name='user_id']" position="attributes">
+				<attribute name="string">Project Manager</attribute>
+				<attribute name="required">state == 'draft'</attribute>
+				<attribute name="readonly">state != 'draft'</attribute>
+			</xpath>
+
+
+			<xpath expr="//notebook/page[@name='description']" position="before">
+
+				<page string='Project info'>
+					<group>
+						<group>
+							<field name="ownership"/>
+							<field name="project_location"/>
+							<field name="type_id"/>
+							<field name="project_purpose" placeholder="Purpose..." widget="many2many_tags"/>
+						</group>
+					</group>
+				</page>
+				<page string='Project Documents'>
+					<group>
+						<group>
+							<field name="project_quote"/>
+							<field name="project_proposal"/>
+							<field name="project_approval_mail"/>
+						</group>
+					</group>
+					<separator string="Contract"/>
+					<group>
+						<group string="Contract">
+							<field name="project_contract"/>
+						</group>
+						<group string="Contract Attachments">
+							<field name="project_contract_attachments" widget="many2many_binary"/>
+						</group>
+					</group>
+				</page>
+			</xpath>
+			<xpath expr="//notebook/page[@name='settings']" position="after">
+			
+				<page string='Project DWGs'>
+					<group>
+						<group string="انشائي (Structural)">
+							<field name="dwg_name_structural"/>
+							<field name="attachment_dwg_structural" widget="many2many_binary"/>
+						</group>
+						<group string="معماري (Architectural)">
+							<field name="dwg_name_architectural"/>
+							<field name="attachment_dwg_architectural" widget="many2many_binary"/>
+						</group>
+					</group>
+					<group>
+						<group string="كهرباء (Electrical)">
+							<field name="dwg_name_electrical"/>
+							<field name="attachment_dwg_electrical" widget="many2many_binary"/>
+						</group>
+						<group string="تيار خفيف (Low Current)">
+							<field name="dwg_name_low_current"/>
+							<field name="attachment_dwg_low_current" widget="many2many_binary"/>
+						</group>
+					</group>
+					<group>
+						<group string="ميكانيكا (Mechanical)">
+							<field name="dwg_name_mechanical"/>
+							<field name="attachment_dwg_mechanical" widget="many2many_binary"/>
+						</group>
+						<group string="تكييف (HVAC)">
+							<field name="dwg_name_hvac"/>
+							<field name="attachment_dwg_hvac" widget="many2many_binary"/>
+						</group>
+					</group>
+					<group>
+						<group string="حريق (Fire Fighting)">
+							<field name="dwg_name_fire"/>
+							<field name="attachment_dwg_fire" widget="many2many_binary"/>
+						</group>
+						<group string="موقع عام (General Site)">
+							<field name="dwg_name_general_site"/>
+							<field name="attachment_dwg_general_site" widget="many2many_binary"/>
+						</group>
+					</group>
+					<group>
+						<group string="Other DWGs">
+							<field name="dwg_name_other"/>
+							<field name="attachment_dwg_other" widget="many2many_binary"/>
+						</group>
+					</group>
+				</page>
+				<page string='Expected Budget'>
+					<group>
+						<group string="Expected Budget">
+							<field name="project_valuebvat"/>
+							<field name="project_valueavat"/>
+						</group>
+					</group>
+				</page>
+				<page string='Statistical'>
+
+					<group string="Purchase Statistical">
+						<group>
+							<field name="p_po_ids" nolabel="1" options="{'no_create': True, 'no_create_edit':True}" style="width: 800px"/>
+						</group>
+
+					</group>
+					<group string="Sales Statistical">
+						<group>
+							<field name="p_so_ids" nolabel="1" options="{'no_create': True, 'no_create_edit':True}" style="width: 800px"/>
+						</group>
+
+					</group>
+					<group string="Invoice Statistical">
+						<group>
+							<field name="p_invoice_ids" nolabel="1" options="{'no_create': True, 'no_create_edit':True}" style="width: 800px"/>
+						</group>
+
+					</group>
+				</page>
+                <page string="Team">
+                    <field name="members_ids" widget="many2many">
+                        <kanban quick_create="false" create="true" delete="true">
+                            <field name="id"/>
+                            <field name="name"/>
+                            <field name="image_128"/>
+                            <templates>
+                                <t t-name="card" class="flex-row">
+                                    <aside class="o_kanban_aside_full">
+                                        <field
+                                            name="image_128"
+                                            class="o_kanban_image_fill w-100"
+                                            widget="image"
+                                            options="{'img_class': 'object-fit-cover'}"
+                                            alt="Avatar"
+                                        />
+                                    </aside>
+                                    <main class="ps-2 ps-md-0">
+                                        <field name="name" class="fw-bold"/>
+                                    </main>
+                                    <div class="o_kanban_card_manage_pane">
+                                        <a role="button" type="delete" class="fa fa-trash-o o_kanban_card_manage_delete" title="Delete"/>
+                                    </div>
+                                </t>
+                            </templates>
+                        </kanban>
+                    </field>
+                </page>
+			</xpath>
+            <xpath expr="//div[hasclass('oe_title')]/h1[./field[@name='name']]" position="after">
+				<label for="project_code"/>
+				<field name="project_code"/>
+				<newline />
+
+            </xpath>
+			
+			<field name="user_id" position="after">
+				<field name="p_assistant" widget="many2one_avatar_user" options="{'no_quick_create': True}" required="state == 'draft'" readonly="state != 'draft'"/>
+            </field>
+			<xpath expr="//group[@name='extra_settings']" position="after">
+				<group string="Custom" name="custom">
+					<field name="project_cost"/>
+				</group>
+			</xpath>
+			<xpath expr="//notebook" position="inside">
+				<page string="Inventory Usage">
+					<center>
+						<strong>
+							<separator string="Inventory Usage By Bill Of Quantity"/>
+						</strong>
+					</center>
+					<br/>
+					<group>
+						<field name="inventory_usages_ids" nolabel="1" colspan="2">
+							<list>
+								<field name="product_id"/>
+								<field name="uom_id"/>
+								<field name="qty"/>
+								<field name="price_unit"/>
+								<field name="price_subtotal"/>
+							</list>
+						</field>
+					</group>
+				</page>
+				<page string="Project Deliverables">
+					<group>
+						<field name="project_deliverables_ids" nolabel="1" colspan="2">
+							<list editable="bottom">
+								<field name="product_id"/>
+								<field name="planned_qty"/>
+								<field name="used_qty"/>
+							</list>
+						</field>
+					</group>
+				</page>
+				<page string="Work Package">
+					<center>
+						<strong>
+							<separator string="Work Package By Bill Of Quantity"/>
+						</strong>
+					</center>
+					<br/>
+					<group>
+						<field name="work_package_ids" nolabel="1" colspan="2">
+							<list>
+								<field name="work_package_id"/>
+								<field name="uom_id"/>
+								<field name="qty"/>
+								<field name="price_unit"/>
+								<field name="price_subtotal"/>
+							</list>
+						</field>
+					</group>
+				</page>
+			</xpath>
+
+        </field>
+    </record>
+    <!-- Simplified Form View -->
+    <record id="project_tags_view_inherit_simple" model="ir.ui.view">
+        <field name="name">project.tags.simpleform</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.project_project_view_form_simplified" />
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field
+                    name="tag_ids"
+                    widget="many2many_tags"
+                    options="{'color_field': 'color'}"
+                />
+            </field>
+        </field>
+    </record>
+
+    <menuitem
+        name="Projects List"
+        id="project_list"
+        parent="project.menu_main_pm"
+        action="project.open_view_project_all_config"
+        sequence="0"
+    />
+
+    <menuitem
+        name="Customers"
+        id="menu_customers"
+        parent="project.menu_main_pm"
+        action="action_customers_form"
+        sequence="10"
+    />
+</odoo>

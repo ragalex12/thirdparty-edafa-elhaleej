@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Task 51 – Labor Cost Accounting page on company form (after General Information) -->
+        <record id="view_company_form_production_labor" model="ir.ui.view">
+            <field name="name">res.company.form.production.labor</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='general_info']" position="after">
+                    <page string="Labor Cost Accounting"
+                          name="labor_cost_accounting"
+                          groups="account.group_account_manager">
+                        <group string="Accounts">
+                            <field name="labor_wip_account_id"
+                                   string="Labor WIP Account (Debit)"
+                                   options="{'no_create': True}"
+                                   help="Account DEBITED when timesheet labor cost is posted (WIP / Project Cost)."/>
+                            <field name="labor_clearing_account_id"
+                                   string="Labor Clearing Account (Credit)"
+                                   options="{'no_create': True}"
+                                   help="Account CREDITED when timesheet labor cost is posted (Payroll Accrual / Labor Clearing)."/>
+                            <field name="labor_cost_journal_id"
+                                   string="Labor Cost Journal"
+                                   options="{'no_create': True}"
+                                   help="Journal for labor cost journal entries. Falls back to the stock journal if not set."/>
+                        </group>
+                        <group string="Rate Multipliers">
+                            <field name="overtime_rate_multiplier"
+                                   string="Overtime Rate Multiplier"/>
+                            <field name="holiday_rate_multiplier"
+                                   string="Holiday Rate Multiplier"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

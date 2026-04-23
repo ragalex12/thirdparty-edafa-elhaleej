@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Project Types -->
+        <record id="project_type_residential" model="project.type">
+            <field name="name">سكني</field>
+            <field name="description">مشاريع سكنية - فلل، شقق، مجمعات سكنية</field>
+            <field name="project_ok" eval="True"/>
+            <field name="task_ok" eval="False"/>
+        </record>
+
+        <record id="project_type_commercial" model="project.type">
+            <field name="name">تجاري</field>
+            <field name="description">مشاريع تجارية - مراكز تسوق، مكاتب، محلات</field>
+            <field name="project_ok" eval="True"/>
+            <field name="task_ok" eval="False"/>
+        </record>
+
+        <record id="project_type_industrial" model="project.type">
+            <field name="name">صناعي</field>
+            <field name="description">مشاريع صناعية - مصانع، مستودعات، ورش</field>
+            <field name="project_ok" eval="True"/>
+            <field name="task_ok" eval="False"/>
+        </record>
+
+        <record id="project_type_infrastructure" model="project.type">
+            <field name="name">بنية تحتية</field>
+            <field name="description">مشاريع البنية التحتية - طرق، جسور، أنفاق</field>
+            <field name="project_ok" eval="True"/>
+            <field name="task_ok" eval="False"/>
+        </record>
+
+        <record id="project_type_renovation" model="project.type">
+            <field name="name">ترميم</field>
+            <field name="description">مشاريع الترميم والصيانة</field>
+            <field name="project_ok" eval="True"/>
+            <field name="task_ok" eval="False"/>
+        </record>
+
+        <!-- Project Purposes -->
+        <record id="project_purpose_construction" model="project.purpose">
+            <field name="name">بناء</field>
+        </record>
+
+        <record id="project_purpose_renovation" model="project.purpose">
+            <field name="name">ترميم</field>
+        </record>
+
+        <record id="project_purpose_maintenance" model="project.purpose">
+            <field name="name">صيانة</field>
+        </record>
+
+        <record id="project_purpose_expansion" model="project.purpose">
+            <field name="name">توسعة</field>
+        </record>
+
+        <record id="project_purpose_restoration" model="project.purpose">
+            <field name="name">ترميم شامل</field>
+        </record>
+
+        <!-- Cost Headers -->
+        <record id="cost_header_earthworks" model="cost.header">
+            <field name="number">100</field>
+            <field name="name">أعمال الحفر والردم</field>
+        </record>
+
+        <record id="cost_header_concrete" model="cost.header">
+            <field name="number">200</field>
+            <field name="name">أعمال الخرسانة</field>
+        </record>
+
+        <record id="cost_header_masonry" model="cost.header">
+            <field name="number">300</field>
+            <field name="name">أعمال البناء</field>
+        </record>
+
+        <record id="cost_header_steel" model="cost.header">
+            <field name="number">400</field>
+            <field name="name">أعمال الحديد</field>
+        </record>
+
+        <record id="cost_header_electrical" model="cost.header">
+            <field name="number">500</field>
+            <field name="name">أعمال الكهرباء</field>
+        </record>
+
+        <record id="cost_header_plumbing" model="cost.header">
+            <field name="number">600</field>
+            <field name="name">أعمال السباكة</field>
+        </record>
+
+        <record id="cost_header_finishing" model="cost.header">
+            <field name="number">700</field>
+            <field name="name">أعمال التشطيب</field>
+        </record>
+
+        <!-- Cost Codes -->
+        <record id="cost_code_earthworks_excavation" model="cost.code">
+            <field name="number">101</field>
+            <field name="name">حفر يدوي</field>
+            <field name="description">حفر يدوي للأسس والخنادق</field>
+            <field name="cost_code_id" ref="cost_header_earthworks"/>
+            <field name="price_unit" eval="50.0"/>
+            <field name="qty" eval="1.0"/>
+        </record>
+
+        <record id="cost_code_earthworks_backfill" model="cost.code">
+            <field name="number">102</field>
+            <field name="name">ردم</field>
+            <field name="description">ردم حول الأسس</field>
+            <field name="cost_code_id" ref="cost_header_earthworks"/>
+            <field name="price_unit" eval="30.0"/>
+            <field name="qty" eval="1.0"/>
+        </record>
+
+        <record id="cost_code_concrete_foundation" model="cost.code">
+            <field name="number">201</field>
+            <field name="name">خرسانة أسس</field>
+            <field name="description">صب خرسانة أسس</field>
+            <field name="cost_code_id" ref="cost_header_concrete"/>
+            <field name="price_unit" eval="350.0"/>
+            <field name="qty" eval="1.0"/>
+        </record>
+
+        <record id="cost_code_concrete_slab" model="cost.code">
+            <field name="number">202</field>
+            <field name="name">خرسانة أرضيات</field>
+            <field name="description">صب خرسانة أرضيات</field>
+            <field name="cost_code_id" ref="cost_header_concrete"/>
+            <field name="price_unit" eval="300.0"/>
+            <field name="qty" eval="1.0"/>
+        </record>
+
+        <record id="cost_code_masonry_brick" model="cost.code">
+            <field name="number">301</field>
+            <field name="name">بناء طوب</field>
+            <field name="description">بناء جدران بالطوب</field>
+            <field name="cost_code_id" ref="cost_header_masonry"/>
+            <field name="price_unit" eval="80.0"/>
+            <field name="qty" eval="1.0"/>
+        </record>
+
+        <record id="cost_code_steel_rebar" model="cost.code">
+            <field name="number">401</field>
+            <field name="name">حديد تسليح</field>
+            <field name="description">حديد تسليح للخرسانة</field>
+            <field name="cost_code_id" ref="cost_header_steel"/>
+            <field name="price_unit" eval="4500.0"/>
+            <field name="qty" eval="1.0"/>
+        </record>
+
+        <record id="cost_code_electrical_wiring" model="cost.code">
+            <field name="number">501</field>
+            <field name="name">تمديدات كهربائية</field>
+            <field name="description">تمديد الأسلاك الكهربائية</field>
+            <field name="cost_code_id" ref="cost_header_electrical"/>
+            <field name="price_unit" eval="25.0"/>
+            <field name="qty" eval="1.0"/>
+        </record>
+
+        <record id="cost_code_plumbing_pipes" model="cost.code">
+            <field name="number">601</field>
+            <field name="name">تمديدات صحية</field>
+            <field name="description">تمديد أنابيب المياه والصرف</field>
+            <field name="cost_code_id" ref="cost_header_plumbing"/>
+            <field name="price_unit" eval="40.0"/>
+            <field name="qty" eval="1.0"/>
+        </record>
+
+        <record id="cost_code_finishing_paint" model="cost.code">
+            <field name="number">701</field>
+            <field name="name">دهان</field>
+            <field name="description">دهان الجدران والأسقف</field>
+            <field name="cost_code_id" ref="cost_header_finishing"/>
+            <field name="price_unit" eval="15.0"/>
+            <field name="qty" eval="1.0"/>
+        </record>
+
+        <record id="cost_code_finishing_tiles" model="cost.code">
+            <field name="number">702</field>
+            <field name="name">بلاط</field>
+            <field name="description">تركيب بلاط الأرضيات والجدران</field>
+            <field name="cost_code_id" ref="cost_header_finishing"/>
+            <field name="price_unit" eval="60.0"/>
+            <field name="qty" eval="1.0"/>
+        </record>
+
+        <!-- Work Packages -->
+        <record id="work_package_structure" model="work.package">
+            <field name="name">حزمة الهيكل الإنشائي</field>
+            <field name="cost_header_ids" eval="[(6, 0, [ref('cost_header_earthworks'), ref('cost_header_concrete'), ref('cost_header_steel')])]"/>
+        </record>
+
+        <record id="work_package_enclosure" model="work.package">
+            <field name="name">حزمة البناء والتسقيف</field>
+            <field name="cost_header_ids" eval="[(6, 0, [ref('cost_header_masonry')])]"/>
+        </record>
+
+        <record id="work_package_mep" model="work.package">
+            <field name="name">حزمة الميكانيكا والكهرباء</field>
+            <field name="cost_header_ids" eval="[(6, 0, [ref('cost_header_electrical'), ref('cost_header_plumbing')])]"/>
+        </record>
+
+        <record id="work_package_finishing" model="work.package">
+            <field name="name">حزمة التشطيب</field>
+            <field name="cost_header_ids" eval="[(6, 0, [ref('cost_header_finishing')])]"/>
+        </record>
+
+    </data>
+</odoo>
+

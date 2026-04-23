@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Task 50 – Optional labor account override on Workcenter form -->
+        <record id="view_mrp_workcenter_form_labor" model="ir.ui.view">
+            <field name="name">mrp.workcenter.form.labor</field>
+            <field name="model">mrp.workcenter</field>
+            <field name="inherit_id" ref="mrp.mrp_workcenter_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='costing']" position="inside">
+                    <field name="labor_account_id"
+                           string="Labor Account (Override)"
+                           options="{'no_create': True}"
+                           groups="account.group_account_manager"
+                           help="Optional. Overrides the company Labor WIP Account for timesheet lines on work orders using this workcenter."/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

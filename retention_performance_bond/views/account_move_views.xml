@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="view_move_form_inherit_retention_performance_bond" model="ir.ui.view">
+    <field name="name">account.move.form.inherit.retention.performance.bond</field>
+    <field name="model">account.move</field>
+    <field name="inherit_id" ref="account.view_move_form"/>
+    <field name="arch" type="xml">
+      <!-- Add button in header to generate deduction journal lines -->
+      <xpath expr="//header" position="inside">
+        <button name="action_generate_deduction_lines" 
+                type="object" 
+                string="Generate retention and performance bond"
+                class="btn-primary"
+                invisible="move_type != 'out_invoice' or state != 'posted' or has_deduction_lines"
+                help="Generate a MISC journal entry for performance bond and retention deductions"/>
+      </xpath>
+      
+      <!-- Add smart button to view deduction journal entry -->
+      <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+        <button name="action_view_deduction_lines" 
+                type="object" 
+                class="oe_stat_button" 
+                icon="fa-file-text-o"
+                invisible="move_type != 'out_invoice' or state != 'posted' or not has_deduction_lines">
+          <div class="o_stat_info">
+            <span class="o_stat_text">Deduction</span>
+            <span class="o_stat_text">Journal</span>
+          </div>
+        </button>
+      </xpath>
+      
+      <xpath expr="//page[@name='other_info']" position="after">
+        <!-- Tabs aligned after Other Info -->
+        
+        <!-- Tab 1: Summary - Overview and Financial Summary -->
+        <page name="summary" string="Summary" invisible="move_type != 'out_invoice'">
+            
+            <!-- Contract References -->
+            <group string="Contract References" col="4">
+              <field name="contract_ref" colspan="2" placeholder="e.g. MC-21323"/>
+              <field name="po_ref" colspan="2" placeholder="PO No"/>
+              <field name="invoice_ref" colspan="2" placeholder="Inv Ref"/>
+              <field name="covered_period" colspan="2" optional="show"/>
+            </group>
+            
+            <!-- Financial Summary -->
+            <group string="Financial Summary" col="4">
+              <group>
+                <field name="gross_untaxed" readonly="1" widget="monetary"/>
+              </group>
+              <group>
+                <field name="tax_base_after_deductions" readonly="1" widget="monetary"/>
+                <field name="amount_tax" readonly="1" widget="monetary"/>
+              </group>
+              <group>
+                <field name="amount_total" readonly="1" widget="monetary"/>
+                <field name="net_collect_now" readonly="1" widget="monetary"/>
+              </group>
+            </group>
+            
+            <!-- Deduction Journal Entry (visible when created) -->
+            <group string="Deduction Journal Entry" col="2" invisible="not deduction_journal_id">
+              <field name="deduction_journal_id" 
+                     readonly="1"
+                     widget="many2one_link"
+                     string="Journal Entry"
+                     colspan="2"
+                     options="{'no_create': True, 'no_edit': True}"/>
+              <button name="action_view_deduction_lines" 
+                      type="object" 
+                      string="Open Deduction Journal Entry"
+                      class="btn-primary"
+                      invisible="not deduction_journal_id"
+                      colspan="2"
+                      help="Open the MISC journal entry created for deductions"/>
+            </group>
+            
+        </page>
+        
+        <!-- Tab 2: Deductions - Performance Bond and Retention -->
+        <page name="deductions" string="Performance Bond and Retention" invisible="move_type != 'out_invoice'">
+            
+            <!-- Performance Bond -->
+            <group string="Performance Bond" col="2">
+              <field name="performance_bond_percent" colspan="1" widget="percentage"/>
+              <field name="performance_bond_amount" colspan="1" readonly="1" widget="monetary"/>
+            </group>
+            
+            <!-- Retention -->
+            <group string="Retention" col="2">
+              <field name="retention_percent" colspan="1" widget="percentage"/>
+              <field name="retention_amount" colspan="1" readonly="1" widget="monetary"/>
+            </group>
+            
+            <!-- Generate Journal Entry Button -->
+            <group string="Journal Entries" invisible="state != 'posted'">
+              <button name="action_generate_deduction_lines" 
+                      type="object" 
+                      string="Generate retention and performance bond"
+                      class="btn-primary"
+                      invisible="state != 'posted' or has_deduction_lines"
+                      help="Create a MISC journal entry for performance bond and retention deductions"/>
+              
+              <!-- Created Deduction Journal Entry -->
+              <group string="Created retention and performance bond Journal Entry" invisible="state != 'posted' or not deduction_journal_id" col="2">
+                <field name="deduction_journal_id" 
+                       readonly="1"
+                       widget="many2one_link"
+                       string="Journal Entry"
+                       colspan="2"
+                       options="{'no_create': True, 'no_edit': True}"/>
+                <button name="action_view_deduction_lines" 
+                        type="object" 
+                        string="Open Journal Entry"
+                        class="btn-primary"
+                        invisible="state != 'posted' or not deduction_journal_id"
+                        colspan="2"
+                        help="Open the MISC journal entry created for deductions"/>
+              </group>
+            </group>
+            
+        </page>
+      </xpath>
+    </field>
+  </record>
+
+</odoo>

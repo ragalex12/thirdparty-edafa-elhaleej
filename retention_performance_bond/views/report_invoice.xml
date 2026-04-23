@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <template id="report_invoice_document_retention_performance_bond" inherit_id="account.report_invoice_document">
+    <xpath expr="//div[@id='total']" position="after">
+      <t t-if="o.move_type == 'out_invoice'">
+        <t t-set="gcc_amounts" t-value="o._get_gcc_report_amounts()"/>
+        <div class="mt32">
+          <h3>Invoice Summary</h3>
+
+          <div class="mt16">
+            <strong>Contract References</strong>
+            <table class="table table-sm">
+              <tbody>
+                <tr>
+                  <td>Contract No</td>
+                  <td><span t-esc="o.contract_ref or ''"/></td>
+                  <td>PO No</td>
+                  <td><span t-esc="o.po_ref or ''"/></td>
+                </tr>
+                <tr>
+                  <td>Inv Ref</td>
+                  <td><span t-esc="o.invoice_ref or ''"/></td>
+                  <td>Covered Period</td>
+                  <td><span t-esc="o.covered_period or ''"/></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="mt16">
+            <strong>Financial Summary</strong>
+            <table class="table table-sm">
+              <tbody>
+                <tr>
+                  <td>Gross (Untaxed)</td>
+                  <td><span t-esc="gcc_amounts['gross_untaxed']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Tax Base After Deductions</td>
+                  <td><span t-esc="gcc_amounts['tax_base_after_deductions']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                  <td>Tax</td>
+                  <td><span t-field="o.amount_tax"/></td>
+                </tr>
+                <tr>
+                  <td>Total</td>
+                  <td><span t-field="o.amount_total"/></td>
+                  <td>Net Collect Now</td>
+                  <td><span t-esc="gcc_amounts['net_collect_now']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="mt16">
+            <strong>Performance Bond and Retention</strong>
+            <table class="table table-sm">
+              <tbody>
+                <tr>
+                  <td>Performance Bond %</td>
+                  <td><span t-esc="'{:.2f}'.format((o.performance_bond_percent or 0.0) * 100)"/>%</td>
+                  <td>Performance Bond Amount</td>
+                  <td><span t-esc="gcc_amounts['performance_bond_amount']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                </tr>
+                <tr>
+                  <td>Retention %</td>
+                  <td><span t-esc="'{:.2f}'.format((o.retention_percent or 0.0) * 100)"/>%</td>
+                  <td>Retention Amount</td>
+                  <td><span t-esc="gcc_amounts['retention_amount']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </t>
+    </xpath>
+  </template>
+</odoo>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Root Menu (keep independent to avoid circular dependency with workers_project_sheets) -->
+        <menuitem id="menu_workers_timesheet_root"
+                  name="Workers Timesheet"
+                  sequence="40"/>
+
+        <!-- Timesheets Menu -->
+        <menuitem id="menu_workers_timesheets"
+                  name="Workers Timesheets"
+                  parent="menu_workers_timesheet_root"
+                  action="hr_timesheet.act_hr_timesheet_line"
+                  sequence="10"/>
+    </data>
+</odoo>
+

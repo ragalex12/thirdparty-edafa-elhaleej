@@ -1,0 +1,811 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* hr_advance_wo_bill
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-06-02 11:41+0000\n"
+"PO-Revision-Date: 2022-06-02 14:44+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"X-Generator: Poedit 3.0.1\n"
+
+#. module: hr_advance_wo_bill
+#: model:mail.template,body_html:hr_advance_wo_bill.advance_email_notification_template
+msgid ""
+"\n"
+"                    \n"
+"                          <p>Dear ${(object.employee.name)},<br/><br/>\n"
+"                          You are in possession of the company asset\n"
+"                          <strong>\"${(object.advance_name.name)}\"</"
+"strong>\n"
+"                          since <strong>${(object.return_date)}.</"
+"strong><br/><br/>\n"
+"                          Please kindly return the property as soon as "
+"possible.<br/><br/></p>\n"
+"                          Regards,<br/><br/>\n"
+"                          ${(object.company_id.name)}\n"
+"            "
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_employee__advance_count
+msgid "# Advance"
+msgstr "عدد العهد"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__invoice_count
+msgid "# Bills"
+msgstr "عدد الفواتير"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__expense_count
+msgid "# Expenses"
+msgstr "عدد المصاريف"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__journal_count
+msgid "# Journals"
+msgstr "عدد القيود"
+
+#. module: hr_advance_wo_bill
+#: code:addons/hr_advance_wo_bill/models/advance.py:0
+#, python-format
+msgid "/web#id=%s&view_type=form&model=hr.advance&menu_id="
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: code:addons/hr_advance_wo_bill/models/advance.py:0
+#, python-format
+msgid ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"                                               Click to Create for New "
+"Expense\n"
+"                                            </p>"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: code:addons/hr_advance_wo_bill/models/advance.py:0
+#, python-format
+msgid ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"                                   Click to Create for journal\n"
+"                                </p>"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__message_needaction
+msgid "Action Needed"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__activity_ids
+msgid "Activities"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__activity_state
+msgid "Activity State"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__activity_type_icon
+msgid "Activity Type Icon"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: code:addons/hr_advance_wo_bill/models/hr_employee.py:0
+#, python-format
+msgid "Advance"
+msgstr "العهد"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_res_config_settings__advance_account_id
+msgid "Advance Account Permanent"
+msgstr "حساب العهدة الدائمه"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_res_config_settings__advance_account_id2
+msgid "Advance Account Temporary"
+msgstr "حساب العهد المؤقته"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__advance_amount
+msgid "Advance Amount"
+msgstr "مبلغ العهدة"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_res_config_settings__advance_journal_id
+msgid "Advance Journal Permanent"
+msgstr "قيد العهدة الدائمه"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_res_config_settings__advance_journal_id2
+msgid "Advance Journal Temporary"
+msgstr "قيد العهدة المؤقته"
+
+#. module: hr_advance_wo_bill
+#: model:ir.ui.menu,name:hr_advance_wo_bill.menu_hr_expense_sheet_all
+msgid "All Reports"
+msgstr "جميع التقارير"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__analytic_account_id
+msgid "Analytic Account"
+msgstr "مركز التكلفه"
+
+#. module: hr_advance_wo_bill
+#: model_terms:ir.ui.view,arch_db:hr_advance_wo_bill.hr_advance_form_view
+msgid "Approve"
+msgstr "موافق"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields.selection,name:hr_advance_wo_bill.selection__hr_advance__state__approved
+msgid "Approved"
+msgstr "تم الموافقة"
+
+#. module: hr_advance_wo_bill
+#: model_terms:ir.ui.view,arch_db:hr_advance_wo_bill.hr_advance_form_view
+msgid "Are you sure you want to create payment?"
+msgstr "متأكد بانشاء المدفوعات؟"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__message_attachment_count
+msgid "Attachment Count"
+msgstr "عدد المرفقات"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__invoice_id
+msgid "Bill"
+msgstr "فاتورة"
+
+#. module: hr_advance_wo_bill
+#: model_terms:ir.ui.view,arch_db:hr_advance_wo_bill.wizard_reason_form
+msgid "Cancel"
+msgstr "الغاء"
+
+#. module: hr_advance_wo_bill
+#: model_terms:ir.ui.view,arch_db:hr_advance_wo_bill.view_hr_expense_sheet_hr_advance
+msgid "Cancel Old Advanced journals"
+msgstr "الغاء قيد العهدة"
+
+#. module: hr_advance_wo_bill
+#: model_terms:ir.actions.act_window,help:hr_advance_wo_bill.action_hr_advance
+msgid "Click to Create a New Record."
+msgstr "أضفط لانشاء سجل جديد"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__name
+#: model:ir.model.fields,help:hr_advance_wo_bill.field_hr_advance__name
+msgid "Code"
+msgstr "كود"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__company_id
+#: model:ir.model.fields,help:hr_advance_wo_bill.field_hr_advance__company_id
+msgid "Company"
+msgstr "شركه"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model,name:hr_advance_wo_bill.model_res_config_settings
+msgid "Config Settings"
+msgstr "ضبط الاعدادات"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__create_uid
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_wizard_reason__create_uid
+msgid "Created by"
+msgstr "انشئ بواسطة"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__create_date
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_wizard_reason__create_date
+msgid "Created on"
+msgstr "انشئ في"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__department_id
+msgid "Department"
+msgstr "القسم"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__display_name
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_employee__display_name
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_expense__display_name
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_expense_sheet__display_name
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_wizard_reason__display_name
+msgid "Display Name"
+msgstr "الاسم المعروض"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields.selection,name:hr_advance_wo_bill.selection__hr_advance__state__draft
+msgid "Draft"
+msgstr "مسودة"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model,name:hr_advance_wo_bill.model_hr_employee
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__employee
+#: model:ir.model.fields,help:hr_advance_wo_bill.field_hr_advance__employee
+#: model_terms:ir.ui.view,arch_db:hr_advance_wo_bill.hr_advance_search_view
+msgid "Employee"
+msgstr "الموظف"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model,name:hr_advance_wo_bill.model_hr_expense
+msgid "Expense"
+msgstr "المصروف"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_expense_sheet__exp_id
+msgid "Expense Name"
+msgstr "اسم المصروفات"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model,name:hr_advance_wo_bill.model_hr_expense_sheet
+msgid "Expense Report"
+msgstr "تقرير المصروف"
+
+#. module: hr_advance_wo_bill
+#: model:ir.ui.menu,name:hr_advance_wo_bill.menu_hr_expense_report
+msgid "Expense Reports"
+msgstr "تقارير المصروفات"
+
+#. module: hr_advance_wo_bill
+#: code:addons/hr_advance_wo_bill/models/advance.py:0
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__expense_ids
+#: model_terms:ir.ui.view,arch_db:hr_advance_wo_bill.hr_advance_form_view
+#, python-format
+msgid "Expenses"
+msgstr "المصاريف"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__message_follower_ids
+msgid "Followers"
+msgstr "المتابعين"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__message_channel_ids
+msgid "Followers (Channels)"
+msgstr "المتابعين (قنوات)"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__message_partner_ids
+msgid "Followers (Partners)"
+msgstr "المتابعين (شركاء)"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,help:hr_advance_wo_bill.field_hr_advance__activity_type_icon
+msgid "Font awesome icon e.g. fa-tasks"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model_terms:ir.ui.view,arch_db:hr_advance_wo_bill.hr_advance_search_view
+msgid "Group By"
+msgstr "مجمع بواسطه"
+
+#. module: hr_advance_wo_bill
+#: model:ir.actions.act_window,name:hr_advance_wo_bill.action_hr_advance
+#: model:ir.ui.menu,name:hr_advance_wo_bill.hr_advance_main_menu
+#: model_terms:ir.ui.view,arch_db:hr_advance_wo_bill.custody_hr_employee_inherit_form_view
+#: model_terms:ir.ui.view,arch_db:hr_advance_wo_bill.hr_advance_search_view
+msgid "HR Advance"
+msgstr "عهد العاملين"
+
+#. module: hr_advance_wo_bill
+#: model_terms:ir.ui.view,arch_db:hr_advance_wo_bill.res_config_settings_view_form_inherit
+msgid "HR Advance Management"
+msgstr "إدارة عهد العاملين"
+
+#. module: hr_advance_wo_bill
+#: model:product.product,name:hr_advance_wo_bill.product_advance_reconcile1
+#: model:product.template,name:hr_advance_wo_bill.product_advance_reconcile1_product_template
+msgid "HR Advance Reconcile"
+msgstr "تسويه عهد العاملين"
+
+#. module: hr_advance_wo_bill
+#: model:ir.actions.server,name:hr_advance_wo_bill.hr_advance_data_reminders_ir_actions_server
+#: model:ir.cron,cron_name:hr_advance_wo_bill.hr_advance_data_reminders
+#: model:ir.cron,name:hr_advance_wo_bill.hr_advance_data_reminders
+msgid "HR Advance Return Notification"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_expense__advance_id
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_expense_sheet__adv_id
+#: model_terms:ir.ui.view,arch_db:hr_advance_wo_bill.hr_advance_form_view
+msgid "HR advance"
+msgstr "عهد العاملين"
+
+#. module: hr_advance_wo_bill
+#: code:addons/hr_advance_wo_bill/models/advance.py:0
+#, python-format
+msgid ""
+"Hi %s,<br>As per the %s you took %s on %s for the reason of %s. S0 here we "
+"remind you that you have to close the advance on or before %s. link."
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model,name:hr_advance_wo_bill.model_hr_advance
+msgid "Hr advance Management"
+msgstr "إدارة عهد العاملين"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__id
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_employee__id
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_expense__id
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_expense_sheet__id
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_res_config_settings__id
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_wizard_reason__id
+msgid "ID"
+msgstr "المُعرف"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__activity_exception_icon
+msgid "Icon"
+msgstr "رمز"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,help:hr_advance_wo_bill.field_hr_advance__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,help:hr_advance_wo_bill.field_hr_advance__message_needaction
+#: model:ir.model.fields,help:hr_advance_wo_bill.field_hr_advance__message_unread
+msgid "If checked, new messages require your attention."
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,help:hr_advance_wo_bill.field_hr_advance__message_has_error
+#: model:ir.model.fields,help:hr_advance_wo_bill.field_hr_advance__message_has_sms_error
+msgid "If checked, some messages have a delivery error."
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__message_is_follower
+msgid "Is Follower"
+msgstr "متابع "
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__job_id
+msgid "Job Title"
+msgstr "الوظيفه"
+
+#. module: hr_advance_wo_bill
+#: code:addons/hr_advance_wo_bill/models/advance.py:0
+#, python-format
+msgid "Jouranls"
+msgstr "القيود"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__returned_advance_je
+msgid "Journal Entry"
+msgstr "قيد اليومية"
+
+#. module: hr_advance_wo_bill
+#: model_terms:ir.ui.view,arch_db:hr_advance_wo_bill.hr_advance_form_view
+msgid "Journals"
+msgstr "القيود"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance____last_update
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_employee____last_update
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_expense____last_update
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_expense_sheet____last_update
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_res_config_settings____last_update
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_wizard_reason____last_update
+msgid "Last Modified on"
+msgstr "آخر تعديل في"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__write_uid
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_wizard_reason__write_uid
+msgid "Last Updated by"
+msgstr "أخر تحديث بواسطه"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__write_date
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_wizard_reason__write_date
+msgid "Last Updated on"
+msgstr "أخر تعديل في"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__mail_send
+msgid "Mail Send"
+msgstr "ان ارسال البريد"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__message_main_attachment_id
+msgid "Main Attachment"
+msgstr "المرفق الرئيسي"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__message_has_error
+msgid "Message Delivery error"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__message_ids
+msgid "Messages"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__my_activity_date_deadline
+msgid "My Activity Deadline"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__activity_summary
+msgid "Next Activity Summary"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__activity_type_id
+msgid "Next Activity Type"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__notes
+#: model_terms:ir.ui.view,arch_db:hr_advance_wo_bill.hr_advance_form_view
+msgid "Notes"
+msgstr "ملاحظات"
+
+#. module: hr_advance_wo_bill
+#: model:mail.template,subject:hr_advance_wo_bill.advance_email_notification_template
+msgid "Notification to return company asset-${object.advance_name.name}"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__message_needaction_counter
+msgid "Number of Actions"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__message_has_error_counter
+msgid "Number of errors"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,help:hr_advance_wo_bill.field_hr_advance__message_needaction_counter
+msgid "Number of messages which requires an action"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,help:hr_advance_wo_bill.field_hr_advance__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,help:hr_advance_wo_bill.field_hr_advance__message_unread_counter
+msgid "Number of unread messages"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields.selection,name:hr_advance_wo_bill.selection__hr_advance__state__paid
+msgid "Paid"
+msgstr "مدفوع"
+
+#. module: hr_advance_wo_bill
+#: model_terms:ir.ui.view,arch_db:hr_advance_wo_bill.hr_advance_form_view
+msgid "Payment"
+msgstr "الدفع"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__journal_id
+msgid "Payment Method"
+msgstr "طريقه الدفع"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields.selection,name:hr_advance_wo_bill.selection__hr_advance__type__permanent
+msgid "Permanent"
+msgstr "دائمه"
+
+#. module: hr_advance_wo_bill
+#: code:addons/hr_advance_wo_bill/models/advance.py:0
+#, python-format
+msgid "Please Give Valid Return Date"
+msgstr "من قضلك ضع تاريخ التسويه"
+
+#. module: hr_advance_wo_bill
+#: code:addons/hr_advance_wo_bill/models/advance.py:0
+#, python-format
+msgid "Please select the payment journal first"
+msgstr "من فضلك اختر قيد الدفع اولا"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__type
+msgid "Please select the type"
+msgstr "من فضلك اختر النوع"
+
+#. module: hr_advance_wo_bill
+#: model_terms:ir.ui.view,arch_db:hr_advance_wo_bill.view_hr_expense_sheet_hr_advance
+msgid "Post Advanced reconcile"
+msgstr "ترحيل قيد العهدة"
+
+#. module: hr_advance_wo_bill
+#: model_terms:ir.ui.view,arch_db:hr_advance_wo_bill.view_hr_expense_sheet_hr_advance
+msgid "Post Advanced reconcile with Tax"
+msgstr "ترحيل قيد العهدة بالضريبة"
+
+#. module: hr_advance_wo_bill
+#: model_terms:ir.ui.view,arch_db:hr_advance_wo_bill.wizard_reason_form
+msgid "Proceed"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: code:addons/hr_advance_wo_bill/models/advance.py:0
+#, python-format
+msgid "REMINDER On %s"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__purpose
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_wizard_reason__reason
+#: model:ir.model.fields,help:hr_advance_wo_bill.field_hr_advance__purpose
+#: model:ir.model.fields,help:hr_advance_wo_bill.field_wizard_reason__reason
+msgid "Reason"
+msgstr "السبب"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,help:hr_advance_wo_bill.field_hr_advance__rejected_reason
+msgid "Reason for the rejection"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields.selection,name:hr_advance_wo_bill.selection__hr_advance__state__reconcile
+msgid "Reconciled"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model_terms:ir.ui.view,arch_db:hr_advance_wo_bill.hr_advance_form_view
+msgid "Refuse"
+msgstr "رفض"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields.selection,name:hr_advance_wo_bill.selection__hr_advance__state__rejected
+msgid "Refused"
+msgstr "مرفوض"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__rejected_reason
+msgid "Rejected Reason"
+msgstr "سبب الرفض"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__renew_reject
+msgid "Renew Reject"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__renew_rejected_reason
+msgid "Renew Rejected Reason"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__renew_return_date
+msgid "Renew Return Date"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,help:hr_advance_wo_bill.field_hr_advance__renew_rejected_reason
+msgid "Renew rejected reason"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__renew_date
+msgid "Renewal Return Date"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.ui.menu,name:hr_advance_wo_bill.menu_hr_expense_sheet_all_to_approve
+msgid "Reports to Approve"
+msgstr "تقارير للموافقة"
+
+#. module: hr_advance_wo_bill
+#: model:ir.ui.menu,name:hr_advance_wo_bill.menu_hr_expense_sheet_all_to_post
+msgid "Reports to Post"
+msgstr "تقارير للترحيل"
+
+#. module: hr_advance_wo_bill
+#: model:ir.ui.menu,name:hr_advance_wo_bill.hr_advance_menu
+msgid "Request"
+msgstr "طلب"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__date_request
+msgid "Requested Date"
+msgstr "تاريخ الطلب"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,help:hr_advance_wo_bill.field_hr_advance__date_request
+msgid "Requested date"
+msgstr "تاريخ الطلب"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__activity_user_id
+msgid "Responsible User"
+msgstr "المستخدم المسؤول"
+
+#. module: hr_advance_wo_bill
+#: model_terms:ir.ui.view,arch_db:hr_advance_wo_bill.hr_advance_form_view
+msgid "Return Advance amount"
+msgstr "مبلغ تسويه العهده"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__return_date
+msgid "Return Date"
+msgstr "تاريخ التسويه"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,help:hr_advance_wo_bill.field_hr_advance__return_date
+msgid "Return date"
+msgstr "تاريخ التسويه"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,help:hr_advance_wo_bill.field_hr_advance__renew_date
+msgid "Return date for the renewal"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields.selection,name:hr_advance_wo_bill.selection__hr_advance__state__returned
+msgid "Returned"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: code:addons/hr_advance_wo_bill/models/advance.py:0
+#, python-format
+msgid "Reversal of: %s"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model_terms:ir.ui.view,arch_db:hr_advance_wo_bill.res_config_settings_view_form_inherit
+msgid "Select Advance Account Permanent..."
+msgstr "أخنر حساب العهده الدائمه"
+
+#. module: hr_advance_wo_bill
+#: model_terms:ir.ui.view,arch_db:hr_advance_wo_bill.res_config_settings_view_form_inherit
+msgid "Select Advance Account Temporary..."
+msgstr "أختر حساب العهده المؤقته"
+
+#. module: hr_advance_wo_bill
+#: model_terms:ir.ui.view,arch_db:hr_advance_wo_bill.res_config_settings_view_form_inherit
+msgid "Select Advance Journal Permanent..."
+msgstr "اختر قيد العهده الدائمه"
+
+#. module: hr_advance_wo_bill
+#: model_terms:ir.ui.view,arch_db:hr_advance_wo_bill.res_config_settings_view_form_inherit
+msgid "Select Advance Journal Temporary..."
+msgstr "اختر قيد العهده المؤقته"
+
+#. module: hr_advance_wo_bill
+#: model_terms:ir.ui.view,arch_db:hr_advance_wo_bill.hr_advance_form_view
+msgid "Send For Approval"
+msgstr "ارسل للموافقه"
+
+#. module: hr_advance_wo_bill
+#: model_terms:ir.ui.view,arch_db:hr_advance_wo_bill.hr_advance_form_view
+msgid "Send Mail"
+msgstr "ارسل بريد الكتروني"
+
+#. module: hr_advance_wo_bill
+#: model_terms:ir.ui.view,arch_db:hr_advance_wo_bill.hr_advance_form_view
+msgid "Set to Draft"
+msgstr "اجعله مسوده"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__state
+#: model_terms:ir.ui.view,arch_db:hr_advance_wo_bill.hr_advance_search_view
+msgid "Status"
+msgstr "الحاله"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,help:hr_advance_wo_bill.field_hr_advance__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields.selection,name:hr_advance_wo_bill.selection__hr_advance__type__temporary
+msgid "Temporary"
+msgstr "مؤقته"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,help:hr_advance_wo_bill.field_hr_advance__activity_exception_decoration
+msgid "Type of the exception activity on record."
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:product.product,uom_name:hr_advance_wo_bill.product_advance_reconcile1
+#: model:product.template,uom_name:hr_advance_wo_bill.product_advance_reconcile1_product_template
+msgid "Units"
+msgstr "الوحدات"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__message_unread
+msgid "Unread Messages"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__message_unread_counter
+msgid "Unread Messages Counter"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.actions.act_window,name:hr_advance_wo_bill.wizard_reason_act
+#: model_terms:ir.ui.view,arch_db:hr_advance_wo_bill.wizard_reason_form
+msgid "Update Reason"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields.selection,name:hr_advance_wo_bill.selection__hr_advance__state__to_approve
+msgid "Waiting For Approval"
+msgstr "في انتظار الموافقة"
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__website_message_ids
+msgid "Website Messages"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,help:hr_advance_wo_bill.field_hr_advance__website_message_ids
+msgid "Website communication history"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: code:addons/hr_advance_wo_bill/models/advance.py:0
+#, python-format
+msgid "You can only generate accounting entry for approved expense(s)."
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: code:addons/hr_advance_wo_bill/models/advance.py:0
+#, python-format
+msgid "You cannot report expenses for different employees in the same report!"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: code:addons/hr_advance_wo_bill/models/advance.py:0
+#, python-format
+msgid "You cannot report twice the same line!"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model.fields,field_description:hr_advance_wo_bill.field_hr_advance__read_only
+msgid "check field"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model_terms:ir.ui.view,arch_db:hr_advance_wo_bill.wizard_reason_form
+msgid "or"
+msgstr ""
+
+#. module: hr_advance_wo_bill
+#: model:ir.model,name:hr_advance_wo_bill.model_wizard_reason
+msgid "wizard.reason"
+msgstr ""

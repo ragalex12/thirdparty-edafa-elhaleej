@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="action_report_analytic_project_statement_xlsx" model="ir.actions.report">
+        <field name="name">Analytic Project Statement XLSX</field>
+        <field name="model">analytic.project.statement.wizard</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">gpc_aps.proj_stmt_xlsx</field>
+        <field name="report_file">analytic_project_statement</field>
+    </record>
+</odoo>

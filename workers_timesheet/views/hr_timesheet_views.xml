@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--
+        NOTE:
+        Your Odoo instance doesn't have the standard hr_timesheet view XMLIDs
+        (form/tree/search) that this module used to inherit from.
+        To avoid installation failures, we temporarily ship no view inheritance here.
+
+        After installation, enable developer mode, open the timesheet views and copy
+        their External IDs, then we can re-add inherited views targeting the correct XMLIDs.
+        -->
+    </data>
+</odoo>
+

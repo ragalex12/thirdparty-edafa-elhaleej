@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        
+        <!-- Demo Project Type -->
+        <record id="demo_project_type_residential" model="project.type">
+            <field name="name">سكني - تجريبي</field>
+            <field name="description">نوع مشروع تجريبي للمنازل السكنية</field>
+            <field name="project_ok" eval="True"/>
+            <field name="task_ok" eval="True"/>
+        </record>
+
+        <!-- Demo Project Purpose -->
+        <record id="demo_project_purpose_building" model="project.purpose">
+            <field name="name">بناء - تجريبي</field>
+        </record>
+
+        <!-- Demo Cost Header -->
+        <record id="demo_cost_header_1" model="cost.header">
+            <field name="name">أعمال الحفر والردم - تجريبي</field>
+            <field name="code">100</field>
+        </record>
+
+        <!-- Demo Cost Code -->
+        <record id="demo_cost_code_1" model="cost.code">
+            <field name="name">حفر يدوي - تجريبي</field>
+            <field name="code">101</field>
+            <field name="cost_header_id" ref="demo_cost_header_1"/>
+        </record>
+
+        <!-- Demo Work Package -->
+        <record id="demo_work_package_1" model="work.package">
+            <field name="name">حزمة الهيكل الإنشائي - تجريبي</field>
+            <field name="description">حزمة عمل تجريبية للهيكل الإنشائي</field>
+        </record>
+
+        <!-- Demo Bill of Quantity -->
+        <record id="demo_bill_quantity_1" model="bill.quantity">
+            <field name="name">قائمة الكميات التجريبية</field>
+            <field name="description">قائمة كميات تجريبية للمشروع</field>
+        </record>
+
+        <!-- Demo Project -->
+        <record id="demo_project_1" model="project.project">
+            <field name="name">مشروع تجريبي - فيلا سكنية</field>
+            <field name="project_code">DEMO-001</field>
+            <field name="type_id" ref="demo_project_type_residential"/>
+            <field name="project_purpose" eval="[(4, ref('demo_project_purpose_building'))]"/>
+            <field name="project_location">الرياض - حي النرجس</field>
+            <field name="ownership">private"/>
+            <field name="state">draft"/>
+        </record>
+
+    </data>
+</odoo>
+

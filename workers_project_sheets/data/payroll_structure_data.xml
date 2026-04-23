@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Workers Daily Cost Payroll Structure -->
+        <record id="structure_workers_daily_cost" model="hr.payroll.structure">
+            <field name="code">WORKERS_DAILY_COST</field>
+            <field name="name">Workers Daily Cost</field>
+            <field name="parent_id" ref="hr_payroll_community.structure_base"/>
+            <field name="note">Payroll structure for workers with day work option. Timesheets are used for payroll calculation.</field>
+            <field name="company_id" ref="base.main_company"/>
+            <!-- Add basic salary rules - can be customized later -->
+            <field eval="[(6, 0, [ref('hr_payroll_community.hr_rule_basic'), ref('hr_payroll_community.hr_rule_net')])]" name="rule_ids"/>
+        </record>
+    </data>
+</odoo>
+

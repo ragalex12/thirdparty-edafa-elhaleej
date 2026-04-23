@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_res_company_form_labor_accrual" model="ir.ui.view">
+        <field name="name">res.company.form.labor.accrual</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet/notebook" position="inside">
+                <page
+                    string="Labor Accrual"
+                    name="gpc_labor_accrual"
+                    groups="account.group_account_manager"
+                >
+                    <group string="Monthly timesheet labor accrual (Phase 1)">
+                        <field
+                            name="labor_accrual_debit_account_id"
+                            string="Debit account"
+                            options="{'no_create': True}"
+                            domain="[('active', '=', True), ('company_ids', 'in', [id])]"
+                        />
+                        <field
+                            name="labor_accrual_credit_account_id"
+                            string="Credit account"
+                            options="{'no_create': True}"
+                            domain="[('active', '=', True), ('company_ids', 'in', [id])]"
+                        />
+                        <field
+                            name="labor_accrual_journal_id"
+                            string="Journal"
+                            options="{'no_create': True}"
+                            domain="[('company_id', '=', id), ('type', '=', 'general')]"
+                        />
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

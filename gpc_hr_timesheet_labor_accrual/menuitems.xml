@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Visible navigation: search was unreliable because no menu existed. -->
+    <menuitem
+        id="menu_labor_accrual_batches"
+        name="Labor Accrual Batches"
+        parent="account.account_transactions_menu"
+        action="gpc_hr_timesheet_labor_accrual.action_labor_accrual_batch"
+        sequence="85"
+        groups="account.group_account_user"
+    />
+    <menuitem
+        id="menu_labor_accrual_from_period"
+        name="Labor Accrual (from period)"
+        parent="account.account_transactions_menu"
+        action="gpc_hr_timesheet_labor_accrual.action_labor_accrual_batch_wizard"
+        sequence="86"
+        groups="account.group_account_user"
+    />
+</odoo>

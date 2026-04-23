@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--
+            Task 83 – Extend the standard timesheet line form and list views
+            to expose the new labor-cost fields added by this module:
+              • is_overtime, is_holiday (cost multiplier flags)
+              • labor_cost            (computed, stored)
+              • labor_move_id         (link to the generated JE)
+        -->
+
+        <!-- ── Form view: add a "Labor Cost" section on the timesheet line ── -->
+        <record id="view_analytic_line_form_labor" model="ir.ui.view">
+            <field name="name">account.analytic.line.form.labor</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[1]" position="after">
+                    <group string="Labor Cost"
+                           groups="account.group_account_readonly"
+                           invisible="not mrp_production_id and not project_id">
+                        <group>
+                            <field name="is_overtime"/>
+                            <field name="is_holiday"/>
+                        </group>
+                        <group>
+                            <field name="labor_cost_currency_id" invisible="1"/>
+                            <field name="labor_cost" readonly="1"/>
+                            <field name="labor_move_id" readonly="1"
+                                   invisible="not labor_move_id"/>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- ── List view: add optional labor columns to the global timesheet list ── -->
+        <record id="view_analytic_line_list_labor" model="ir.ui.view">
+            <field name="name">account.analytic.line.list.labor</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='unit_amount']" position="after">
+                    <field name="is_overtime" optional="hide"/>
+                    <field name="is_holiday" optional="hide"/>
+                    <field name="labor_cost_currency_id" column_invisible="1"/>
+                    <field name="labor_cost"
+                           optional="hide"
+                           groups="account.group_account_readonly"
+                           decoration-muted="labor_cost == 0"/>
+                    <field name="labor_move_id"
+                           optional="hide"
+                           groups="account.group_account_readonly"
+                           string="JE"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

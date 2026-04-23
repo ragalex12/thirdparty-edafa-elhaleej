@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_gpc_project_issue_wizard_form" model="ir.ui.view">
+        <field name="name">gpc.project.issue.wizard.form</field>
+        <field name="model">gpc.project.issue.wizard</field>
+        <field name="arch" type="xml">
+            <form string="GPC project issue">
+                <group>
+                    <field name="picking_id" />
+                </group>
+                <p class="text-muted">
+                    Creates one draft journal entry at the valued cost of the included outgoing moves,
+                    with the debit account from company settings and the credit on inventory valuation.
+                </p>
+                <footer>
+                    <button
+                        name="action_create_draft_journal_entry"
+                        type="object"
+                        string="Create draft journal entry"
+                        class="btn-primary"
+                    />
+                    <button string="Cancel" special="cancel" class="btn-secondary" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

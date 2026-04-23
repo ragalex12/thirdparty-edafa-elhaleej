@@ -1,0 +1,121 @@
+<odoo>
+    <template id="hr_advance_report_template">
+        <t t-call="web.html_container">
+            <t t-call="web.internal_layout">
+                <div class="page">
+                    <h1 style="text-align:center;">
+                        <span style="font-size:70%;">Petty Cash Report</span>
+                    </h1>
+                    <p style="text-align:center;">
+                        <t t-if="data['date_from']">
+                            <span>From:</span>
+                            <span t-esc="data['date_from']"/>
+                        </t>
+                        <t t-if="data['date_to']">
+                            <span>To:</span>
+                            <span t-esc="data['date_to']"/>
+                        </t>
+                    </p>
+
+                    <!-- Loop over each partner -->
+                    <t t-foreach="partners" t-as="p">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th colspan="3">
+                                        <span>Employee Name: </span><strong t-esc="p.name"/>
+                                    </th>
+                                    <th colspan="3">
+                                        <div class="col-xs-6 text-left">
+                                            <span>Print time: </span>
+                                            <span t-esc="time.strftime('%Y-%m-%d %H:%M:%S')"/>
+                                        </div>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>#</th>
+                                    <th style="width:60%">Name</th>
+                                    <th style="width:30%">Date</th>
+                                    <th>Debit</th>
+                                    <th>Credit</th>
+                                    <th>Balance</th>
+                                    <th t-if="data['amount_currency']">Currency</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <t t-set="n" t-value="0"/>
+                                <t t-set="td" t-value="0"/>
+                                <t t-set="tc" t-value="0"/>
+                                <t t-set="tb" t-value="0"/>
+                                <t t-set="id" t-value="0"/>
+                                <t t-set="ic" t-value="0"/>
+                                <t t-set="ib" t-value="0"/>
+                                <t t-set="tac" t-value="0"/>
+
+                                <!-- Initial Balance -->
+                                <t t-foreach="grouped_data[p.id]['initial_balance']" t-as="s">
+                                    <tr t-if="data['initial_balance']">
+                                        <t t-set="id" t-value="id + s.debit"/>
+                                        <t t-set="td" t-value="td + s.debit"/>
+                                        <t t-set="ic" t-value="ic + s.credit"/>
+                                        <t t-set="tc" t-value="tc + s.credit"/>
+                                        <t t-set="ib" t-value="ib + s.balance"/>
+                                        <t t-set="tb" t-value="tb + s.balance"/>
+                                    </tr>
+                                </t>
+
+                                <tr t-if="data['initial_balance']">
+                                    <td colspan="3">Initial Balance</td>
+                                    <td><span t-esc="id" t-options='{"widget": "float", "decimal_precision": "Product Price"}'/></td>
+                                    <td><span t-esc="ic" t-options='{"widget": "float", "decimal_precision": "Product Price"}'/></td>
+                                    <td><span t-esc="ib" t-options='{"widget": "float", "decimal_precision": "Product Price"}'/></td>
+                                </tr>
+
+                                <!-- Main Lines -->
+                                <t t-foreach="grouped_data[p.id]['lines']" t-as="u">
+                                    <tr>
+                                        <t t-set="n" t-value="n + 1"/>
+                                        <td><span t-esc="n"/></td>
+                                        <td style="width:60%"><span t-esc="u.name"/></td>
+                                        <td style="width:30%"><span t-esc="u.date"/></td>
+                                        <td>
+                                            <span t-esc="u.debit" t-options='{"widget": "float", "decimal_precision": "Product Price"}'/>
+                                            <t t-set="td" t-value="td + u.debit"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="u.credit" t-options='{"widget": "float", "decimal_precision": "Product Price"}'/>
+                                            <t t-set="tc" t-value="tc + u.credit"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="tb + u.balance" t-options='{"widget": "float", "decimal_precision": "Product Price"}'/>
+                                            <t t-set="tb" t-value="tb + u.balance"/>
+                                        </td>
+                                        <td class="text-right" t-if="data['amount_currency']">
+                                            <t t-if="u.currency_id != u.company_id.currency_id">
+                                                <span t-esc="u['amount_currency']"
+                                                      t-options="{'widget': 'monetary', 'display_currency': u.currency_id}"/>
+                                                <t t-set="tac" t-value="tac + u['amount_currency']"/>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                </t>
+
+                                <!-- Totals -->
+                                <tr>
+                                    <td colspan="3"/>
+                                    <td><span t-esc="td" t-options='{"widget": "float", "decimal_precision": "Product Price"}'/></td>
+                                    <td><span t-esc="tc" t-options='{"widget": "float", "decimal_precision": "Product Price"}'/></td>
+                                    <td><span t-esc="tb" t-options='{"widget": "float", "decimal_precision": "Product Price"}'/></td>
+                                    <td t-if="data['amount_currency']">
+                                        <span t-esc="tac" t-options="{'widget': 'monetary', 'display_currency': u.currency_id}"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

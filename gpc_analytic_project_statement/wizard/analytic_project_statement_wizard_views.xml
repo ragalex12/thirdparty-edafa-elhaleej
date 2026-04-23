@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_analytic_project_statement_wizard" model="ir.ui.view">
+        <field name="name">analytic.project.statement.wizard.form</field>
+        <field name="model">analytic.project.statement.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Analytic Project Statement">
+                <group name="main">
+                    <field
+                        name="company_id"
+                        options="{'no_create': True}"
+                        groups="base.group_multi_company"
+                    />
+                </group>
+                <group name="period">
+                    <group>
+                        <field name="date_from" />
+                        <field name="date_to" />
+                    </group>
+                    <group>
+                        <field name="target_move" widget="radio" />
+                    </group>
+                </group>
+                <group name="filters" string="Filters">
+                    <field
+                        name="journal_ids"
+                        widget="many2many_tags"
+                        options="{'no_create': True}"
+                        domain="[('company_id', '=', company_id)]"
+                    />
+                    <field
+                        name="account_ids"
+                        widget="many2many_tags"
+                        options="{'no_create': True}"
+                        domain="[('company_ids', 'in', [company_id])]"
+                    />
+                    <field
+                        name="analytic_account_ids"
+                        widget="many2many_tags"
+                        options="{'no_create': True}"
+                        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]"
+                    />
+                </group>
+                <footer>
+                    <button
+                        name="action_export_xlsx"
+                        type="object"
+                        string="Export XLSX"
+                        class="btn-primary"
+                    />
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_analytic_project_statement_wizard" model="ir.actions.act_window">
+        <field name="name">Analytic Project Statement</field>
+        <field name="res_model">analytic.project.statement.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

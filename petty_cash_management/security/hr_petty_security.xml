@@ -1,0 +1,39 @@
+<?xml version="1.0" ?>
+<odoo>
+    <!--Employee -->
+    <record id="petty_rule_employee_accountant" model="ir.rule">
+        <field name="name">Accountant Employee</field>
+        <field name="model_id" ref="hr.model_hr_employee"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('account.group_account_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!--Custody-->
+    <record id="hr_petty_rule_advance_manager" model="ir.rule">
+        <field name="name">Manager HR Petty</field>
+        <field name="model_id" ref="model_hr_petty"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('account.group_account_user')), (4, ref('hr.group_hr_manager'))]"/>
+    </record>
+    <record id="hr_petty_rule_custody_employee" model="ir.rule">
+        <field name="name">Employee Petty</field>
+        <field name="model_id" ref="model_hr_petty"/>
+        <field name="domain_force">
+            ['|',('employee.user_id','=',user.id),('employee.parent_id.user_id','=',user.id)]
+        </field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+	<record id="hr_rule_petty_req" model="ir.rule">
+        <field name="name">Petty Request Multi Company</field>
+        <field name="model_id" ref="model_hr_petty"/>
+        <field eval="True" name="global"/>
+        <field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
+    </record>
+
+
+</odoo>

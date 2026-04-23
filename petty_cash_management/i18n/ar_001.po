@@ -1,0 +1,614 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* petty_cash_management
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-08-05 00:29+0000\n"
+"PO-Revision-Date: 2024-08-05 03:40+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : "
+"n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5);\n"
+"X-Generator: Poedit 3.4.4\n"
+
+#. module: petty_cash_management
+#: model:mail.template,body_html:petty_cash_management.petty_email_notification_template
+msgid ""
+"\n"
+"                    \n"
+"                          <p>Dear ${(object.employee.name)},<br/><br/>\n"
+"                          You are in request <strong>\"${(object."
+"petty_name.name)}\"</strong>\n"
+"                          since <strong>${(object.return_date)}.</"
+"strong><br/><br/>\n"
+"                          Please kindly return the property as soon as "
+"possible.<br/><br/></p>\n"
+"                          Regards,<br/><br/>\n"
+"                          ${(object.company_id.name)}\n"
+"            "
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_employee__petty_count
+msgid "# Advance"
+msgstr "العهد النقدية #"
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__journal_count
+msgid "# Journals"
+msgstr "القيود المحاسبية #"
+
+#. module: petty_cash_management
+#. odoo-python
+#: code:addons/petty_cash_management/models/petty_cash.py:0
+#, python-format
+msgid "/web#id=%s&view_type=form&model=hr.petty&menu_id="
+msgstr ""
+
+#. module: petty_cash_management
+#. odoo-python
+#: code:addons/petty_cash_management/models/petty_cash.py:0
+#, python-format
+msgid ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"                                   Click to Create for journal\n"
+"                                </p>"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__message_needaction
+msgid "Action Needed"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__activity_ids
+msgid "Activities"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__activity_state
+msgid "Activity State"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__activity_type_icon
+msgid "Activity Type Icon"
+msgstr ""
+
+#. module: petty_cash_management
+#. odoo-python
+#: code:addons/petty_cash_management/models/hr_employee.py:0
+#, python-format
+msgid "Advance"
+msgstr "العهد النقدية"
+
+#. module: petty_cash_management
+#: model_terms:ir.ui.view,arch_db:petty_cash_management.hr_petty_form_view
+msgid "Approve"
+msgstr "موافقة"
+
+#. module: petty_cash_management
+#: model:ir.model.fields.selection,name:petty_cash_management.selection__hr_petty__state__approved
+msgid "Approved"
+msgstr "تمت الموافقة"
+
+#. module: petty_cash_management
+#: model_terms:ir.ui.view,arch_db:petty_cash_management.hr_petty_form_view
+msgid "Are you sure you want to create payment?"
+msgstr "هل أنت متأكد من أنك تريد إنشاء الدفع؟"
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__message_attachment_count
+msgid "Attachment Count"
+msgstr "عدد المرفقات"
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__invoice_id
+msgid "Bill"
+msgstr "فاتوره"
+
+#. module: petty_cash_management
+#: model_terms:ir.actions.act_window,help:petty_cash_management.action_hr_petty
+msgid "Click to Create a New Record."
+msgstr "أضغط لإنشاء سجل جديد"
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__name
+#: model:ir.model.fields,help:petty_cash_management.field_hr_petty__name
+msgid "Code"
+msgstr "كود "
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__company_id
+#: model:ir.model.fields,help:petty_cash_management.field_hr_petty__company_id
+msgid "Company"
+msgstr "الشركة / الفرع"
+
+#. module: petty_cash_management
+#: model:ir.model,name:petty_cash_management.model_res_config_settings
+msgid "Config Settings"
+msgstr "ضبط الاعدادات"
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__department_id
+msgid "Department"
+msgstr "الإدارة"
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields.selection,name:petty_cash_management.selection__hr_petty__state__draft
+msgid "Draft"
+msgstr "مسوده"
+
+#. module: petty_cash_management
+#: model:ir.model,name:petty_cash_management.model_hr_employee
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__employee
+#: model:ir.model.fields,help:petty_cash_management.field_hr_petty__employee
+#: model_terms:ir.ui.view,arch_db:petty_cash_management.hr_petty_search_view
+msgid "Employee"
+msgstr "الموظف"
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__message_follower_ids
+msgid "Followers"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__message_partner_ids
+msgid "Followers (Partners)"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,help:petty_cash_management.field_hr_petty__activity_type_icon
+msgid "Font awesome icon e.g. fa-tasks"
+msgstr ""
+
+#. module: petty_cash_management
+#: model_terms:ir.ui.view,arch_db:petty_cash_management.hr_petty_search_view
+msgid "Group By"
+msgstr ""
+
+#. module: petty_cash_management
+#: model_terms:ir.ui.view,arch_db:petty_cash_management.hr_petty_search_view
+msgid "HR Petty"
+msgstr "إدارة العهد النقدية"
+
+#. module: petty_cash_management
+#: model:ir.actions.act_window,name:petty_cash_management.action_hr_petty
+msgid "HR petty"
+msgstr "إدارة العهد النقدية"
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__has_message
+msgid "Has Message"
+msgstr ""
+
+#. module: petty_cash_management
+#. odoo-python
+#: code:addons/petty_cash_management/models/petty_cash.py:0
+#, python-format
+msgid ""
+"Hi %s,<br>As per the %s you ask %s on %s for the reason of %s. S0 here we "
+"remind you that you have to close the advance on or before %s. link."
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model,name:petty_cash_management.model_hr_petty
+msgid "Hr petty Management"
+msgstr "إدارة العهد النقدية"
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__id
+msgid "ID"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__activity_exception_icon
+msgid "Icon"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,help:petty_cash_management.field_hr_petty__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,help:petty_cash_management.field_hr_petty__message_needaction
+msgid "If checked, new messages require your attention."
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,help:petty_cash_management.field_hr_petty__message_has_error
+#: model:ir.model.fields,help:petty_cash_management.field_hr_petty__message_has_sms_error
+msgid "If checked, some messages have a delivery error."
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__message_is_follower
+msgid "Is Follower"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__job_id
+msgid "Job Title"
+msgstr "الوظيفة"
+
+#. module: petty_cash_management
+#. odoo-python
+#: code:addons/petty_cash_management/models/petty_cash.py:0
+#, python-format
+msgid "Jouranls"
+msgstr "القيود"
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__returned_advance_je
+msgid "Journal Entry"
+msgstr "قيد يومية"
+
+#. module: petty_cash_management
+#: model_terms:ir.ui.view,arch_db:petty_cash_management.hr_petty_form_view
+msgid "Journals"
+msgstr "القيود"
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__mail_send
+msgid "Mail Send"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__message_has_error
+msgid "Message Delivery error"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__message_ids
+msgid "Messages"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__my_activity_date_deadline
+msgid "My Activity Deadline"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__activity_summary
+msgid "Next Activity Summary"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__activity_type_id
+msgid "Next Activity Type"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__notes
+#: model_terms:ir.ui.view,arch_db:petty_cash_management.hr_petty_form_view
+msgid "Notes"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:mail.template,subject:petty_cash_management.petty_email_notification_template
+msgid "Notification to Petty -${object.petty_name.name}"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__message_needaction_counter
+msgid "Number of Actions"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__message_has_error_counter
+msgid "Number of errors"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,help:petty_cash_management.field_hr_petty__message_needaction_counter
+msgid "Number of messages requiring action"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,help:petty_cash_management.field_hr_petty__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields.selection,name:petty_cash_management.selection__hr_petty__state__paid
+msgid "Paid"
+msgstr "مدفوع"
+
+#. module: petty_cash_management
+#: model_terms:ir.ui.view,arch_db:petty_cash_management.hr_petty_form_view
+msgid "Payment"
+msgstr "الدفع"
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__journal_id
+msgid "Payment Method"
+msgstr "طريقة الدفع"
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_res_config_settings__petty_account_id
+msgid "Petty Account"
+msgstr "حساب العهد النقدية"
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__petty_amount
+msgid "Petty Amount"
+msgstr "قيمة العهده"
+
+#. module: petty_cash_management
+#: model:ir.ui.menu,name:petty_cash_management.hr_petty_main_menu
+#: model_terms:ir.ui.view,arch_db:petty_cash_management.hr_petty_form_view
+#: model_terms:ir.ui.view,arch_db:petty_cash_management.petty_hr_employee_inherit_form_view
+msgid "Petty Cash"
+msgstr "عهد نقدية"
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_res_config_settings__petty_journal_id
+msgid "Petty Journal"
+msgstr "قيد العهده"
+
+#. module: petty_cash_management
+#: model_terms:ir.ui.view,arch_db:petty_cash_management.res_config_settings_view_form_inherit
+msgid "Petty Management"
+msgstr "إدارة العهد النقدية"
+
+#. module: petty_cash_management
+#: model:ir.actions.server,name:petty_cash_management.hr_advance_data_reminders_ir_actions_server
+msgid "Petty Reconcile Notification"
+msgstr "إشعار غلق العهده"
+
+#. module: petty_cash_management
+#: model:mail.template,name:petty_cash_management.petty_email_notification_template
+msgid "Petty e-mail template"
+msgstr ""
+
+#. module: petty_cash_management
+#. odoo-python
+#: code:addons/petty_cash_management/models/petty_cash.py:0
+#, python-format
+msgid "Please Give Valid Return Date"
+msgstr "من قضلك ضع تاريخ التسويه"
+
+#. module: petty_cash_management
+#. odoo-python
+#: code:addons/petty_cash_management/models/petty_cash.py:0
+#, python-format
+msgid "Please select the payment journal first"
+msgstr "من فضلك اختر قيد الدفع اولا"
+
+#. module: petty_cash_management
+#. odoo-python
+#: code:addons/petty_cash_management/models/hr_employee.py:0
+#, python-format
+msgid "Prtty"
+msgstr ""
+
+#. module: petty_cash_management
+#. odoo-python
+#: code:addons/petty_cash_management/models/petty_cash.py:0
+#, python-format
+msgid "REMINDER On %s"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__rating_ids
+msgid "Ratings"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__purpose
+#: model:ir.model.fields,help:petty_cash_management.field_hr_petty__purpose
+msgid "Reason"
+msgstr "السبب"
+
+#. module: petty_cash_management
+#: model:ir.model.fields,help:petty_cash_management.field_hr_petty__rejected_reason
+msgid "Reason for the rejection"
+msgstr "سبب الرفض"
+
+#. module: petty_cash_management
+#: model:ir.model.fields.selection,name:petty_cash_management.selection__hr_petty__state__reconcile
+msgid "Reconciled"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields.selection,name:petty_cash_management.selection__hr_petty__state__rejected
+msgid "Refused"
+msgstr "مرفوض"
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__rejected_reason
+msgid "Rejected Reason"
+msgstr "سبب الرفض"
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__renew_reject
+msgid "Renew Reject"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__renew_rejected_reason
+msgid "Renew Rejected Reason"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__renew_return_date
+msgid "Renew Return Date"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,help:petty_cash_management.field_hr_petty__renew_rejected_reason
+msgid "Renew rejected reason"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__renew_date
+msgid "Renewal Return Date"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.ui.menu,name:petty_cash_management.hr_petty_menu
+msgid "Request"
+msgstr "طلب"
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__date_request
+msgid "Requested Date"
+msgstr "تاريخ الطلب"
+
+#. module: petty_cash_management
+#: model:ir.model.fields,help:petty_cash_management.field_hr_petty__date_request
+msgid "Requested date"
+msgstr "تاريخ الطلب"
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__activity_user_id
+msgid "Responsible User"
+msgstr "المستخدم المسئول "
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__return_date
+msgid "Return Date"
+msgstr "تاريخ التسويه المتوقع"
+
+#. module: petty_cash_management
+#: model_terms:ir.ui.view,arch_db:petty_cash_management.hr_petty_form_view
+msgid "Return Petty amount"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,help:petty_cash_management.field_hr_petty__return_date
+msgid "Return date"
+msgstr "تاريخ التسويه المتوقع"
+
+#. module: petty_cash_management
+#: model:ir.model.fields,help:petty_cash_management.field_hr_petty__renew_date
+msgid "Return date for the renewal"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields.selection,name:petty_cash_management.selection__hr_petty__state__returned
+msgid "Returned"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr ""
+
+#. module: petty_cash_management
+#: model_terms:ir.ui.view,arch_db:petty_cash_management.res_config_settings_view_form_inherit
+msgid "Select Petty Account..."
+msgstr ""
+
+#. module: petty_cash_management
+#: model_terms:ir.ui.view,arch_db:petty_cash_management.res_config_settings_view_form_inherit
+msgid "Select Petty Journal..."
+msgstr ""
+
+#. module: petty_cash_management
+#: model_terms:ir.ui.view,arch_db:petty_cash_management.hr_petty_form_view
+msgid "Send For Approval"
+msgstr "ارسال للموافقة"
+
+#. module: petty_cash_management
+#: model_terms:ir.ui.view,arch_db:petty_cash_management.hr_petty_form_view
+msgid "Send Mail"
+msgstr ""
+
+#. module: petty_cash_management
+#: model_terms:ir.ui.view,arch_db:petty_cash_management.hr_petty_form_view
+msgid "Set to Draft"
+msgstr "تعيين كمسوده"
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__state
+#: model_terms:ir.ui.view,arch_db:petty_cash_management.hr_petty_search_view
+msgid "Status"
+msgstr "الحالة"
+
+#. module: petty_cash_management
+#: model:ir.model.fields,help:petty_cash_management.field_hr_petty__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,help:petty_cash_management.field_hr_petty__activity_exception_decoration
+msgid "Type of the exception activity on record."
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields.selection,name:petty_cash_management.selection__hr_petty__state__to_approve
+msgid "Waiting For Approval"
+msgstr "بانتظار الموافقة"
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__website_message_ids
+msgid "Website Messages"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,help:petty_cash_management.field_hr_petty__website_message_ids
+msgid "Website communication history"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:ir.model.fields,field_description:petty_cash_management.field_hr_petty__read_only
+msgid "check field"
+msgstr ""
+
+#. module: petty_cash_management
+#: model:product.template,name:petty_cash_management.product_petty_cash_reconcile1_product_template
+msgid "petty cash Reconcile"
+msgstr ""

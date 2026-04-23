@@ -1,0 +1,228 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* itech_hr_advance_report
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 15.0-20220617\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-05-29 00:01+0000\n"
+"PO-Revision-Date: 2023-05-29 01:04+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"X-Generator: Poedit 3.0.1\n"
+
+#. module: itech_hr_advance_report
+#: model_terms:ir.ui.view,arch_db:itech_hr_advance_report.hr_advance_report_template
+msgid "<span>Employee Name: </span>"
+msgstr "اسم الموظف"
+
+#. module: itech_hr_advance_report
+#: model_terms:ir.ui.view,arch_db:itech_hr_advance_report.hr_advance_report_template
+msgid "<span>From:</span>"
+msgstr "من"
+
+#. module: itech_hr_advance_report
+#: model_terms:ir.ui.view,arch_db:itech_hr_advance_report.hr_advance_report_template
+msgid "<span>Print time: </span>"
+msgstr "وقت الطباعة:"
+
+#. module: itech_hr_advance_report
+#: model_terms:ir.ui.view,arch_db:itech_hr_advance_report.hr_advance_report_template
+msgid "<span>T/P HR Advance Report</span>"
+msgstr "تقرير عهد الموظفين"
+
+#. module: itech_hr_advance_report
+#: model_terms:ir.ui.view,arch_db:itech_hr_advance_report.hr_advance_report_template
+msgid "<span>To:</span>"
+msgstr "إلي"
+
+#. module: itech_hr_advance_report
+#: model_terms:ir.ui.view,arch_db:itech_hr_advance_report.hr_advance_report_template
+msgid "Account"
+msgstr "حساب"
+
+#. module: itech_hr_advance_report
+#: model_terms:ir.ui.view,arch_db:itech_hr_advance_report.hr_advance_report_template
+msgid "Balance"
+msgstr "الرصيد"
+
+#. module: itech_hr_advance_report
+#: model_terms:ir.ui.view,arch_db:itech_hr_advance_report.view_hr_custody_report
+msgid "Cancel"
+msgstr "الغاء"
+
+#. module: itech_hr_advance_report
+#: model:ir.model.fields,field_description:itech_hr_advance_report.field_hr_advance_report__company_id
+msgid "Company"
+msgstr "الشركة"
+
+#. module: itech_hr_advance_report
+#: model:ir.model.fields,field_description:itech_hr_advance_report.field_hr_advance_report__create_uid
+msgid "Created by"
+msgstr "أنشئ بواسطة"
+
+#. module: itech_hr_advance_report
+#: model:ir.model.fields,field_description:itech_hr_advance_report.field_hr_advance_report__create_date
+msgid "Created on"
+msgstr "أنشئ في"
+
+#. module: itech_hr_advance_report
+#: model_terms:ir.ui.view,arch_db:itech_hr_advance_report.hr_advance_report_template
+msgid "Credit"
+msgstr "دائن"
+
+#. module: itech_hr_advance_report
+#: model_terms:ir.ui.view,arch_db:itech_hr_advance_report.hr_advance_report_template
+msgid "Currency"
+msgstr "العملة"
+
+#. module: itech_hr_advance_report
+#: model_terms:ir.ui.view,arch_db:itech_hr_advance_report.hr_advance_report_template
+msgid "Date"
+msgstr "التاريخ"
+
+#. module: itech_hr_advance_report
+#: model:ir.model.fields,field_description:itech_hr_advance_report.field_hr_advance_report__date_from
+msgid "Date From"
+msgstr "التاريخ من"
+
+#. module: itech_hr_advance_report
+#: model:ir.model.fields,field_description:itech_hr_advance_report.field_hr_advance_report__date_to
+msgid "Date To"
+msgstr "التاريخ الي"
+
+#. module: itech_hr_advance_report
+#: model_terms:ir.ui.view,arch_db:itech_hr_advance_report.hr_advance_report_template
+msgid "Debit"
+msgstr "مدين"
+
+#. module: itech_hr_advance_report
+#: model:ir.model.fields,field_description:itech_hr_advance_report.field_hr_advance_report__display_name
+msgid "Display Name"
+msgstr "الاسم"
+
+#. module: itech_hr_advance_report
+#: model_terms:ir.ui.view,arch_db:itech_hr_advance_report.hr_advance_report_template
+msgid "Entry"
+msgstr "القيد"
+
+#. module: itech_hr_advance_report
+#: model:ir.ui.menu,name:itech_hr_advance_report.menu_account_title_tp_advance_report
+msgid "HR Advance Report"
+msgstr "تقرير عهد الموظفين"
+
+#. module: itech_hr_advance_report
+#: model_terms:ir.ui.view,arch_db:itech_hr_advance_report.view_hr_custody_report
+msgid "HR Advance Summary"
+msgstr "ملخص عهد العاملين"
+
+#. module: itech_hr_advance_report
+#: model:ir.actions.act_window,name:itech_hr_advance_report.action_hr_advance_report
+msgid "HR Advance report"
+msgstr "تقرير عهد الموظفين"
+
+#. module: itech_hr_advance_report
+#: model:ir.model.fields,field_description:itech_hr_advance_report.field_hr_advance_report__id
+msgid "ID"
+msgstr "المُعرف"
+
+#. module: itech_hr_advance_report
+#: model:ir.model.fields,field_description:itech_hr_advance_report.field_hr_advance_report__initial_balance
+msgid "Include Initial Balances"
+msgstr "تضمين الأرصدة الأولية"
+
+#. module: itech_hr_advance_report
+#: model_terms:ir.ui.view,arch_db:itech_hr_advance_report.hr_advance_report_template
+msgid "Initial Balance"
+msgstr "الرصيد الافتتاحي "
+
+#. module: itech_hr_advance_report
+#: model:ir.model.fields,help:itech_hr_advance_report.field_hr_advance_report__amount_currency
+msgid ""
+"It adds the currency column on report if the currency differs from the "
+"company currency."
+msgstr ""
+"يضيف عمود العملة في التقرير إذا كانت العملة تختلف عن عملة الشركة."
+
+#. module: itech_hr_advance_report
+#: model:ir.model.fields,field_description:itech_hr_advance_report.field_hr_advance_report____last_update
+msgid "Last Modified on"
+msgstr "آخر تعديل في"
+
+#. module: itech_hr_advance_report
+#: model:ir.model.fields,field_description:itech_hr_advance_report.field_hr_advance_report__write_uid
+msgid "Last Updated by"
+msgstr "آخر تحديث بواسطة"
+
+#. module: itech_hr_advance_report
+#: model:ir.model.fields,field_description:itech_hr_advance_report.field_hr_advance_report__write_date
+msgid "Last Updated on"
+msgstr "آخر تحديث في"
+
+#. module: itech_hr_advance_report
+#: model:ir.model.fields,field_description:itech_hr_advance_report.field_hr_advance_report__partner_ids
+msgid "Partner"
+msgstr "الموظف"
+
+#. module: itech_hr_advance_report
+#: model_terms:ir.ui.view,arch_db:itech_hr_advance_report.view_hr_custody_report
+msgid "Print"
+msgstr "اطبع"
+
+#. module: itech_hr_advance_report
+#: model_terms:ir.ui.view,arch_db:itech_hr_advance_report.hr_advance_report_template
+msgid "Reference"
+msgstr "المرجع"
+
+#. module: itech_hr_advance_report
+#: model:ir.ui.menu,name:itech_hr_advance_report.menu_hr_advance_report
+msgid "Reports"
+msgstr "التقارير"
+
+#. module: itech_hr_advance_report
+#: model:ir.ui.menu,name:itech_hr_advance_report.menu_account_tp_advance_report
+#: model:ir.ui.menu,name:itech_hr_advance_report.menu_tp_advance_report
+msgid "T/P Advance Report"
+msgstr "تقرير عهد الموظفين"
+
+#. module: itech_hr_advance_report
+#: model:ir.actions.report,name:itech_hr_advance_report.report_hr_advance
+msgid "T/P Advance report"
+msgstr "تقرير عهد الموظفين"
+
+#. module: itech_hr_advance_report
+#: model:ir.model.fields,field_description:itech_hr_advance_report.field_hr_advance_report__advance_ids
+msgid "T/P advances"
+msgstr "عهد الموظفين"
+
+#. module: itech_hr_advance_report
+#: model:ir.model.fields,field_description:itech_hr_advance_report.field_hr_advance_report__amount_currency
+msgid "With Currency"
+msgstr "مع العملة"
+
+#. module: itech_hr_advance_report
+#: model:ir.model,name:itech_hr_advance_report.model_hr_advance_report
+msgid "hr.advance.report"
+msgstr ""
+
+#. module: itech_hr_advance_report
+#: model_terms:ir.ui.view,arch_db:itech_hr_advance_report.hr_advance_report_template
+msgid "name"
+msgstr "الوصف"
+
+#. module: itech_hr_advance_report
+#: model:ir.model,name:itech_hr_advance_report.model_report_itech_hr_advance_report_hr_advance_report_template
+msgid "report.itech_hr_advance_report.hr_advance_report_template"
+msgstr ""
+
+#. module: itech_hr_advance_report
+#: code:addons/itech_hr_advance_report/models/hr_advance_report.py:0
+#, python-format
+msgid "start date must be less than end date."
+msgstr "تاريخ البداية لابد ان يكون اقل من تاريخ النهاية."

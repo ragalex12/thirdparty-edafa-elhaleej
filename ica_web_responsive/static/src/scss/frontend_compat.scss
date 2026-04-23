@@ -1,0 +1,5 @@
+// Compatibility shim for Odoo 19 frontend bundles.
+// Some inherited/theme SCSS still calls this legacy mixin.
+@mixin o-apply-colors($args...) {
+  // Intentionally left blank: avoids hard asset compile failures.
+}

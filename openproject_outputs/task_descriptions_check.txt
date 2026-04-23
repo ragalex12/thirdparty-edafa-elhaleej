@@ -1,0 +1,57 @@
+================================================================================
+SAMPLE TASK DESCRIPTIONS - Verifying Full Content
+================================================================================
+
+────────────────────────────────────────────────────────────────────────────────
+TASK 1: Detect model used in crashing view
+ID: 93
+────────────────────────────────────────────────────────────────────────────────
+
+DESCRIPTION (409 characters):
+**Findings:**
+- View model: hr.employee (line 6 in hr_employee_view.xml)
+- Issue: Odoo 19 automatically switches to hr.employee.public for non-HR users
+- Private fields added by hr_employee_enhance module not available in public model
+
+**Evidence:**
+- File: /opt/localaddons/hr_employee_enhance/views/hr_employee_view.xml
+- Inheritance: ref='hr.view_employee_form'
+- 62 fields added without group restrictions
+
+────────────────────────────────────────────────────────────────────────────────
+TASK 2: Scan XML views for unsafe private fields
+ID: 94
+────────────────────────────────────────────────────────────────────────────────
+
+DESCRIPTION (747 characters):
+**Fields Detected:**
+1. Social Media (7 fields): whatsapp, signal, facebook, instagram, linkedin, twitter, behance
+2. Identity Documents (8 fields): identification_id, issued, id_expiry_date, id_attachment_id, passport_id, passport_issued, passport_expiration_date, passport_attachment_id
+3. Payroll (1 field): salary_type (incorrectly using base.group_user)
+4. Personal Data (4 fields): religion, military, name_ar, no_employee
+5. Employment (2 fields): joining_date, experience_period
+6. Equipment (35+ fields): ATM, medical care, business card, access card, premium card, uniform, mobile, SIM, car, laptop, tablet
+7. Training & Misc: ptraining_ids, miscellaneous_receiving_ids, fam_ids
+
+**Risk Level:** CRITICAL - GDPR/data protection violation
+
+────────────────────────────────────────────────────────────────────────────────
+TASK 3: Scan Python models for hr.employee.public extension
+ID: 95
+────────────────────────────────────────────────────────────────────────────────
+
+DESCRIPTION (339 characters):
+**Results:**
+- File: /opt/localaddons/hr_employee_enhance/models/hr_employee.py
+- _inherit = 'hr.employee' ONLY (line 52)
+- NO hr.employee.public extension found (CORRECT per Odoo 19 best practices)
+
+**Note:** Odoo 19 guidelines explicitly state NOT to duplicate private fields to hr.employee.public. Use groups attribute in views instead.
+
+================================================================================
+Total work packages: 20
+Tasks checked: 3
+
+Full project at:
+https://generated-complexity-ireland-fully.trycloudflare.com/projects/odoo19-hr-security-fix
+================================================================================

@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_employee_payroll_user,hr.employee.payroll.user,model_hr_employee,base.group_user,1,1,1,0
+access_hr_employee_payroll_manager,hr.employee.payroll.manager,model_hr_employee,hr.group_hr_manager,1,1,1,1
+access_project_project_payroll_user,project.project.payroll.user,model_project_project,base.group_user,1,1,1,0
+access_project_project_payroll_manager,project.project.payroll.manager,model_project_project,project.group_project_manager,1,1,1,1
+access_hr_payslip_project_user,hr.payslip.project.user,model_hr_payslip,hr_payroll_community.group_hr_payroll_community_user,1,1,1,0
+access_hr_payslip_project_manager,hr.payslip.project.manager,model_hr_payslip,hr_payroll_community.group_hr_payroll_community_manager,1,1,1,1
+

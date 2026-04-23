@@ -1,0 +1,179 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* itech_tax_report
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-05-28 15:14+0000\n"
+"PO-Revision-Date: 2022-05-28 18:21+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5);\n"
+"X-Generator: Poedit 3.0.1\n"
+
+#. module: itech_tax_report
+#: model_terms:ir.ui.view,arch_db:itech_tax_report.tax_report_template
+msgid "<span>From:</span>"
+msgstr "من"
+
+#. module: itech_tax_report
+#: model_terms:ir.ui.view,arch_db:itech_tax_report.tax_report_template
+msgid "<span>Tax Name: </span>"
+msgstr "اسم الضريبة"
+
+#. module: itech_tax_report
+#: model_terms:ir.ui.view,arch_db:itech_tax_report.tax_report_template
+msgid "<span>Tax Report</span>"
+msgstr "تقرير الضرائب"
+
+#. module: itech_tax_report
+#: model_terms:ir.ui.view,arch_db:itech_tax_report.tax_report_template
+msgid "<span>To:</span>"
+msgstr "الي"
+
+#. module: itech_tax_report
+#: model_terms:ir.ui.view,arch_db:itech_tax_report.tax_report_template
+msgid "Account"
+msgstr "حساب"
+
+#. module: itech_tax_report
+#: model_terms:ir.ui.view,arch_db:itech_tax_report.tax_report_template
+msgid "Balance"
+msgstr "الرصيد"
+
+#. module: itech_tax_report
+#: model_terms:ir.ui.view,arch_db:itech_tax_report.view_tax_report
+msgid "Cancel"
+msgstr "الغاء"
+
+#. module: itech_tax_report
+#: model:ir.model.fields,field_description:itech_tax_report.field_itech_tax_report__company_id
+msgid "Company"
+msgstr "الشركة"
+
+#. module: itech_tax_report
+#: model:ir.model.fields,field_description:itech_tax_report.field_itech_tax_report__create_uid
+msgid "Created by"
+msgstr "أنشئ بواسطة"
+
+#. module: itech_tax_report
+#: model:ir.model.fields,field_description:itech_tax_report.field_itech_tax_report__create_date
+msgid "Created on"
+msgstr "أنشئ في"
+
+#. module: itech_tax_report
+#: model_terms:ir.ui.view,arch_db:itech_tax_report.tax_report_template
+msgid "Credit"
+msgstr "دائن"
+
+#. module: itech_tax_report
+#: model_terms:ir.ui.view,arch_db:itech_tax_report.tax_report_template
+msgid "Date"
+msgstr "التاريخ"
+
+#. module: itech_tax_report
+#: model:ir.model.fields,field_description:itech_tax_report.field_itech_tax_report__date_from
+msgid "Date From"
+msgstr "التاريخ من"
+
+#. module: itech_tax_report
+#: model:ir.model.fields,field_description:itech_tax_report.field_itech_tax_report__date_to
+msgid "Date To"
+msgstr "التاريخ الي"
+
+#. module: itech_tax_report
+#: model_terms:ir.ui.view,arch_db:itech_tax_report.tax_report_template
+msgid "Debit"
+msgstr "مدين"
+
+#. module: itech_tax_report
+#: model:ir.model.fields,field_description:itech_tax_report.field_itech_tax_report__display_name
+#: model:ir.model.fields,field_description:itech_tax_report.field_report_itech_tax_report_tax_report_template__display_name
+msgid "Display Name"
+msgstr "الاسم"
+
+#. module: itech_tax_report
+#: model_terms:ir.ui.view,arch_db:itech_tax_report.tax_report_template
+msgid "Entry"
+msgstr "القيد"
+
+#. module: itech_tax_report
+#: model_terms:ir.ui.view,arch_db:itech_tax_report.view_tax_report
+msgid "HR Advance Summary"
+msgstr ""
+
+#. module: itech_tax_report
+#: model:ir.model.fields,field_description:itech_tax_report.field_itech_tax_report__id
+#: model:ir.model.fields,field_description:itech_tax_report.field_report_itech_tax_report_tax_report_template__id
+msgid "ID"
+msgstr ""
+
+#. module: itech_tax_report
+#: model:ir.model.fields,field_description:itech_tax_report.field_itech_tax_report____last_update
+#: model:ir.model.fields,field_description:itech_tax_report.field_report_itech_tax_report_tax_report_template____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: itech_tax_report
+#: model:ir.model.fields,field_description:itech_tax_report.field_itech_tax_report__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: itech_tax_report
+#: model:ir.model.fields,field_description:itech_tax_report.field_itech_tax_report__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: itech_tax_report
+#: model_terms:ir.ui.view,arch_db:itech_tax_report.view_tax_report
+msgid "Print"
+msgstr "اطبع"
+
+#. module: itech_tax_report
+#: model_terms:ir.ui.view,arch_db:itech_tax_report.tax_report_template
+msgid "Reference"
+msgstr "المرجع"
+
+#. module: itech_tax_report
+#: model:ir.model.fields,field_description:itech_tax_report.field_itech_tax_report__tax_ids
+msgid "Tax"
+msgstr "الضريبة"
+
+#. module: itech_tax_report
+#: model:ir.ui.menu,name:itech_tax_report.menu_account_tax_details_report
+#: model:ir.ui.menu,name:itech_tax_report.menu_account_title_tax_report
+msgid "Tax Details Report"
+msgstr "تقرير تفاصيل الضرائب"
+
+#. module: itech_tax_report
+#: model:ir.actions.act_window,name:itech_tax_report.action_tax_report
+#: model:ir.actions.report,name:itech_tax_report.report_tax
+msgid "Tax report"
+msgstr "تقرير الضرائب"
+
+#. module: itech_tax_report
+#: model:ir.model,name:itech_tax_report.model_itech_tax_report
+msgid "itech.tax.report"
+msgstr ""
+
+#. module: itech_tax_report
+#: model_terms:ir.ui.view,arch_db:itech_tax_report.tax_report_template
+msgid "name"
+msgstr "الوصف"
+
+#. module: itech_tax_report
+#: model:ir.model,name:itech_tax_report.model_report_itech_tax_report_tax_report_template
+msgid "report.itech_tax_report.tax_report_template"
+msgstr ""
+
+#. module: itech_tax_report
+#: code:addons/itech_tax_report/models/tax_report.py:0
+#, python-format
+msgid "start date must be less than end date."
+msgstr "تاريخ البداية لابد ان يكون اقل من تاريخ النهاية."

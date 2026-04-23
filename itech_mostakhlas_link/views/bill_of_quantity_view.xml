@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Extend Bill Quantity Form View to add invoice tracking to lines -->
+        <record id="view_bill_quantity_form_inherit_boq" model="ir.ui.view">
+            <field name="name">bill.quantity.form.inherit.boq</field>
+            <field name="model">bill.quantity</field>
+            <field name="inherit_id" ref="itech_construction_project.view_bill_quantity_form"/>
+            <field name="arch" type="xml">
+                <!-- Add invoice tracking fields to list view inside quantity_line -->
+                <xpath expr="//field[@name='quantity_line']//list//field[@name='price_subtotal']" position="after">
+                    <field name="assigned_to_vendor" invisible="1"/>
+                    <field name="invoiced_qty" sum="Total Invoiced" optional="hide"/>
+                    <field name="remaining_qty" sum="Total Remaining" optional="hide"/>
+                </xpath>
+                
+                <!-- Make partner_id always visible in list -->
+                <xpath expr="//field[@name='quantity_line']//list//field[@name='partner_id']" position="attributes">
+                    <attribute name="invisible">False</attribute>
+                    <attribute name="string">Assigned Vendor</attribute>
+                </xpath>
+                
+                <!-- Add invoice tracking section in form view of line -->
+                <xpath expr="//field[@name='quantity_line']//form//field[@name='price_subtotal']" position="after">
+                    <separator string="Invoice Tracking"/>
+                    <group>
+                        <group>
+                            <field name="assigned_to_vendor" readonly="1"/>
+                            <field name="invoiced_qty" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="remaining_qty" readonly="1"/>
+                            <field name="invoice_line_ids" readonly="1" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                </xpath>
+                
+                <!-- Make partner_id always visible in form view -->
+                <xpath expr="//field[@name='quantity_line']//form//field[@name='partner_id']" position="attributes">
+                    <attribute name="invisible">False</attribute>
+                    <attribute name="string">Assigned Vendor</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Add filter for assigned lines -->
+        <record id="view_bill_quantity_search_inherit" model="ir.ui.view">
+            <field name="name">bill.quantity.search.inherit</field>
+            <field name="model">bill.quantity</field>
+            <field name="inherit_id" ref="itech_construction_project.view_bill_quantity_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//search" position="inside">
+                    <filter string="Assigned to Vendor" name="assigned_to_vendor" 
+                            domain="[('quantity_line.assigned_to_vendor', '=', True)]"/>
+                    <separator/>
+                    <filter string="With Remaining Qty" name="with_remaining_qty" 
+                            domain="[('quantity_line.remaining_qty', '>', 0)]"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
+

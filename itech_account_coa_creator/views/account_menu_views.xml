@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Note: Lock Date menu restriction removed as menu_action_change_lock_date -->
+        <!-- does not exist in Odoo 19. Lock dates are now managed differently. -->
+        <!-- If needed, you can add custom restrictions based on the actual Odoo 19 structure -->
+        
+    </data>
+</odoo>
+

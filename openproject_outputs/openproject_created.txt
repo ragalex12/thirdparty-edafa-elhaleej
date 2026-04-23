@@ -1,0 +1,5 @@
+SUCCESS
+Project ID: 5
+URL: https://generated-complexity-ireland-fully.trycloudflare.com/projects/odoo19-hr-security-fix
+Port: 8090
+Host header: generated-complexity-ireland-fully.trycloudflare.com

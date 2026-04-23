@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Report Actions -->
+        <record id="action_report_payroll" model="ir.actions.report">
+            <field name="name">Payroll Report</field>
+            <field name="model">workers.report.payroll.wizard</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">workers_reports.report_payroll</field>
+            <field name="report_file">workers_reports.report_payroll</field>
+        </record>
+        
+        <record id="action_report_timesheet" model="ir.actions.report">
+            <field name="name">Timesheet Report</field>
+            <field name="model">workers.report.timesheet.wizard</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">workers_reports.report_timesheet</field>
+            <field name="report_file">workers_reports.report_timesheet</field>
+        </record>
+        
+        <record id="action_report_project" model="ir.actions.report">
+            <field name="name">Project Report</field>
+            <field name="model">workers.report.project.wizard</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">workers_reports.report_project</field>
+            <field name="report_file">workers_reports.report_project</field>
+        </record>
+        
+        <record id="action_report_worker" model="ir.actions.report">
+            <field name="name">Worker Report</field>
+            <field name="model">workers.report.wizard</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">workers_reports.report_worker</field>
+            <field name="report_file">workers_reports.report_worker</field>
+        </record>
+    </data>
+</odoo>
+

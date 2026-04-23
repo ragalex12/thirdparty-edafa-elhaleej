@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Hourly Cost on employee form (for timesheet / MO labor costing) -->
+        <record id="view_employee_form_hourly_cost" model="ir.ui.view">
+            <field name="name">hr.employee.form.hourly.cost</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='job_id']" position="after">
+                    <field name="hourly_cost" optional="show"/>
+                    <field name="currency_id" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

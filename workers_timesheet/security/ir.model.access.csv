@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_account_analytic_line_workers_user,account.analytic.line.workers.user,model_account_analytic_line,base.group_user,1,1,1,0
+access_account_analytic_line_workers_manager,account.analytic.line.workers.manager,model_account_analytic_line,hr_timesheet.group_hr_timesheet_approver,1,1,1,1
+

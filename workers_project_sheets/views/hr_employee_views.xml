@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Employee Form View - Add Payroll Project Fields -->
+        <record id="view_employee_form_payroll_projects" model="ir.ui.view">
+            <field name="name">hr.employee.form.payroll.projects</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr_employee_enhance.hr_employee_inherit_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page string="Payroll Projects" name="payroll_projects">
+                        <group>
+                            <group string="Payroll Configuration">
+                                <field name="day_work"/>
+                                <field name="project_payroll_structure_id" 
+                                       invisible="day_work"/>
+                                <field name="total_project_hours" readonly="1"/>
+                            </group>
+                            <group string="Projects">
+                                <field name="project_payroll_ids" widget="many2many_tags" 
+                                       domain="[('use_for_payroll', '=', True)]"
+                                       options="{'no_create': True}"/>
+                            </group>
+                        </group>
+                        <group string="Day Work Information" invisible="not day_work">
+                            <p class="text-muted">
+                                This employee uses "Workers Daily Cost" payroll structure. 
+                                Timesheets will be automatically included in payroll calculations.
+                            </p>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
+

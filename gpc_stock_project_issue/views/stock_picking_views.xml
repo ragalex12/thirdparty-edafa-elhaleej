@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_picking_form_gpc_project_issue" model="ir.ui.view">
+        <field name="name">stock.picking.form.gpc.project.issue</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button
+                    name="action_open_gpc_project_issue_wizard"
+                    type="object"
+                    string="GPC project issue"
+                    class="btn-secondary"
+                    groups="stock.group_stock_user"
+                    invisible="state != 'done' or gpc_issue_move_id or not picking_type_id.gpc_project_issue_enabled"
+                />
+            </xpath>
+            <xpath expr="//sheet/notebook" position="inside">
+                <page
+                    string="GPC project issue"
+                    name="gpc_project_issue"
+                    groups="stock.group_stock_user"
+                >
+                    <group>
+                        <group string="Allocation" name="gpc_issue_allocation">
+                            <field name="company_id" invisible="1" />
+                            <field
+                                name="gpc_issue_project_id"
+                                options="{'no_create': True}"
+                            />
+                            <field
+                                name="gpc_issue_analytic_account_id"
+                                options="{'no_create': True}"
+                            />
+                        </group>
+                        <group string="Accounting link" name="gpc_issue_accounting">
+                            <field name="gpc_issue_move_state" invisible="not gpc_issue_move_id" />
+                            <field name="gpc_issue_move_id" readonly="1" />
+                            <button
+                                name="action_post_gpc_project_issue_entry"
+                                type="object"
+                                string="Post journal entry"
+                                class="btn-primary"
+                                groups="account.group_account_user"
+                                invisible="not gpc_issue_move_id or gpc_issue_move_state != 'draft'"
+                            />
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

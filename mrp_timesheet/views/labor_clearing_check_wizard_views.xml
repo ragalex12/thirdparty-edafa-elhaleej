@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── Wizard form view ──────────────────────────────────────────────── -->
+    <record id="view_labor_clearing_check_wizard_form" model="ir.ui.view">
+        <field name="name">mrp.labor.clearing.check.wizard.form</field>
+        <field name="model">mrp.labor.clearing.check.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Labor Clearing Account Balance Check">
+                <group string="Filters">
+                    <group>
+                        <field name="company_id"/>
+                        <field name="clearing_account_id"/>
+                    </group>
+                    <group>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_check" type="object"
+                            string="Check Balance" class="btn-primary"/>
+                    <button special="cancel" string="Close"/>
+                </footer>
+                <group string="Summary"
+                       invisible="total_credited == 0 and total_debited == 0">
+                    <field name="currency_id" invisible="1"/>
+                    <field name="total_credited"/>
+                    <field name="total_debited"/>
+                    <field name="outstanding_balance"
+                           decoration-danger="outstanding_balance &gt; 0"
+                           decoration-success="outstanding_balance &lt;= 0"/>
+                </group>
+                <field name="line_ids"
+                       invisible="not line_ids"
+                       nolabel="1">
+                    <list>
+                        <field name="currency_id" column_invisible="1"/>
+                        <field name="period"/>
+                        <field name="total_credited"/>
+                        <field name="total_debited"/>
+                        <field name="outstanding_balance"
+                               decoration-danger="outstanding_balance &gt; 0"
+                               decoration-success="outstanding_balance &lt;= 0"/>
+                    </list>
+                </field>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── Action ────────────────────────────────────────────────────────── -->
+    <record id="action_labor_clearing_check_wizard" model="ir.actions.act_window">
+        <field name="name">Labor Clearing Balance Check</field>
+        <field name="res_model">mrp.labor.clearing.check.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- ── Menu entry under Manufacturing > Reporting ────────────────────── -->
+    <menuitem
+        id="menu_labor_clearing_check"
+        name="Labor Clearing Balance Check"
+        parent="mrp.menu_mrp_reporting"
+        action="action_labor_clearing_check_wizard"
+        sequence="50"/>
+
+</odoo>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Project Form View - Add Payroll Integration -->
+        <record id="view_project_form_payroll" model="ir.ui.view">
+            <field name="name">project.project.form.payroll</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page string="Payroll Integration" name="payroll_integration">
+                        <group>
+                            <group string="Payroll Configuration">
+                                <field name="use_for_payroll"/>
+                                <field name="payroll_structure_id" 
+                                       invisible="not use_for_payroll"/>
+                            </group>
+                            <group string="Payroll Statistics">
+                                <field name="payroll_hours" readonly="1"/>
+                                <field name="payroll_workers_count" readonly="1"/>
+                            </group>
+                        </group>
+                        <group string="Payroll Rules" invisible="not use_for_payroll">
+                            <field name="payroll_rule_ids" widget="many2many_tags" 
+                                   options="{'no_create': True}"/>
+                        </group>
+                        <group string="Worker Sheet Statistics" invisible="not use_for_payroll">
+                            <group>
+                                <field name="worker_sheet_w_count" readonly="1"/>
+                                <field name="worker_sheet_c_count" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="worker_sheet_g_count" readonly="1"/>
+                                <field name="worker_sheet_h_count" readonly="1"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Project Tree View - Add Payroll Fields -->
+        <!-- Commented out: project.view_project_tree doesn't exist in Odoo 19 -->
+        <!-- Tree view fields can be added manually via view customization if needed -->
+        <!--
+        <record id="view_project_tree_payroll" model="ir.ui.view">
+            <field name="name">project.project.tree.payroll</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.view_project_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='state']" position="after">
+                    <field name="use_for_payroll" optional="hide"/>
+                    <field name="payroll_hours" optional="hide"/>
+                </xpath>
+            </field>
+        </record>
+        -->
+    </data>
+</odoo>
+

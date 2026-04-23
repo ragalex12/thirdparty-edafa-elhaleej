@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_account_account_coa_creator,account.account.coa.creator,account.model_account_account,itech_account_coa_creator.group_account_coa_creator,1,1,1,1
+

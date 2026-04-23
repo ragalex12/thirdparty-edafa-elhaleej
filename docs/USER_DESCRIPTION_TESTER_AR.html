@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="utf-8"/>
+<title>وصف استخدام للمختبِرين</title>
+<style>
+body { font-family: 'DejaVu Sans', 'Noto Sans Arabic', Arial, sans-serif; margin: 24px; line-height: 1.65; font-size: 11pt; color: #222; }
+h1 { font-size: 18pt; border-bottom: 1px solid #ccc; padding-bottom: 6px; }
+h2 { font-size: 14pt; margin-top: 18px; color: #1a1a1a; }
+h3 { font-size: 12pt; margin-top: 12px; }
+p { margin: 8px 0; }
+ul, ol { margin: 8px 0 8px 0; padding-right: 24px; }
+li { margin: 4px 0; }
+hr { border: none; border-top: 1px solid #ddd; margin: 16px 0; }
+</style>
+</head>
+<body>
+
+<h1>وصف استخدام للمختبِرين (جمع من تعليمات الجلسة)</h1>
+
+
+<hr>
+
+
+<h2>1) تقرير OCA دفتر الأستاذ العام — فلتر نطاق الحسابات (From / To)</h2>
+
+
+<h3>أين يفتح التقرير</h3>
+<ol>
+<li>سجّل الدخول بحساب لديه صلاحية <strong>المحاسبة / الفوترة</strong> (مثل مجموعة مستخدمي المحاسبة أو المدير).</li>
+<li>افتح تطبيق <strong>المحاسبة</strong> أو <strong>الفوترة</strong> (حسب ما يظهر لديكم).</li>
+<li>من القائمة اذهب إلى <strong>التقارير</strong> ← <strong>تقارير محاسبية OCA</strong> (أو اسم مشابه يحتوي على <strong>OCA</strong>).</li>
+<li>اختر <strong>General Ledger</strong> / <strong>دفتر الأستاذ العام</strong>.</li>
+</ol>
+
+<p><strong>تأكد أن النموذج صحيح:</strong> يجب أن ترى تبويب <strong>Filter accounts</strong> مع حقول <strong>From Code</strong> و <strong>To</strong>، وخيارات مثل <strong>Grouped By</strong> و <strong>Activate centralization</strong>. إذا ظهر نموذج بدون هذا التبويب وبدون From/To، فأنت لست على تقرير OCA المطلوب.</p>
+
+
+<h3>ماذا تفعل في الاختبار</h3>
+<ol>
+<li>اختر <strong>الشركة</strong> الصحيحة إن وُجدت.</li>
+<li>حدّد <strong>Date From</strong> و <strong>Date To</strong> لفترة فيها حركات معروفة.</li>
+<li>اترك <strong>Target Moves</strong> على <strong>All Posted Entries</strong> ما لم يُطلب غير ذلك.</li>
+<li>افتح تبويب <strong>Filter accounts</strong>.</li>
+<li>في <strong>From Code</strong> اختر أول حساب في النطاق المراد اختباره.</li>
+<li>في <strong>To</strong> اختر آخر حساب في نفس النطاق.</li>
+<li>راقب أن قائمة <strong>Filter accounts</strong> (الوسوم) تُحدَّث وتشمل الحسابات ضمن النطاق عند استخدام أرقام حسابات <strong>رقمية بالكامل</strong> (حسب سلوك النظام).</li>
+<li>اضغط <strong>View</strong> لعرض التقرير في المتصفح.</li>
+<li>تحقق أن الحسابات الظاهرة <strong>ضمن النطاق From/To</strong> فقط.</li>
+<li>بذات التواريخ وذات <strong>From/To</strong>، صدّر <strong>Export XLSX</strong> و/أو <strong>Export PDF</strong>.</li>
+<li>قارن بين الشاشة والملف: نفس الحسابات ضمن النطاق، والمجاميع متسقة.</li>
+</ol>
+
+<h3>تسجيل النتيجة</h3>
+<ul>
+<li><strong>نجاح:</strong> الفلتر يُطبَّق على الشاشة وعلى الملف، والبيانات متطابقة.</li>
+<li><strong>فشل:</strong> ظهور حسابات خارج النطاق، أو اختلاف بين الشاشة والتصدير لنفس الإعدادات.</li>
+</ul>
+
+<h3>ملاحظات</h3>
+<ul>
+<li>ابدأ <strong>بنطاق حسابات ضيّق</strong> لتسهيل المراجعة اليدوية.</li>
+<li>إذا كانت أرقام الحسابات <strong>غير رقمية</strong> أو <strong>مختلطة</strong>، سلوك التعبئة التلقائية قد يختلف؛ راجع مع المسؤول التقني أو نفّذ التحقق على <strong>قاعدة البيانات الهدف</strong>.</li>
+</ul>
+
+<hr>
+
+
+<h2>2) تقرير كشف حساب المشاريع التحليلية (Analytic Project Statement)</h2>
+
+
+<h3>أين يفتح التقرير</h3>
+<ol>
+<li>سجّل الدخول بحساب لديه صلاحية <strong>المستخدم المحاسبي</strong>.</li>
+<li>افتح تطبيق <strong>المحاسبة</strong> (أو <strong>الفوترة</strong> إن كان ذلك هو التطبيق المعروض لديكم).</li>
+<li>من الشريط العلوي اختر <strong>التقارير</strong> (<strong>Reporting</strong>).</li>
+<li>اختر <strong>Analytic Project Statement</strong> / <strong>كشف حساب المشاريع التحليلية</strong> (حسب الترجمة الظاهرة لديكم).</li>
+</ol>
+
+<p><strong>التأكد:</strong> يجب أن يفتح مربع حوار بعنوان <strong>Analytic Project Statement</strong> ويحتوي على: الشركة، التاريخ من/إلى، <strong>حركات الهدف</strong>، وقسم <strong>الفلاتر</strong> (دفاتر يومية، حسابات، مشاريع/حسابات تحليلية)، وزر <strong>Export XLSX</strong>.</p>
+
+
+<h3>ماذا يفعل المختبِر</h3>
+<ol>
+<li>اختر <strong>الشركة</strong> الصحيحة إن وُجدت.</li>
+<li>حدّد <strong>Date from</strong> و <strong>Date to</strong> لفترة فيها حركات معروفة.</li>
+<li>اختر <strong>Target moves</strong>: عادة <strong>All posted entries</strong> ما لم يُطلب اختبار القيود غير المرحّلة.</li>
+<li>أول تشغيل — بدون فلاتر تقييدية (أو بأقل فلاتر ممكنة): اترك الحقول فارغة إن كان الهدف استخراج صورة شاملة، ثم <strong>Export XLSX</strong>.</li>
+<li>تحقق من <strong>ستة أعمدة</strong> بالمعنى: التاريخ؛ رقم القيد/الحركة؛ المشروع؛ الحساب؛ مدين؛ دائن.</li>
+<li>إذا كان قيد واحد موزّعاً على أكثر من مشروع، يجب أن يظهر <strong>أكثر من صف</strong> (صف لكل جزء).</li>
+<li>فلتر لمشروع واحد في <strong>المشاريع / الحسابات التحليلية</strong>، ثم صدّر مرة أخرى وتحقق من المطابقة مع القيود.</li>
+<li>تسجيل نجاح أو فشل حسب الأعمدة والفلتر والأرقام.</li>
+</ol>
+
+<h3>ملاحظات</h3>
+<ul>
+<li>المخرجات عبر <strong>Export XLSX</strong>؛ راجع الملف وليس فقط شاشة فارغة.</li>
+<li>إذا لم يظهر عنصر القائمة، قد تكون الوحدة غير مثبتة أو الصلاحيات غير كافية.</li>
+</ul>
+
+<hr>
+
+
+<h2>3) استحقاق تكلفة العمالة من الـ Timesheet (Labor Accrual)</h2>
+
+
+<h3>إعداد لمرة واحدة</h3>
+<ol>
+<li><strong>الإعدادات</strong> → <strong>الشركات</strong> → الشركة → تبويب <strong>Labor Accrual</strong>.</li>
+<li>تعبئة <strong>حساب المدين</strong> و<strong>حساب الدائن</strong> و<strong>اليومية</strong> — يفضّل أن يكون المدين والدائن <strong>حسابين مختلفين</strong> حسب سياسة المحاسبة.</li>
+</ol>
+
+<h3>أين تفتح الدفعات</h3>
+<ol>
+<li>تطبيق <strong>المحاسبة</strong> / <strong>الفوترة</strong>.</li>
+<li>الشريط العلوي: <strong>Accounting</strong> → <strong>Transactions</strong>.</li>
+<li><strong>Labor Accrual Batches</strong> (قائمة الدفعات) أو <strong>Labor Accrual (from period)</strong> (معالج بالفترة).</li>
+</ol>
+
+<h3>سير العمل: سحب البنود → مسودة قيد → ترحيل</h3>
+
+<p><strong>من المعالج:</strong> شركة + بداية/نهاية الفترة → <strong>Create batch and populate lines</strong> → ثم على الدفعة: <strong>Populate lines</strong> → <strong>Generate draft entry</strong> → <strong>Post</strong>.</p>
+
+
+<p><strong>من القائمة:</strong> <strong>Labor Accrual Batches</strong> → <strong>New</strong> أو فتح دفعة → نفس الأزرار بالترتيب.</p>
+
+
+<h3>التحقق</h3>
+<ul>
+<li>تبويب <strong>Lines</strong>؛ قيد مرتبط؛ بعد <strong>Post</strong> حالة مرحّلة؛ مطابقة مع الحركات المتوقعة.</li>
+</ul>
+
+<h3>منع التكرار وإعادة التشغيل</h3>
+<ul>
+<li>رسالة وجود دفعة لنفس الشركة والفترة: افتح تلك الدفعة أو استخدم <strong>Reverse &amp; release period</strong> عند الحاجة.</li>
+</ul>
+
+<hr>
+
+
+<h2>5) إصدار مواد لمشروع بتكلفة المخزون — GPC project issue (Task 5)</h2>
+
+
+<h3>أين يبدأ المختبِر</h3>
+<ol>
+<li><strong>المخزون</strong> → <strong>العمليات</strong> → <strong>التسليمات / Deliveries</strong> (ليس الإيصالات وحدها).</li>
+<li>فتح <strong>أمر تسليم منتهٍ</strong> الحالة <strong>Done</strong>.</li>
+</ol>
+
+<h3>التحقق قبل المعالج</h3>
+<ul>
+<li><strong>Done</strong>؛ كمية صادرة فعلية وليست 0؛ إن عُلّق على <strong>Waiting</strong> أكمل السلسلة أولاً.</li>
+</ul>
+
+<h3>خطوات الاختبار</h3>
+<ol>
+<li>تبويب <strong>GPC project issue</strong>: <strong>المشروع</strong> و<strong>الحساب التحليلي</strong>.</li>
+<li>من الرأس: <strong>GPC project issue</strong> → <strong>Create draft journal entry</strong>.</li>
+<li>مراجعة المسودة ثم <strong>Post journal entry</strong> عند الجاهزية.</li>
+</ol>
+
+<h3>حالات رفض متوقعة</h3>
+<ul>
+<li>ليس <strong>Done</strong>؛ نوع العملية غير مفعّل لـ GPC؛ نقص مشروع/تحليلي؛ قيمة غير موجبة أو خلط حسابات تقييم.</li>
+</ul>
+
+<h3>ملاحظة</h3>
+
+<p>لوحة <strong>نظرة عامة على المخزون</strong> قد تعرض <strong>Sample data</strong> على الرسوم عندما لا توجد أرقام؛ ذلك للعرض فقط. البيانات الحقيقية من <strong>التسليمات/التحويلات</strong>.</p>
+
+
+<hr>
+
+
+<h2>6) مسار اعتماد فواتير المبيعات وتكامل ZATCA (Task 6) — Tier Validation</h2>
+
+
+<h3>إن وُجد اعتماد داخلي (Tier Validation)</h3>
+
+<p><strong>ضبط (مسؤول):</strong> <strong>الإعدادات</strong> → <strong>فني</strong> → <strong>Tier Validations</strong> → <strong>Tier Definition</strong>؛ النموذج <strong>account.move</strong>؛ نطاق مقترح للمسودات: `[(&quot;move_type&quot;, &quot;=&quot;, &quot;out_invoice&quot;), (&quot;state&quot;, &quot;=&quot;, &quot;draft&quot;)]`؛ معرّفو اعتماد.</p>
+
+
+<p><strong>اختبار المختبِر:</strong> فاتورة عميل مسودة → طلب اعتماد → اعتماد → ثم ترحيل. إن ظهر <strong>Confirm</strong> فقط دون اعتماد، فمسار الاعتماد غير مفعّل أو النطاق لا يطابق الفاتورة.</p>
+
+
+<h3>ZATCA</h3>
+
+<p>مسار <strong>منفصل</strong>؛ غالباً <strong>بعد الترحيل</strong> عبر `l10n_sa_edi`؛ متابعة بيئة الإنتاج حسب الجهة.</p>
+
+
+<hr>
+
+
+<p>*هذا الملف يجمع الصياغة نفسها المستخدمة في المحادثة لوصف خطوات المختبِر.*</p>
+
+</body>
+</html>

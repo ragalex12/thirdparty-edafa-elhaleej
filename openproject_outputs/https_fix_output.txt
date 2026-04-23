@@ -1,0 +1,1 @@
+h /opt/localaddons/fix_openproject_https.sh

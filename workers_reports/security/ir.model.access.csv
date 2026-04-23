@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_workers_report_wizard_user,workers.report.wizard.user,model_workers_report_wizard,base.group_user,1,0,1,0
+access_workers_report_payroll_wizard_user,workers.report.payroll.wizard.user,model_workers_report_payroll_wizard,base.group_user,1,0,1,0
+access_workers_report_timesheet_wizard_user,workers.report.timesheet.wizard.user,model_workers_report_timesheet_wizard,base.group_user,1,0,1,0
+access_workers_report_project_wizard_user,workers.report.project.wizard.user,model_workers_report_project_wizard,base.group_user,1,0,1,0
+

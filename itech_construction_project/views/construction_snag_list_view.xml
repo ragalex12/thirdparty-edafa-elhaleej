@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- List View -->
+        <record id="view_construction_snag_list_tree" model="ir.ui.view">
+            <field name="name">construction.snag.list.tree</field>
+            <field name="model">construction.snag.list</field>
+            <field name="arch" type="xml">
+                <list string="Construction Snag List / Change Orders">
+                    <field name="name"/>
+                    <field name="project_id"/>
+                    <field name="date"/>
+                    <field name="category"/>
+                    <field name="priority" widget="badge" decoration-danger="priority == 'urgent'" decoration-warning="priority == 'high'"/>
+                    <field name="status" widget="badge" decoration-success="status == 'approved'" decoration-info="status == 'submitted'" decoration-muted="status == 'completed'"/>
+                    <field name="assigned_to"/>
+                    <field name="estimated_cost"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Form View -->
+        <record id="view_construction_snag_list_form" model="ir.ui.view">
+            <field name="name">construction.snag.list.form</field>
+            <field name="model">construction.snag.list</field>
+            <field name="arch" type="xml">
+                <form string="Construction Snag List / Change Orders">
+                    <header>
+                        <button string="Submit" name="action_submit" type="object" 
+                                invisible="status != 'draft'" class="oe_highlight"/>
+                        <button string="Approve" name="action_approve" type="object" 
+                                invisible="status != 'submitted'" class="oe_highlight"/>
+                        <button string="Reject" name="action_reject" type="object" 
+                                invisible="status != 'submitted'"/>
+                        <button string="Complete" name="action_complete" type="object" 
+                                invisible="status != 'approved'" class="oe_highlight"/>
+                        <button string="Reset to Draft" name="action_reset_to_draft" type="object" 
+                                invisible="status == 'draft'"/>
+                        <field name="status" widget="statusbar" statusbar_visible="draft,submitted,approved,completed"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" type="object" 
+                                    name="action_view_project" 
+                                    icon="fa-folder-open" 
+                                    invisible="not project_id">
+                                <field string="Project" name="project_id" widget="statinfo"/>
+                            </button>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="project_id" options="{'no_create': True}"/>
+                                <field name="date"/>
+                                <field name="category"/>
+                            </group>
+                            <group>
+                                <field name="priority"/>
+                                <field name="assigned_to"/>
+                                <field name="estimated_cost"/>
+                                <field name="actual_cost"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Description">
+                                <field name="description" placeholder="Enter detailed description of the snag/change order..."/>
+                            </page>
+                            <page string="Notes">
+                                <field name="notes" placeholder="Enter additional notes..."/>
+                            </page>
+                            <page string="Attachments">
+                                <field name="attachment_ids" widget="many2many_binary"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- Search View -->
+        <record id="view_construction_snag_list_search" model="ir.ui.view">
+            <field name="name">construction.snag.list.search</field>
+            <field name="model">construction.snag.list</field>
+            <field name="arch" type="xml">
+                <search string="Construction Snag List / Change Orders">
+                    <field name="name"/>
+                    <field name="project_id"/>
+                    <field name="category"/>
+                    <field name="status"/>
+                    <field name="priority"/>
+                    <field name="assigned_to"/>
+                    <filter string="Draft" name="draft" domain="[('status', '=', 'draft')]"/>
+                    <filter string="Submitted" name="submitted" domain="[('status', '=', 'submitted')]"/>
+                    <filter string="Approved" name="approved" domain="[('status', '=', 'approved')]"/>
+                    <filter string="Completed" name="completed" domain="[('status', '=', 'completed')]"/>
+                    <filter string="Urgent" name="urgent" domain="[('priority', '=', 'urgent')]"/>
+                    <filter string="High Priority" name="high_priority" domain="[('priority', 'in', ['urgent', 'high'])]"/>
+                    <filter string="My Snags" name="my_snags" domain="[('assigned_to', '=', uid)]"/>
+                    <group>
+                        <filter string="Status" name="group_by_status" context="{'group_by': 'status'}"/>
+                        <filter string="Priority" name="group_by_priority" context="{'group_by': 'priority'}"/>
+                        <filter string="Category" name="group_by_category" context="{'group_by': 'category'}"/>
+                        <filter string="Project" name="group_by_project" context="{'group_by': 'project_id'}"/>
+                        <filter string="Assigned To" name="group_by_assigned" context="{'group_by': 'assigned_to'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_construction_snag_list" model="ir.actions.act_window">
+            <field name="name">Snags List / Change Orders</field>
+            <field name="res_model">construction.snag.list</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_construction_snag_list_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first Snag List / Change Order!
+                </p>
+                <p>
+                    Track construction snags and change orders for your projects.
+                </p>
+            </field>
+        </record>
+
+        <!-- Menu Item -->
+        <menuitem
+            id="menu_construction_snag_list"
+            name="Snags List / Change Orders"
+            parent="project.menu_main_pm"
+            action="action_construction_snag_list"
+            sequence="20"
+        />
+    </data>
+</odoo>

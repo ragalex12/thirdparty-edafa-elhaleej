@@ -1,0 +1,105 @@
+<odoo>
+    <template id="tax_report_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h1 style="text-align:center;">
+                        <!--<t t-set="info" t-value="get_state"/>-->
+                        <!--<span t-esc="data['state']"/>-->
+                        <span>Tax Report</span>
+                    </h1>
+                    <p style="text-align:center;">
+                        <t t-if="data['date_from']">
+                            <span>From:</span>
+                            <span t-esc="data['date_from']"/>
+                        </t>
+                        <t t-if="data['date_to']">
+                            <span>To:</span>
+                            <span t-esc="data['date_to']"/>
+                        </t>
+
+                    </p>
+                    <br></br>
+                    <t t-foreach="tax_ids" t-as="p">
+						<span>Tax Name: </span>
+						<span t-foreach="tax_ids" t-as="n">
+							<strong t-esc="n.name"/>
+							<span>,  </span>
+						</span>
+						
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Entry</th>
+                                    <th>name</th>
+                                    <th>Reference</th>
+                                    <th>Date</th>
+                                    <th>Account</th>
+                                    <th>Debit</th>
+                                    <th>Credit</th>
+                                    <th>Balance</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="n" t-value="0"/>
+                                <t t-set="td" t-value="0"/>
+                                <t t-set="tc" t-value="0"/>
+                                <t t-set="tb" t-value="0"/>
+                                <t t-foreach="docs.sorted(key=lambda x: x.date)" t-as="u">
+                                    <tr>
+                                        <t t-set="n" t-value="n+1"/>
+                                        <td>
+                                            <span t-esc="n"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="u.move_id.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="u.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="u.ref"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="u.date"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="u.account_id.code"/>
+                                            <span t-esc="u.account_id.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="u.debit" t-options='{"widget": "float", "decimal_precision": "Product Price"}'/>
+                                            <t t-set="td" t-value="td+u.debit"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="u.credit" t-options='{"widget": "float", "decimal_precision": "Product Price"}'/>
+                                            <t t-set="tc" t-value="tc+u.credit"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="tb+u.balance" t-options='{"widget": "float", "decimal_precision": "Product Price"}'/>
+                                            <t t-set="tb" t-value="tb+u.balance"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                                <tr>
+                                    <td colspan="6"/>
+                                    <td>
+                                        <span t-esc="td" t-options='{"widget": "float", "decimal_precision": "Product Price"}'/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="tc" t-options='{"widget": "float", "decimal_precision": "Product Price"}'/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="tb" t-options='{"widget": "float", "decimal_precision": "Product Price"}'/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

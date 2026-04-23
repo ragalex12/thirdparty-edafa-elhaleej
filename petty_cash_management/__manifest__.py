@@ -1,0 +1,28 @@
+# -*- coding: utf-8 -*-
+{
+    'name': 'Petty cash',
+    'version': '19.0.1.0.0',
+    'summary': """Manage petty cash of an employee""",
+    'description': 'Manage the petty cash of an employee',
+    'category': 'Generic Modules/Human Resources',
+    'author': 'iTech',
+    'company': 'iTech',
+    'maintainer': 'iTech',
+    'website': "https://www.itech.com.eg",
+    'depends': ['hr', 'mail','hr_expense','uom','account', 'product'],
+    'data': [
+        'security/ir.model.access.csv',
+        'security/hr_petty_security.xml',
+        'views/petty_cash_view.xml',
+        'views/res_config_settings_views.xml',
+        'views/hr_employee_view.xml',
+        'views/notification_mail.xml',
+        'views/petty_cash_notification.xml',
+        'data/data.xml',
+    ],
+    'images': ['static/description/banner.png'],
+    'license': 'AGPL-3',
+    'installable': True,
+    'auto_install': False,
+    'application': False,
+}

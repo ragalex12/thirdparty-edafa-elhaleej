@@ -1,0 +1,1997 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* itech_construction_project
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0-20251019\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-26 07:44+0000\n"
+"PO-Revision-Date: 2026-02-26 07:44+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__purchase_count
+msgid "# Purchase"
+msgstr "عدد المشتريات"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__sales_count
+msgid "# Sales"
+msgstr "عدد المبيعات"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__timesheets_count
+msgid "# Timesheets"
+msgstr "عدد سجلات الوقت"
+
+#. module: itech_construction_project
+#. odoo-python
+#: code:addons/itech_construction_project/models/project.py:0
+msgid ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"                                   Click to Create for New Customer\n"
+"                                </p>"
+msgstr ""
+
+#. module: itech_construction_project
+#. odoo-python
+#: code:addons/itech_construction_project/models/project.py:0
+msgid ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"                                   Click to Create for New Invoices\n"
+"                                </p>"
+msgstr ""
+
+#. module: itech_construction_project
+#. odoo-python
+#: code:addons/itech_construction_project/models/project.py:0
+msgid ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"                                   Click to Create for New Sale\n"
+"                                </p>"
+msgstr ""
+
+#. module: itech_construction_project
+#. odoo-python
+#: code:addons/itech_construction_project/models/project.py:0
+msgid ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"                                   Click to Create for New Supervisor timesheets\n"
+"                                </p>"
+msgstr ""
+
+#. module: itech_construction_project
+#. odoo-python
+#: code:addons/itech_construction_project/models/project.py:0
+msgid ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"                                   Click to Create for New Vendor Bills\n"
+"                                </p>"
+msgstr ""
+
+#. module: itech_construction_project
+#. odoo-python
+#: code:addons/itech_construction_project/models/project.py:0
+msgid ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"                                   Click to Create for New purchase\n"
+"                                </p>"
+msgstr ""
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "<span class=\"o_stat_text\">Snag List</span>"
+msgstr "قائمة العيوب"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_tags_view_inherit_list
+msgid "Account(Customer)"
+msgstr "الحساب (العميل)"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity__message_needaction
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__message_needaction
+msgid "Action Needed"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__activity_ids
+msgid "Activities"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__activity_state
+msgid "Activity State"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__activity_type_icon
+msgid "Activity Type Icon"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__actual_cost
+msgid "Actual Cost"
+msgstr "التكلفة الفعلية"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_type_form
+msgid "Add a description..."
+msgstr "أضف وصف..."
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_partner_form_agent
+msgid "Agent"
+msgstr ""
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.res_partner_view_search
+msgid "Agent Partners"
+msgstr ""
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_partner_form_agent
+msgid "Agent information"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.actions.act_window,name:itech_construction_project.action_agent_form
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.res_partner_view_search
+msgid "Agents"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_stock_picking__analylic_acc_id
+msgid "Analylic Account"
+msgstr "الحساب التحليلي"
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__res_partner__settlement__annual
+msgid "Annual"
+msgstr "سنوي"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__project_approval_mail
+msgid "Approval mail"
+msgstr "بريد الموافقة"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_construction_snag_list_form
+msgid "Approve"
+msgstr "موافقة"
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__construction_snag_list__status__approved
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__project_project__state__approve
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_construction_snag_list_search
+msgid "Approved"
+msgstr "موافق عليه"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_account_bank_statement_line__approved_pg
+#: model:ir.model.fields,field_description:itech_construction_project.field_account_move__approved_pg
+msgid "Approved By PM"
+msgstr "موافق عليه من مدير المشروع"
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__construction_snag_list__category__architectural
+msgid "Architectural"
+msgstr "معماري"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "Are you sure you want to finish the project?"
+msgstr "هل أنت متأكد أنك تريد إنهاء المشروع؟"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "Assign"
+msgstr "تعيين"
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__project_project__state__assigned
+msgid "Assigned"
+msgstr "معين"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__assigned_to
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_construction_snag_list_search
+msgid "Assigned To"
+msgstr "مكلف إلى"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity__message_attachment_count
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__message_attachment_count
+msgid "Attachment Count"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__attachment_ids
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_construction_snag_list_form
+msgid "Attachments"
+msgstr "المرفقات"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "Avatar"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_product_product__boq_type
+msgid "BOQ Type"
+msgstr "نوع قائمة الكميات"
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__project_project__ownership__bankfinansing
+msgid "Bank Financing"
+msgstr "تمويل بنكي"
+
+#. module: itech_construction_project
+#: model:ir.actions.act_window,name:itech_construction_project.act_open_bill_quantity_view
+#: model:ir.model.fields,field_description:itech_construction_project.field_stock_picking__bill_of_qty_id
+#: model:ir.ui.menu,name:itech_construction_project.menu_bill_quantity
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_bill_quantity_form
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_bill_quantity_search
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_bill_quantity_tree
+msgid "Bill Of Quantity"
+msgstr "قائمة الكميات"
+
+#. module: itech_construction_project
+#: model:ir.model,name:itech_construction_project.model_bill_quantity_line
+msgid "Bill Of Quantity Line"
+msgstr "بند قائمة الكميات"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity__quantity_line
+msgid "Bill Of Quantity Lines"
+msgstr "بنود قائمة الكميات"
+
+#. module: itech_construction_project
+#: model:ir.model,name:itech_construction_project.model_bill_quantity
+msgid "Bill Quantity"
+msgstr "قائمة الكميات"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity_line__bill_quantity_id
+msgid "Bill of Quantity Reference"
+msgstr "مرجع قائمة الكميات"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_type__project_ok
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_type_search
+msgid "Can be applied for projects"
+msgstr "يمكن تطبيقه على المشاريع"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_type__task_ok
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_type_search
+msgid "Can be applied for tasks"
+msgstr "يمكن تطبيقه على المهام"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_create_purchase_order_wizard_form
+msgid "Cancel"
+msgstr ""
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "Cancel Project"
+msgstr "إلغاء المشروع"
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__project_project__state__cancel
+msgid "Cancelled"
+msgstr "ملغي"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__category
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_construction_snag_list_search
+msgid "Category"
+msgstr "الفئة"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,help:itech_construction_project.field_res_partner__agent
+#: model:ir.model.fields,help:itech_construction_project.field_res_users__agent
+msgid "Check this field if the partner is a creditor or an agent."
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,help:itech_construction_project.field_res_partner__is_customer
+#: model:ir.model.fields,help:itech_construction_project.field_res_users__is_customer
+msgid "Check this field if the partner is a customer."
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,help:itech_construction_project.field_res_partner__is_vendor
+#: model:ir.model.fields,help:itech_construction_project.field_res_users__is_vendor
+msgid "Check this field if the partner is a vendor."
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__material_line__status__close
+msgid "Close"
+msgstr "مغلق"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_construction_snag_list_form
+msgid "Complete"
+msgstr "إكمال"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_type__complete_name
+msgid "Complete Name"
+msgstr "الاسم الكامل"
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__construction_snag_list__status__completed
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_construction_snag_list_search
+msgid "Completed"
+msgstr "مكتمل"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_stock_picking__construnction_pro_id
+msgid "Construction Project"
+msgstr "مشروع البناء"
+
+#. module: itech_construction_project
+#. odoo-python
+#: code:addons/itech_construction_project/models/project.py:0
+#: model:ir.model,name:itech_construction_project.model_construction_snag_list
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_construction_snag_list_form
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_construction_snag_list_search
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_construction_snag_list_tree
+msgid "Construction Snag List / Change Orders"
+msgstr "قائمة العيوب الإنشائية / أوامر التغيير"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_task__consume_material_ids
+msgid "Consume Material"
+msgstr "المواد المستهلكة"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.inherit_job_orders_material_form
+msgid "Consumed Material"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model,name:itech_construction_project.model_res_partner
+msgid "Contact"
+msgstr "جهة الاتصال"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__project_contract
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "Contract"
+msgstr "العقد"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__project_contract_attachments
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "Contract Attachments"
+msgstr "ملحقات العقد"
+
+#. module: itech_construction_project
+#: model:ir.ui.menu,name:itech_construction_project.menu_contractors
+msgid "Contractors"
+msgstr "المقاولون"
+
+#. module: itech_construction_project
+#: model:ir.actions.act_window,name:itech_construction_project.act_open_cost_code_view
+#: model:ir.model,name:itech_construction_project.model_cost_code
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity_line__cost_code_id
+#: model:ir.model.fields,field_description:itech_construction_project.field_cost_code__cost_code_id
+#: model:ir.model.fields,field_description:itech_construction_project.field_cost_header__cost_code_ids
+#: model:ir.ui.menu,name:itech_construction_project.menu_cost_code
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_cost_code_form
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_cost_code_search
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_cost_code_tree
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_cost_header_form
+msgid "Cost Code"
+msgstr "كود التكلفة"
+
+#. module: itech_construction_project
+#: model:ir.actions.act_window,name:itech_construction_project.act_open_cost_header_view
+#: model:ir.model,name:itech_construction_project.model_cost_header
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity_line__cost_header_id
+#: model:ir.model.fields,field_description:itech_construction_project.field_work_package__cost_header_ids
+#: model:ir.ui.menu,name:itech_construction_project.menu_cost_header
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_cost_header_form
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_cost_header_search
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_cost_header_tree
+msgid "Cost Header"
+msgstr "رأس التكلفة"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_cost_code__name
+#: model:ir.model.fields,field_description:itech_construction_project.field_cost_header__name
+msgid "Cost Header Name"
+msgstr "اسم رأس التكلفة"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_cost_code__number
+#: model:ir.model.fields,field_description:itech_construction_project.field_cost_header__number
+msgid "Cost Header Number"
+msgstr "رقم رأس التكلفة"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_work_package_form
+msgid "Cost Headers"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_cost_header__cost_of_header
+msgid "Cost Of Header"
+msgstr "تكلفة الرأس"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_create_purchase_order_wizard_form
+msgid "Create"
+msgstr ""
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "Create Invoice"
+msgstr "إنشاء فاتورة"
+
+#. module: itech_construction_project
+#: model:ir.actions.act_window,name:itech_construction_project.action_create_purchase_order
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.inherit_material_request_form
+msgid "Create Purchase Order"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model,website_form_label:itech_construction_project.model_project_task
+msgid "Create a Task"
+msgstr "إنشاء مهمة"
+
+#. module: itech_construction_project
+#: model_terms:ir.actions.act_window,help:itech_construction_project.action_construction_snag_list
+msgid "Create your first Snag List / Change Order!"
+msgstr "أنشئ قائمة العيوب / أمر التغيير الأول!"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity__create_uid
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity_line__create_uid
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__create_uid
+#: model:ir.model.fields,field_description:itech_construction_project.field_cost_code__create_uid
+#: model:ir.model.fields,field_description:itech_construction_project.field_cost_header__create_uid
+#: model:ir.model.fields,field_description:itech_construction_project.field_material_consume__create_uid
+#: model:ir.model.fields,field_description:itech_construction_project.field_material_details__create_uid
+#: model:ir.model.fields,field_description:itech_construction_project.field_material_line__create_uid
+#: model:ir.model.fields,field_description:itech_construction_project.field_product_product_extension__create_uid
+#: model:ir.model.fields,field_description:itech_construction_project.field_product_purchase_order__create_uid
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_deliverables__create_uid
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_purpose__create_uid
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_type__create_uid
+#: model:ir.model.fields,field_description:itech_construction_project.field_purchase_order_wizard__create_uid
+#: model:ir.model.fields,field_description:itech_construction_project.field_work_package__create_uid
+#: model:ir.model.fields,field_description:itech_construction_project.field_work_package_extension__create_uid
+msgid "Created by"
+msgstr "تم الإنشاء بواسطة"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity__create_date
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity_line__create_date
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__create_date
+#: model:ir.model.fields,field_description:itech_construction_project.field_cost_code__create_date
+#: model:ir.model.fields,field_description:itech_construction_project.field_cost_header__create_date
+#: model:ir.model.fields,field_description:itech_construction_project.field_material_consume__create_date
+#: model:ir.model.fields,field_description:itech_construction_project.field_material_details__create_date
+#: model:ir.model.fields,field_description:itech_construction_project.field_material_line__create_date
+#: model:ir.model.fields,field_description:itech_construction_project.field_product_product_extension__create_date
+#: model:ir.model.fields,field_description:itech_construction_project.field_product_purchase_order__create_date
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_deliverables__create_date
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_purpose__create_date
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_type__create_date
+#: model:ir.model.fields,field_description:itech_construction_project.field_purchase_order_wizard__create_date
+#: model:ir.model.fields,field_description:itech_construction_project.field_work_package__create_date
+#: model:ir.model.fields,field_description:itech_construction_project.field_work_package_extension__create_date
+msgid "Created on"
+msgstr "تم الإنشاء في"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_res_partner__agent
+#: model:ir.model.fields,field_description:itech_construction_project.field_res_users__agent
+msgid "Creditor/Agent"
+msgstr "الدائن/الوكيل"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "Custom"
+msgstr ""
+
+#. module: itech_construction_project
+#. odoo-python
+#: code:addons/itech_construction_project/models/project.py:0
+#: model:ir.actions.act_window,name:itech_construction_project.action_customers_form
+#: model:ir.ui.menu,name:itech_construction_project.menu_customers
+msgid "Customers"
+msgstr "العملاء"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__date
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.inherit_job_orders_material_form
+msgid "Date"
+msgstr "التاريخ"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "Delete"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__project_deliverables_ids
+msgid "Deliverable"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity_line__description
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__description
+#: model:ir.model.fields,field_description:itech_construction_project.field_cost_code__description
+#: model:ir.model.fields,field_description:itech_construction_project.field_material_consume__name
+#: model:ir.model.fields,field_description:itech_construction_project.field_material_details__name
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_type__description
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.inherit_job_orders_material_form
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_type_form
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_construction_snag_list_form
+msgid "Description"
+msgstr "الوصف"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.inherit_job_orders_material_form
+msgid "Destination Location"
+msgstr ""
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.inherit_job_orders_material_form
+msgid "Destination Location Zone"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_account_move__display_name
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity__display_name
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity_line__display_name
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__display_name
+#: model:ir.model.fields,field_description:itech_construction_project.field_cost_code__display_name
+#: model:ir.model.fields,field_description:itech_construction_project.field_cost_header__display_name
+#: model:ir.model.fields,field_description:itech_construction_project.field_material_consume__display_name
+#: model:ir.model.fields,field_description:itech_construction_project.field_material_details__display_name
+#: model:ir.model.fields,field_description:itech_construction_project.field_material_line__display_name
+#: model:ir.model.fields,field_description:itech_construction_project.field_product_product__display_name
+#: model:ir.model.fields,field_description:itech_construction_project.field_product_product_extension__display_name
+#: model:ir.model.fields,field_description:itech_construction_project.field_product_purchase_order__display_name
+#: model:ir.model.fields,field_description:itech_construction_project.field_product_template__display_name
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_deliverables__display_name
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__display_name
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_purpose__display_name
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_task__display_name
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_type__display_name
+#: model:ir.model.fields,field_description:itech_construction_project.field_purchase_order__display_name
+#: model:ir.model.fields,field_description:itech_construction_project.field_purchase_order_wizard__display_name
+#: model:ir.model.fields,field_description:itech_construction_project.field_res_partner__display_name
+#: model:ir.model.fields,field_description:itech_construction_project.field_sale_order__display_name
+#: model:ir.model.fields,field_description:itech_construction_project.field_stock_move__display_name
+#: model:ir.model.fields,field_description:itech_construction_project.field_stock_picking__display_name
+#: model:ir.model.fields,field_description:itech_construction_project.field_work_package__display_name
+#: model:ir.model.fields,field_description:itech_construction_project.field_work_package_extension__display_name
+msgid "Display Name"
+msgstr "اسم العرض"
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__construction_snag_list__status__draft
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_construction_snag_list_search
+msgid "Draft"
+msgstr "مسودة"
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__construction_snag_list__category__electrical
+msgid "Electrical"
+msgstr "كهرباء"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity_line__employee_id
+msgid "Employee"
+msgstr "الموظف"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_construction_snag_list_form
+msgid "Enter additional notes..."
+msgstr "أدخل ملاحظات إضافية..."
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_construction_snag_list_form
+msgid "Enter detailed description of the snag/change order..."
+msgstr "أدخل وصفاً مفصلاً للعيوب/أمر التغيير..."
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_stock_picking__cost_equipment
+msgid "Equipment Cost"
+msgstr "تكلفة المعدات"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__estimated_cost
+msgid "Estimated Cost"
+msgstr "التكلفة المقدرة"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "Expected Budget"
+msgstr "الميزانية المتوقعة"
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__res_partner__agent_type__agent
+msgid "External agent"
+msgstr "وكيل خارجي"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "Finish Project"
+msgstr "إنهاء المشروع"
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__project_project__state__finished
+msgid "Finished"
+msgstr "منتهي"
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__construction_snag_list__category__fire
+msgid "Fire Fighting"
+msgstr "حريق"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity__message_follower_ids
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__message_follower_ids
+msgid "Followers"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity__message_partner_ids
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__message_partner_ids
+msgid "Followers (Partners)"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,help:itech_construction_project.field_construction_snag_list__activity_type_icon
+msgid "Font awesome icon e.g. fa-tasks"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__project_project__ownership__generalcontractor
+msgid "General Contractor"
+msgstr "مقاول عام"
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__construction_snag_list__category__hvac
+msgid "HVAC"
+msgstr "تكييف"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity__has_message
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__has_message
+msgid "Has Message"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__construction_snag_list__priority__high
+msgid "High"
+msgstr "عالية"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_construction_snag_list_search
+msgid "High Priority"
+msgstr "أولوية عالية"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_account_move__id
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity__id
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity_line__id
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__id
+#: model:ir.model.fields,field_description:itech_construction_project.field_cost_code__id
+#: model:ir.model.fields,field_description:itech_construction_project.field_cost_header__id
+#: model:ir.model.fields,field_description:itech_construction_project.field_material_consume__id
+#: model:ir.model.fields,field_description:itech_construction_project.field_material_details__id
+#: model:ir.model.fields,field_description:itech_construction_project.field_material_line__id
+#: model:ir.model.fields,field_description:itech_construction_project.field_product_product__id
+#: model:ir.model.fields,field_description:itech_construction_project.field_product_product_extension__id
+#: model:ir.model.fields,field_description:itech_construction_project.field_product_purchase_order__id
+#: model:ir.model.fields,field_description:itech_construction_project.field_product_template__id
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_deliverables__id
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__id
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_purpose__id
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_task__id
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_type__id
+#: model:ir.model.fields,field_description:itech_construction_project.field_purchase_order__id
+#: model:ir.model.fields,field_description:itech_construction_project.field_purchase_order_wizard__id
+#: model:ir.model.fields,field_description:itech_construction_project.field_res_partner__id
+#: model:ir.model.fields,field_description:itech_construction_project.field_sale_order__id
+#: model:ir.model.fields,field_description:itech_construction_project.field_stock_move__id
+#: model:ir.model.fields,field_description:itech_construction_project.field_stock_picking__id
+#: model:ir.model.fields,field_description:itech_construction_project.field_work_package__id
+#: model:ir.model.fields,field_description:itech_construction_project.field_work_package_extension__id
+msgid "ID"
+msgstr "المُعرف"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__activity_exception_icon
+msgid "Icon"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,help:itech_construction_project.field_construction_snag_list__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,help:itech_construction_project.field_bill_quantity__message_needaction
+#: model:ir.model.fields,help:itech_construction_project.field_construction_snag_list__message_needaction
+msgid "If checked, new messages require your attention."
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,help:itech_construction_project.field_bill_quantity__message_has_error
+#: model:ir.model.fields,help:itech_construction_project.field_bill_quantity__message_has_sms_error
+#: model:ir.model.fields,help:itech_construction_project.field_construction_snag_list__message_has_error
+#: model:ir.model.fields,help:itech_construction_project.field_construction_snag_list__message_has_sms_error
+msgid "If checked, some messages have a delivery error."
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__image_medium
+msgid "Image"
+msgstr "صورة"
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__project_project__state__inprogress
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "In Progress"
+msgstr "قيد التنفيذ"
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__res_partner__agent_type__intagent
+msgid "Internal agent"
+msgstr "وكيل داخلي"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "Inventory Usage"
+msgstr "استخدام المخزون"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "Inventory Usage By Bill Of Quantity"
+msgstr "استخدام المخزون حسب قائمة الكميات"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__inventory_usages_ids
+msgid "Inventory Usage Reference"
+msgstr "مرجع استخدام المخزون"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "Invoice Statistical"
+msgstr "إحصائيات الفواتير"
+
+#. module: itech_construction_project
+#. odoo-python
+#: code:addons/itech_construction_project/models/project.py:0
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__invoices_count
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__p_invoice_ids
+msgid "Invoices"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_res_partner__is_customer
+#: model:ir.model.fields,field_description:itech_construction_project.field_res_users__is_customer
+msgid "Is Customer"
+msgstr "هو عميل"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity__message_is_follower
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__message_is_follower
+msgid "Is Follower"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_res_partner__is_vendor
+#: model:ir.model.fields,field_description:itech_construction_project.field_res_users__is_vendor
+msgid "Is Vendor"
+msgstr "هو مورد"
+
+#. module: itech_construction_project
+#: model:ir.model,name:itech_construction_project.model_account_move
+msgid "Journal Entry"
+msgstr "قيد اليومية"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity_line__key
+msgid "Key"
+msgstr "المفتاح"
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__bill_quantity_line__key__labor
+msgid "Labor"
+msgstr "عمالة"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity__labor_cost
+msgid "Labor Cost"
+msgstr "تكلفة العمالة"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity__write_uid
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity_line__write_uid
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__write_uid
+#: model:ir.model.fields,field_description:itech_construction_project.field_cost_code__write_uid
+#: model:ir.model.fields,field_description:itech_construction_project.field_cost_header__write_uid
+#: model:ir.model.fields,field_description:itech_construction_project.field_material_consume__write_uid
+#: model:ir.model.fields,field_description:itech_construction_project.field_material_details__write_uid
+#: model:ir.model.fields,field_description:itech_construction_project.field_material_line__write_uid
+#: model:ir.model.fields,field_description:itech_construction_project.field_product_product_extension__write_uid
+#: model:ir.model.fields,field_description:itech_construction_project.field_product_purchase_order__write_uid
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_deliverables__write_uid
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_purpose__write_uid
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_type__write_uid
+#: model:ir.model.fields,field_description:itech_construction_project.field_purchase_order_wizard__write_uid
+#: model:ir.model.fields,field_description:itech_construction_project.field_work_package__write_uid
+#: model:ir.model.fields,field_description:itech_construction_project.field_work_package_extension__write_uid
+msgid "Last Updated by"
+msgstr "آخر تحديث بواسطة"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity__write_date
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity_line__write_date
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__write_date
+#: model:ir.model.fields,field_description:itech_construction_project.field_cost_code__write_date
+#: model:ir.model.fields,field_description:itech_construction_project.field_cost_header__write_date
+#: model:ir.model.fields,field_description:itech_construction_project.field_material_consume__write_date
+#: model:ir.model.fields,field_description:itech_construction_project.field_material_details__write_date
+#: model:ir.model.fields,field_description:itech_construction_project.field_material_line__write_date
+#: model:ir.model.fields,field_description:itech_construction_project.field_product_product_extension__write_date
+#: model:ir.model.fields,field_description:itech_construction_project.field_product_purchase_order__write_date
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_deliverables__write_date
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_purpose__write_date
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_type__write_date
+#: model:ir.model.fields,field_description:itech_construction_project.field_purchase_order_wizard__write_date
+#: model:ir.model.fields,field_description:itech_construction_project.field_work_package__write_date
+#: model:ir.model.fields,field_description:itech_construction_project.field_work_package_extension__write_date
+msgid "Last Updated on"
+msgstr "آخر تحديث في"
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__construction_snag_list__priority__low
+msgid "Low"
+msgstr "منخفضة"
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__product_product__boq_type__machine_qui
+msgid "Machinery / Equipment"
+msgstr "الآلات / المعدات"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_material_line__project_id
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__bill_quantity_line__key__material
+msgid "Material"
+msgstr "المواد"
+
+#. module: itech_construction_project
+#: model:ir.model,name:itech_construction_project.model_material_consume
+msgid "Material Consume"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity__material_cost
+msgid "Material Cost"
+msgstr "تكلفة المواد"
+
+#. module: itech_construction_project
+#: model:ir.model,name:itech_construction_project.model_material_details
+msgid "Material Details"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model,name:itech_construction_project.model_material_line
+msgid "Material Line"
+msgstr ""
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.inherit_job_orders_material_form
+msgid "Material Plannings"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_task__material_req_stock_ids
+msgid "Material Req Stock"
+msgstr "طلبات المواد"
+
+#. module: itech_construction_project
+#: model:ir.ui.menu,name:itech_construction_project.menu_materialr_requisitions
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.inherit_job_orders_material_form
+msgid "Material Requisitions"
+msgstr "طلبات المواد"
+
+#. module: itech_construction_project
+#: model:ir.ui.menu,name:itech_construction_project.menu_materials
+#: model:ir.ui.menu,name:itech_construction_project.sub_materials
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_bill_quantity_form
+msgid "Materials"
+msgstr "المواد"
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__construction_snag_list__category__mechanical
+msgid "Mechanical"
+msgstr "ميكانيكا"
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__construction_snag_list__priority__medium
+msgid "Medium"
+msgstr "متوسطة"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity__message_has_error
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__message_has_error
+msgid "Message Delivery error"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity__message_ids
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__message_ids
+msgid "Messages"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__res_partner__settlement__monthly
+msgid "Monthly"
+msgstr "شهري"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__my_activity_date_deadline
+msgid "My Activity Deadline"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__project_project__ownership__mycompany
+msgid "My Company"
+msgstr "شركتي"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_construction_snag_list_search
+msgid "My Snags"
+msgstr "عيوبي"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_purpose__name
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_type__name
+msgid "Name"
+msgstr "الاسم"
+
+#. module: itech_construction_project
+#. odoo-python
+#: code:addons/itech_construction_project/models/construction_snag_list.py:0
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__project_project__state__draft
+msgid "New"
+msgstr "جديد"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_bill_quantity_form
+msgid "New Revision"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__activity_summary
+msgid "Next Activity Summary"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__activity_type_id
+msgid "Next Activity Type"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__notes
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_construction_snag_list_form
+msgid "Notes"
+msgstr "ملاحظات"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity__message_needaction_counter
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__message_needaction_counter
+msgid "Number of Actions"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity__message_has_error_counter
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__message_has_error_counter
+msgid "Number of errors"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,help:itech_construction_project.field_bill_quantity__message_needaction_counter
+#: model:ir.model.fields,help:itech_construction_project.field_construction_snag_list__message_needaction_counter
+msgid "Number of messages requiring action"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,help:itech_construction_project.field_bill_quantity__message_has_error_counter
+#: model:ir.model.fields,help:itech_construction_project.field_construction_snag_list__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_product_purchase_order__on_hand_qty
+msgid "On Hand Quantity"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__material_line__status__open
+msgid "Open"
+msgstr "مفتوح"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_product_product__pur_order_wiz_id
+#: model:ir.model.fields,field_description:itech_construction_project.field_product_template__pur_order_wiz_id
+msgid "Ordersss"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__construction_snag_list__category__other
+msgid "Other"
+msgstr "أخرى"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__attachment_dwg_other
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "Other DWGs"
+msgstr "رسومات أخرى"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__dwg_name_other
+msgid "Other DWGs Name"
+msgstr "اسم الرسومات الأخرى"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__ownership
+msgid "Ownership"
+msgstr "الملكية"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity__parent_id
+msgid "Parent"
+msgstr "الأصل"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_type__parent_id
+msgid "Parent Type"
+msgstr "النوع الأب"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_purchase_order_wizard__partner_ids
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.inherit_job_orders_material_form
+msgid "Partner"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_res_partner__aec
+#: model:ir.model.fields,field_description:itech_construction_project.field_res_users__aec
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.res_partner_view_search
+msgid "Partner Code"
+msgstr "رمز الشريك"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.res_partner_view_search
+msgid "Partner Reference"
+msgstr "مرجع الشريك"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity_line__partner_id
+msgid "Partners"
+msgstr "الشركاء"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_material_line__planned_qty
+msgid "Planned Qty."
+msgstr "الكمية المخططة"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_product_product_extension__price_subtotal
+#: model:ir.model.fields,field_description:itech_construction_project.field_work_package_extension__price_subtotal
+msgid "Price Subtotal"
+msgstr "المجموع الفرعي"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_product_product_extension__price_unit
+#: model:ir.model.fields,field_description:itech_construction_project.field_work_package_extension__price_unit
+msgid "Price Unit"
+msgstr "سعر الوحدة"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__priority
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_construction_snag_list_search
+msgid "Priority"
+msgstr "الأولوية"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_task__prod_material_ids
+msgid "Prod Material"
+msgstr "تخطيط المواد"
+
+#. module: itech_construction_project
+#: model:ir.model,name:itech_construction_project.model_product_template
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity_line__product_id
+#: model:ir.model.fields,field_description:itech_construction_project.field_material_consume__product_id
+#: model:ir.model.fields,field_description:itech_construction_project.field_material_details__product_id
+#: model:ir.model.fields,field_description:itech_construction_project.field_product_product_extension__product_id
+#: model:ir.model.fields,field_description:itech_construction_project.field_product_purchase_order__pro_pur_ids
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.inherit_job_orders_material_form
+msgid "Product"
+msgstr "المنتج"
+
+#. module: itech_construction_project
+#: model:ir.model,name:itech_construction_project.model_product_product_extension
+msgid "Product Product Extension"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model,name:itech_construction_project.model_product_purchase_order
+msgid "Product Purchase Order"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_product_product_extension__uom_id
+#: model:ir.model.fields,field_description:itech_construction_project.field_work_package_extension__uom_id
+msgid "Product UOM"
+msgstr "وحدة قياس المنتج"
+
+#. module: itech_construction_project
+#: model:ir.model,name:itech_construction_project.model_product_product
+msgid "Product Variant"
+msgstr "متغير المنتج"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_material_line__product_id
+#: model:ir.model.fields,field_description:itech_construction_project.field_product_product__tmpl_id
+#: model:ir.model.fields,field_description:itech_construction_project.field_product_purchase_order__pro_ids
+#: model:ir.model.fields,field_description:itech_construction_project.field_purchase_order_wizard__product_ids
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_create_purchase_order_wizard_form
+msgid "Products"
+msgstr "المنتجات"
+
+#. module: itech_construction_project
+#. odoo-python
+#: code:addons/itech_construction_project/models/construction_snag_list.py:0
+#: model:ir.model,name:itech_construction_project.model_project_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_account_bank_statement_line__project_id
+#: model:ir.model.fields,field_description:itech_construction_project.field_account_move__project_id
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity__project_id
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__project_id
+#: model:ir.model.fields,field_description:itech_construction_project.field_product_product_extension__project_id
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_deliverables__project_id
+#: model:ir.model.fields,field_description:itech_construction_project.field_purchase_order__project_id
+#: model:ir.model.fields,field_description:itech_construction_project.field_sale_order__project_r_id
+#: model:ir.model.fields,field_description:itech_construction_project.field_work_package_extension__project_id
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_construction_snag_list_form
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_construction_snag_list_search
+msgid "Project"
+msgstr "المشروع"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__p_assistant
+msgid "Project Assistant"
+msgstr "مساعد المشروع"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__project_code
+msgid "Project Code"
+msgstr "رمز المشروع"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__project_cost
+msgid "Project Cost"
+msgstr "تكلفة المشروع"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "Project DWGs"
+msgstr "رسومات المشروع"
+
+#. module: itech_construction_project
+#: model:ir.model,name:itech_construction_project.model_project_deliverables
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "Project Deliverables"
+msgstr ""
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "Project Documents"
+msgstr "مستندات المشروع"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__project_location
+msgid "Project Location"
+msgstr "موقع المشروع"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "Project Manager"
+msgstr "مدير المشروع"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__members_ids
+msgid "Project Members"
+msgstr "أعضاء المشروع"
+
+#. module: itech_construction_project
+#: model:ir.model,name:itech_construction_project.model_project_purpose
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__project_purpose
+msgid "Project Purpose"
+msgstr "الغرض من المشروع"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_product_product__project_task_id
+#: model:ir.model.fields,field_description:itech_construction_project.field_stock_picking__project_task_stock_id
+msgid "Project Task"
+msgstr "مهمة المشروع"
+
+#. module: itech_construction_project
+#: model:ir.model,name:itech_construction_project.model_project_type
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_type_form
+msgid "Project Type"
+msgstr "نوع المشروع"
+
+#. module: itech_construction_project
+#: model:ir.actions.act_window,name:itech_construction_project.action_project_type
+#: model:ir.ui.menu,name:itech_construction_project.project_category
+msgid "Project Types"
+msgstr "أنواع المشاريع"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,help:itech_construction_project.field_project_project__privacy_visibility
+msgid ""
+"Project and Task Visibility:\n"
+"- Invited internal users: Can access only the project or tasks they follow. Assignees automatically get access.\n"
+"- Invited internal and portal users: Same as above, extended to portal users.\n"
+"- All internal users: Full access to the project and all its tasks.\n"
+"- All internal and invited portal users: Internal users get full access. Portal users can access only the project or tasks they follow.\n"
+"\n"
+"Portal Access Levels:\n"
+"- Read-only: Portal users see tasks via their portal but can’t edit them.\n"
+"- Edit (limited): Portal users access kanban/list views and can edit limited fields on followed tasks.\n"
+"- Edit: Same as above, with access to all tasks.\n"
+"\n"
+"Other Rules:\n"
+"- Internal users can open a task from a direct link, even without project access.\n"
+"- Project admins have access to private projects, even if not followers.\n"
+msgstr ""
+"يحدد إمكانية رؤية مهام المشروع:\n"
+"- المستخدمون الداخليون المدعوون: قد يرى الموظفون فقط المشروع والمهام المتابعة.\n"
+"- جميع المستخدمين الداخليين: قد يرى الموظفون جميع المشاريع والمهام.\n"
+"- بوابة المدعوين وجميع المستخدمين الداخليين: قد يرى الموظفون كل شيء. قد يرى مستخدمو البوابة المشاريع والمهام المتابعة من\n"
+"   قبلهم أو من قبل شخص من شركتهم."
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "Project info"
+msgstr "معلومات المشروع"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,help:itech_construction_project.field_project_project__members_ids
+msgid ""
+"Project's members are users who can have an access to the tasks related to "
+"this project."
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.ui.menu,name:itech_construction_project.project_list
+msgid "Projects List"
+msgstr "قائمة المشاريع"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__project_proposal
+msgid "Proposal"
+msgstr "الاقتراح"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_purchase_order_wizard__pur_pro_id
+msgid "Pur Pro"
+msgstr ""
+
+#. module: itech_construction_project
+#. odoo-python
+#: code:addons/itech_construction_project/models/project.py:0
+msgid "Purchase"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model,name:itech_construction_project.model_purchase_order
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_create_purchase_order_wizard_form
+msgid "Purchase Order"
+msgstr "أمر شراء"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__purchase_order_ids
+msgid "Purchase Order Reference"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model,name:itech_construction_project.model_purchase_order_wizard
+msgid "Purchase Order Wizard"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__p_po_ids
+msgid "Purchase Orders"
+msgstr ""
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "Purchase Statistical"
+msgstr "إحصائيات المشتريات"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "Purchase orders"
+msgstr "أوامر الشراء"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "Purpose..."
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_product_product_extension__qty
+#: model:ir.model.fields,field_description:itech_construction_project.field_work_package_extension__qty
+msgid "QTY"
+msgstr "الكمية"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity_line__qty
+#: model:ir.model.fields,field_description:itech_construction_project.field_cost_code__qty
+msgid "Qty"
+msgstr "الكمية"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_material_consume__product_qty
+#: model:ir.model.fields,field_description:itech_construction_project.field_material_details__product_qty
+#: model:ir.model.fields,field_description:itech_construction_project.field_product_product__quantity
+#: model:ir.model.fields,field_description:itech_construction_project.field_product_purchase_order__quantity
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.inherit_job_orders_material_form
+msgid "Quantity"
+msgstr "الكمية"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_bill_quantity_form
+msgid "Quantity Line"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__res_partner__settlement__quaterly
+msgid "Quarterly"
+msgstr "ربع سنوي"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__project_quote
+msgid "Quote"
+msgstr "العرض"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity_line__price_unit
+msgid "Rate"
+msgstr "السعر"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity__rating_ids
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__rating_ids
+msgid "Ratings"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__name
+msgid "Reference"
+msgstr "المرجع"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.inherit_job_orders_material_form
+msgid "References"
+msgstr ""
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_construction_snag_list_form
+msgid "Reject"
+msgstr "رفض"
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__construction_snag_list__status__rejected
+msgid "Rejected"
+msgstr "مرفوض"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_construction_snag_list_form
+msgid "Reset to Draft"
+msgstr "إعادة إلى المسودة"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__activity_user_id
+msgid "Responsible User"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity__revision
+msgid "Revision"
+msgstr "المراجعة"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity__message_has_sms_error
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__sale_order_ids
+msgid "Sale Order Reference"
+msgstr ""
+
+#. module: itech_construction_project
+#. odoo-python
+#: code:addons/itech_construction_project/models/project.py:0
+msgid "Sales"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model,name:itech_construction_project.model_sale_order
+msgid "Sales Order"
+msgstr "أمر البيع"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__p_so_ids
+msgid "Sales Orders"
+msgstr ""
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "Sales Statistical"
+msgstr "إحصائيات المبيعات"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "Sales orders"
+msgstr "أوامر البيع"
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__res_partner__settlement__semi
+msgid "Semi-annual"
+msgstr "نصف سنوي"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_res_partner__settlement
+#: model:ir.model.fields,field_description:itech_construction_project.field_res_users__settlement
+msgid "Settlement period"
+msgstr "فترة التسوية"
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__project_project__ownership__sharingother
+msgid "Sharing Other"
+msgstr "مشاركة مع آخرين"
+
+#. module: itech_construction_project
+#: model:ir.actions.act_window,name:itech_construction_project.action_construction_snag_list
+#: model:ir.ui.menu,name:itech_construction_project.menu_construction_snag_list
+msgid "Snags List / Change Orders"
+msgstr "قائمة العيوب / أوامر التغيير"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.inherit_job_orders_material_form
+msgid "Source Document"
+msgstr ""
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.inherit_job_orders_material_form
+msgid "Source Location"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_material_line__status
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__state
+msgid "State"
+msgstr "الحالة"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "Statistical"
+msgstr "إحصائيات"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__status
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.inherit_job_orders_material_form
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_construction_snag_list_search
+msgid "Status"
+msgstr "الحالة"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,help:itech_construction_project.field_construction_snag_list__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model,name:itech_construction_project.model_stock_move
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_task__stock_move_ids
+#: model:ir.model.fields,field_description:itech_construction_project.field_stock_move__project_stock_move_id
+msgid "Stock Move"
+msgstr "حركة المخزون"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.inherit_job_orders_material_form
+msgid "Stock Moves"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__construction_snag_list__category__structural
+msgid "Structural"
+msgstr "انشائي"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_stock_picking__sub_contract_cost
+msgid "SubContract Cost"
+msgstr "تكلفة المقاول"
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__bill_quantity_line__key__subcontract
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__product_product__boq_type__subcontract
+msgid "Subcontract"
+msgstr "مقاول"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity__subcontract_cost
+msgid "Subcontract Cost"
+msgstr "تكلفة المقاولين"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_construction_snag_list_form
+msgid "Submit"
+msgstr "إرسال"
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__construction_snag_list__status__submitted
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_construction_snag_list_search
+msgid "Submitted"
+msgstr "مقدم"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_type__child_ids
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_type_form
+msgid "Subtypes"
+msgstr "الأنواع الفرعية"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__tag_ids
+msgid "Tags"
+msgstr "الوسوم"
+
+#. module: itech_construction_project
+#: model:ir.model,name:itech_construction_project.model_project_task
+#: model:ir.model.fields,field_description:itech_construction_project.field_material_consume__task_id
+#: model:ir.model.fields,field_description:itech_construction_project.field_material_details__task_id
+msgid "Task"
+msgstr "المهمة"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_stock_picking__job_orders_id
+msgid "Task / Job Orders"
+msgstr "المهمة / أوامر العمل"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_stock_picking__job_orders_user_ids
+msgid "Task / Job Orders User"
+msgstr "مستخدم المهمة / أوامر العمل"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "Team"
+msgstr "الفريق"
+
+#. module: itech_construction_project
+#. odoo-python
+#: code:addons/itech_construction_project/models/project.py:0
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "Timesheets"
+msgstr "سجلات الوقت"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity_line__price_subtotal
+msgid "Total"
+msgstr "الإجمالي"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__project_valueavat
+msgid "Total Amount after VAT"
+msgstr "إجمالي المبلغ بعد الضريبة"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__project_valuebvat
+msgid "Total Amount before VAT"
+msgstr "إجمالي المبلغ قبل الضريبة"
+
+#. module: itech_construction_project
+#: model_terms:ir.actions.act_window,help:itech_construction_project.action_construction_snag_list
+msgid "Track construction snags and change orders for your projects."
+msgstr "تتبع عيوب البناء وأوامر التغيير لمشاريعك."
+
+#. module: itech_construction_project
+#: model:ir.model,name:itech_construction_project.model_stock_picking
+msgid "Transfer"
+msgstr "تحويل"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity_line__type
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__type_id
+#: model:ir.model.fields,field_description:itech_construction_project.field_res_partner__agent_type
+#: model:ir.model.fields,field_description:itech_construction_project.field_res_users__agent_type
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_type_search
+msgid "Type"
+msgstr "النوع"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,help:itech_construction_project.field_construction_snag_list__activity_exception_decoration
+msgid "Type of the exception activity on record."
+msgstr ""
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.inherit_job_orders_material_form
+msgid "Unit Of Measure"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_cost_code__price_unit
+msgid "Unit Price"
+msgstr "سعر الوحدة"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity_line__uom_id
+#: model:ir.model.fields,field_description:itech_construction_project.field_material_consume__uom_id
+#: model:ir.model.fields,field_description:itech_construction_project.field_material_details__uom_id
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.inherit_job_orders_material_form
+msgid "Unit of Measure"
+msgstr "وحدة القياس"
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__construction_snag_list__priority__urgent
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_construction_snag_list_search
+msgid "Urgent"
+msgstr "عاجلة"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,help:itech_construction_project.field_project_task__display_name
+msgid ""
+"Use these keywords in the title to set new tasks:\n"
+"\n"
+"        30h Allocate 30 hours to the task\n"
+"        #tags Set tags on the task\n"
+"        @user Assign the task to a user\n"
+"        ! Set the task a medium priority\n"
+"        !! Set the task a high priority\n"
+"        !!! Set the task a urgent priority\n"
+"\n"
+"        Make sure to use the right format and order e.g. Improve the configuration screen 5h #feature #v16 @Mitchell !"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_material_line__used_qty
+msgid "Used Qty"
+msgstr "الكمية المستخدمة"
+
+#. module: itech_construction_project
+#. odoo-python
+#: code:addons/itech_construction_project/models/project.py:0
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__vendor_bills_count
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "Vendor Bills"
+msgstr "فواتير الموردين"
+
+#. module: itech_construction_project
+#: model:ir.ui.menu,name:itech_construction_project.sub_vendors
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_create_purchase_order_wizard_form
+msgid "Vendors"
+msgstr "الموردون"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__privacy_visibility
+msgid "Visibility"
+msgstr "الظهور"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity__website_message_ids
+#: model:ir.model.fields,field_description:itech_construction_project.field_construction_snag_list__website_message_ids
+msgid "Website Messages"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,help:itech_construction_project.field_bill_quantity__website_message_ids
+#: model:ir.model.fields,help:itech_construction_project.field_construction_snag_list__website_message_ids
+msgid "Website communication history"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_stock_picking__work_cost_package
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__product_product__boq_type__work_package
+msgid "Work Cost Package"
+msgstr "حزمة تكلفة العمل"
+
+#. module: itech_construction_project
+#: model:ir.actions.act_window,name:itech_construction_project.act_open_work_package_view
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity_line__work_package_id
+#: model:ir.model.fields,field_description:itech_construction_project.field_work_package_extension__work_package_id
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__bill_quantity_line__key__work_package
+#: model:ir.ui.menu,name:itech_construction_project.menu_work_package
+#: model:ir.ui.menu,name:itech_construction_project.work_packages_main
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_work_package_form
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_work_package_search
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_work_package_tree
+msgid "Work Package"
+msgstr "حزمة العمل"
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "Work Package By Bill Of Quantity"
+msgstr "حزمة العمل حسب قائمة الكميات"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_bill_quantity__work_package_cost
+#: model:ir.model.fields,field_description:itech_construction_project.field_work_package__work_package_cost
+msgid "Work Package Cost"
+msgstr "تكلفة حزمة العمل"
+
+#. module: itech_construction_project
+#: model:ir.model,name:itech_construction_project.model_work_package_extension
+msgid "Work Package Extension"
+msgstr "امتداد حزمة العمل"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_work_package__name
+msgid "Work Package Name"
+msgstr "الاسم"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__work_package_ids
+msgid "Work Package Reference"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model,name:itech_construction_project.model_work_package
+msgid "Work Packages"
+msgstr "حزم العمل"
+
+#. module: itech_construction_project
+#: model:ir.model.fields.selection,name:itech_construction_project.selection__product_product__boq_type__worker
+msgid "Worker / Resource"
+msgstr "العامل / الموارد"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_stock_picking__worker_cost
+msgid "Worker / Resource Cost"
+msgstr "تكلفة العامل / الموارد"
+
+#. module: itech_construction_project
+#. odoo-python
+#: code:addons/itech_construction_project/models/project.py:0
+msgid "You are not allowed to approve this project"
+msgstr ""
+
+#. module: itech_construction_project
+#. odoo-python
+#: code:addons/itech_construction_project/models/project.py:0
+msgid "You can delete project in draft state only."
+msgstr ""
+
+#. module: itech_construction_project
+#. odoo-python
+#: code:addons/itech_construction_project/models/project.py:0
+msgid "You cannot create recursive project types."
+msgstr ""
+
+#. module: itech_construction_project
+#. odoo-python
+#: code:addons/itech_construction_project/models/project.py:0
+msgid "is_customer"
+msgstr ""
+
+#. module: itech_construction_project
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.view_create_purchase_order_wizard_form
+msgid "or"
+msgstr ""
+
+#. module: itech_construction_project
+#. odoo-python
+#: code:addons/itech_construction_project/models/project.py:0
+msgid "project_id"
+msgstr ""
+
+#. module: itech_construction_project
+#. odoo-python
+#: code:addons/itech_construction_project/models/project.py:0
+msgid "project_r_id"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__attachment_dwg_structural
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "انشائي (Structural)"
+msgstr "انشائي (Structural)"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__dwg_name_structural
+msgid "انشائي (Structural) DWG Name"
+msgstr "اسم الرسم الانشائي"
+
+#. module: itech_construction_project
+#: model:project.purpose,name:itech_construction_project.project_purpose_construction
+msgid "بناء"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:project.type,name:itech_construction_project.project_type_infrastructure
+msgid "بنية تحتية"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:project.type,name:itech_construction_project.project_type_commercial
+msgid "تجاري"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:project.purpose,name:itech_construction_project.project_purpose_renovation
+#: model:project.type,name:itech_construction_project.project_type_renovation
+msgid "ترميم"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:project.purpose,name:itech_construction_project.project_purpose_restoration
+msgid "ترميم شامل"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__attachment_dwg_hvac
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "تكييف (HVAC)"
+msgstr "تكييف (HVAC)"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__dwg_name_hvac
+msgid "تكييف (HVAC) DWG Name"
+msgstr "اسم الرسم التكييف"
+
+#. module: itech_construction_project
+#: model:project.purpose,name:itech_construction_project.project_purpose_expansion
+msgid "توسعة"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__attachment_dwg_low_current
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "تيار خفيف (Low Current)"
+msgstr "تيار خفيف (Low Current)"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__dwg_name_low_current
+msgid "تيار خفيف (Low Current) DWG Name"
+msgstr "اسم الرسم تيار خفيف"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__attachment_dwg_fire
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "حريق (Fire Fighting)"
+msgstr "حريق (Fire Fighting)"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__dwg_name_fire
+msgid "حريق (Fire Fighting) DWG Name"
+msgstr "اسم الرسم حريق"
+
+#. module: itech_construction_project
+#: model:project.type,name:itech_construction_project.project_type_residential
+msgid "سكني"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:project.type,name:itech_construction_project.project_type_industrial
+msgid "صناعي"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:project.purpose,name:itech_construction_project.project_purpose_maintenance
+msgid "صيانة"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__attachment_dwg_electrical
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "كهرباء (Electrical)"
+msgstr "كهرباء (Electrical)"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__dwg_name_electrical
+msgid "كهرباء (Electrical) DWG Name"
+msgstr "اسم الرسم الكهربائي"
+
+#. module: itech_construction_project
+#: model:project.type,description:itech_construction_project.project_type_infrastructure
+msgid "مشاريع البنية التحتية - طرق، جسور، أنفاق"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:project.type,description:itech_construction_project.project_type_renovation
+msgid "مشاريع الترميم والصيانة"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:project.type,description:itech_construction_project.project_type_commercial
+msgid "مشاريع تجارية - مراكز تسوق، مكاتب، محلات"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:project.type,description:itech_construction_project.project_type_residential
+msgid "مشاريع سكنية - فلل، شقق، مجمعات سكنية"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:project.type,description:itech_construction_project.project_type_industrial
+msgid "مشاريع صناعية - مصانع، مستودعات، ورش"
+msgstr ""
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__attachment_dwg_architectural
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "معماري (Architectural)"
+msgstr "معماري (Architectural)"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__dwg_name_architectural
+msgid "معماري (Architectural) DWG Name"
+msgstr "اسم الرسم المعماري"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__attachment_dwg_general_site
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "موقع عام (General Site)"
+msgstr "موقع عام (General Site)"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__dwg_name_general_site
+msgid "موقع عام (General Site) DWG Name"
+msgstr "اسم الرسم موقع عام"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__attachment_dwg_mechanical
+#: model_terms:ir.ui.view,arch_db:itech_construction_project.project_details_view_inherit_form
+msgid "ميكانيكا (Mechanical)"
+msgstr "ميكانيكا (Mechanical)"
+
+#. module: itech_construction_project
+#: model:ir.model.fields,field_description:itech_construction_project.field_project_project__dwg_name_mechanical
+msgid "ميكانيكا (Mechanical) DWG Name"
+msgstr "اسم الرسم الميكانيكي"

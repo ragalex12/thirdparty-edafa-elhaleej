@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	# Paper Format 
+	<record id="itech_tax_paperformat" model="report.paperformat">
+		<field name="name">Landscape Tax paper</field>
+		<field name="default" eval="True"/>
+		<field name="format">A4</field>
+		<field name="page_height">0</field>
+		<field name="page_width">0</field>
+		<field name="orientation">Landscape</field>
+		<field name="margin_top">25.00</field>
+		<field name="margin_bottom">30.00</field>
+		<field name="margin_left">7.00</field>
+		<field name="margin_right">7.00</field>
+		<field name="header_line" eval="False"/>
+		<field name="header_spacing">35</field>
+		<field name="dpi">90</field>
+	</record>
+
+    <record id="view_tax_report" model="ir.ui.view">
+        <field name="name">itech.tax.report.form</field>
+        <field name="model">itech.tax.report</field>
+        <field name="arch" type="xml">
+            <form string="TAX Summary">
+                <group>
+                    <group>
+                        <field name="company_id" invisable='1'/>
+                        <field name="tax_ids" widget="many2many_tags"/>
+                    </group>
+                    <group>
+                        <field name="date_from"/>
+                        <newline/>
+                        <field name="date_to"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="print_report" string="Print" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_tax_report" model="ir.actions.act_window">
+        <field name="name">Tax report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">itech.tax.report</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+	<record id="report_tax" model="ir.actions.report">
+		<field name="name">Tax report</field>
+		<field name="model">itech.tax.report</field>
+		<field name="report_type">qweb-pdf</field>
+		<field name="report_name">itech_tax_report.tax_report_template</field>
+		<field name="report_file">itech_tax_report.tax_report_template</field>
+        <field name="paperformat_id" ref="itech_tax_report.itech_tax_paperformat"/>
+		<field name="binding_type">report</field>
+	</record>
+
+    <menuitem
+        parent="account.menu_finance_reports"
+        id="menu_account_title_tax_report"
+        name="Tax Details Report"
+        groups="account.group_account_manager,account.group_account_user"
+    />
+	
+    <menuitem id="menu_account_tax_details_report" name="Tax Details Report" action="action_tax_report"
+              parent="menu_account_title_tax_report" />
+</odoo>

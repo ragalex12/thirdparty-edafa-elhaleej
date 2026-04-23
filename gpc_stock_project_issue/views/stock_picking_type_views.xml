@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_picking_type_form_gpc_project_issue" model="ir.ui.view">
+        <field name="name">stock.picking.type.form.gpc.project.issue</field>
+        <field name="model">stock.picking.type</field>
+        <field name="inherit_id" ref="stock.view_picking_type_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='general']/group[@name='second']" position="after">
+                <group
+                    name="gpc_project_issue"
+                    string="GPC project issue (Task 5)"
+                    groups="stock.group_stock_manager"
+                >
+                    <field name="gpc_project_issue_enabled" />
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

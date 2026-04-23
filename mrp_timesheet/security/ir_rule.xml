@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Task 80 – Multi-company record isolation
+
+        account.analytic.line already has company_id on it and Odoo core adds
+        a global rule via analytic_account_id.company_id. We add an explicit
+        rule on the mrp_production_id side so that:
+          - A user in Company A cannot see or edit timesheet lines whose
+            linked Manufacturing Order belongs to Company B.
+          - This complements check_company=True on the Many2one fields.
+
+        The rule uses a 'child_of' domain against the companies accessible to
+        the current user (res.company.ids is the multi-company list).
+    -->
+    <record id="rule_analytic_line_mrp_company" model="ir.rule">
+        <field name="name">MRP Timesheet: multi-company analytic line isolation</field>
+        <field name="model_id" ref="analytic.model_account_analytic_line"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">
+            [
+                '|',
+                ('mrp_production_id', '=', False),
+                ('mrp_production_id.company_id', 'child_of', company_ids)
+            ]
+        </field>
+    </record>
+</odoo>

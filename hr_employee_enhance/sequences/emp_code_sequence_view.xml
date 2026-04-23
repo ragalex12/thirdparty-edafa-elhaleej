@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+	<record id="seq_employeeid_ref" model="ir.sequence">
+        <field name="name">Default Employee ID Seq</field>
+        <field name="code">employeeid_seq</field>
+		<field name="implementation">no_gap</field>
+        <field name="padding">4</field>
+    </record>
+
+    </data>
+</odoo>

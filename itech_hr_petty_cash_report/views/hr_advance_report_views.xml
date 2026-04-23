@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	# Paper Format 
+	<record id="itech_paperformat" model="report.paperformat">
+		<field name="name">Advance Landscape Paper Format</field>
+		<field name="default" eval="True"/>
+		<field name="format">A4</field>
+		<field name="page_height">0</field>
+		<field name="page_width">0</field>
+		<field name="orientation">Landscape</field>
+		<field name="margin_top">35.00</field>
+		<field name="margin_bottom">30.00</field>
+		<field name="margin_left">7.00</field>
+		<field name="margin_right">7.00</field>
+		<field name="header_line" eval="False"/>
+		<field name="header_spacing">35</field>
+		<field name="dpi">90</field>
+	</record>
+
+    <record id="view_hr_custody_report" model="ir.ui.view">
+        <field name="name">hr.advance.report.form</field>
+        <field name="model">hr.advance.report</field>
+        <field name="arch" type="xml">
+            <form string="Petty Cash Summary">
+                <group>
+                    <group>
+                        <field name="company_id" invisable='1'/>
+                        <field name="partner_ids" widget="many2many_tags"/>
+						<!--<field name="partner_ids" domain="[('employee','=',True)]" widget="many2many_tags"/> -->
+                        <newline/>
+                        <field name="initial_balance" />
+                        <field name="amount_currency"/>
+                        <field name="cumulated_amount_currency"/>
+                </group>
+                    <group>
+                        <field name="date_from"/>
+                        <newline/>
+                        <field name="date_to"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="print_report" string="Print" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hr_advance_report" model="ir.actions.act_window">
+        <field name="name">HR Advance report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.advance.report</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+	<record id="report_hr_advance" model="ir.actions.report">
+		<field name="name">T/P Advance report</field>
+		<field name="model">hr.advance.report</field>
+		<field name="report_type">qweb-pdf</field>
+		<field name="report_name">itech_hr_petty_cash_report.hr_advance_report_template</field>
+		<field name="report_file">itech_hr_petty_cash_report.hr_advance_report_template</field>
+		<field name="binding_type">report</field>
+	</record>
+    <menuitem
+        parent="account.menu_finance_reports"
+        id="menu_account_title_tp_advance_report"
+        name="Petty Cash Advance"
+        groups="account.group_account_manager,account.group_account_user"
+    />
+	
+    <menuitem id="menu_account_tp_advance_report" name="Petty Cash Advance Report" action="action_hr_advance_report"
+              parent="menu_account_title_tp_advance_report" />
+</odoo>

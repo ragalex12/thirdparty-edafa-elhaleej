@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <!--
+    Temporarily disabled due to Odoo 19 search-view validation errors during module install.
+    <record id="view_account_move_line_filter_inherit_line_references" model="ir.ui.view">
+        <field name="name">account.move.line.search.inherit.line.references</field>
+        <field name="model">account.move.line</field>
+        <field name="inherit_id" ref="account.view_account_move_line_filter"/>
+        <field name="arch" type="xml">
+
+        <xpath expr="//search" position="inside">
+            <field name="line_reference" string="Reference"/>
+            <field name="line_reference_number" string="Reference Number"/>
+            <field name="line_tax_number" string="Tax Number"/>
+            <separator/>
+            <filter name="has_line_reference"
+                string="Has Line Reference"
+                domain="[('line_reference', '!=', False), ('line_reference', '!=', '')]"/>
+            <filter name="has_line_reference_number"
+                string="Has Reference Number"
+                domain="[('line_reference_number', '!=', False), ('line_reference_number', '!=', '')]"/>
+            <filter name="has_line_tax_number"
+                string="Has Tax Number"
+                domain="[('line_tax_number', '!=', False), ('line_tax_number', '!=', '')]"/>
+            <separator/>
+            <group expand="0" string="Group By">
+            <filter name="group_by_partner"
+                string="Partner"
+                context="{'group_by': 'partner_id'}"/>
+            <filter name="group_by_tax_number"
+                string="Tax Number"
+                context="{'group_by': 'line_tax_number'}"/>
+            </group>
+        </xpath>
+
+        </field>
+    </record>
+    -->
+    </data>
+</odoo>

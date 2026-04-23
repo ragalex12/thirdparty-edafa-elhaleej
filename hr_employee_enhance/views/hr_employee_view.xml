@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="hr_employee_inherit_form_view">
+            <field name="name">hr.employee.form.view</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+				<xpath expr="//field[@name='private_phone']" position="after">
+					<label for="emp_no"/>
+					<div class="o_row">
+						<field name="emp_no" />
+						<button string="Generate" class="btn btn-link" type="object" name="action_create_sequence" />
+					</div>
+				</xpath>
+		
+
+                <xpath expr="//page[@name='personal_information']/group" position="after">
+                    <group name="fam_ids" colspan="4" string="Family Details" groups="hr.group_hr_user">
+                        <field name="fam_ids">
+                            <list editable="bottom">
+                                <field name="member_name" required="1"/>
+                                <field name="gender" required="0"/>
+                                <field name="relation_id" required="1"/>
+                                <field name="member_contact"/>
+                                <field name="medical"/>
+                                <field name="medical_percent" widget="percentage"/>
+                                <field name="blood_type"/>
+                                <field name="birth_date"/>
+                            </list>
+                        </field>
+                    </group>
+                </xpath>
+                <field name="job_id" position="after">
+					<field name="joining_date" groups="hr.group_hr_user"/>
+                    <field name="experience_period" groups="hr.group_hr_user"/>
+                </field>
+                <xpath expr="//page[@name='personal_information']/group" position="after">
+					<group style="width:100%;">
+					<group name="social_ids" string="Comm. &amp; Social URL" style="width:33.3%;" groups="hr.group_hr_user"> 
+							<field name="whatsapp"/>
+							<field name="signal"/>
+							<field name="facebook"/>
+							<field name="instagram"/>
+							<field name="linkedin"/>
+							<field name="twitter"/>
+							<field name="behance"/>
+						</group> 
+					<group name="identification_id" string="Identification ID" style="width:33.3%;" groups="hr.group_hr_user">
+						<field name="identification_id"/>
+						<field name="issued" invisible="identification_id  in (None,False)"/>
+						<field name="id_expiry_date" invisible="identification_id  in (None,False)"/>
+						<field name="id_attachment_id" widget="many2many_binary" class="oe_inline" invisible="identification_id  in (None,False)"/>
+						</group>
+					<group name="passport_id" string="Passport ID" style="width:33.3%;" groups="hr.group_hr_user">
+						<field name="passport_id"/>
+						<field name="passport_issued" invisible="passport_id  in (None,False)"/>
+						<field name="passport_expiration_date" invisible="passport_id  in (None,False)"/>
+						<field name="passport_attachment_id" widget="many2many_binary" class="oe_inline" invisible="passport_id  in (None,False)"/>
+						</group>
+					</group>
+
+                </xpath>
+				<xpath expr="//field[@name='sex']" position="before">
+                    <field name="age"/>
+                </xpath>
+				<xpath expr="//field[@name='sex']" position="after">
+                    <field name="religion" groups="hr.group_hr_user"/>
+                </xpath>
+				<xpath expr="//field[@name='marital']" position="before">
+                    <field name="military" groups="hr.group_hr_user" options="{'invisible': [('gender','!=','male')]}"/>
+                </xpath>
+                <xpath expr="//div/h1" position="after">
+                    <label for="name_ar" class="oe_edit_only" groups="hr.group_hr_user"/>
+                    <h1>
+                        <field name="name_ar" placeholder="Arabic Name" groups="hr.group_hr_user"/>
+                    </h1>
+
+                    <label for="no_employee" groups="hr.group_hr_user"/>
+                    <field name="no_employee" groups="hr.group_hr_user"/>
+                </xpath>
+				<xpath expr="//page[@name='hr_settings']" position="inside">
+					<group name="payroll_payment" string="Payroll payment" groups="hr.group_hr_user" style="width: 50%">
+                        <field name="salary_type"/>
+                    </group>
+                </xpath>
+
+                <xpath expr="//page[@name='hr_settings']" position="after">
+                    <page string="Previous Trainings" name="ptraining" groups="hr.group_hr_user">
+						<separator string="Previous Training" />
+						<field name="ptraining_ids">
+							<list>
+								<field name="ptraining_program"/>
+								<field name="ptraining_center"/>
+								<field name="pperiod_from"/>
+								<field name="pperiod_to"/>
+								<field name="presults"/>
+								<field name="ptraining_officer"/>
+							</list>
+							<form>
+								<group col="4">
+									<field name="ptraining_program"/>
+									<field name="ptraining_center"/>
+									<field name="pperiod_from"/>
+									<field name="pperiod_to"/>
+									<field name="presults"/>
+									<field name="ptraining_officer"/>
+								</group>
+							</form>
+
+						</field>
+                    </page>
+					 <page string="Receivings" name="receiv" groups="hr.group_hr_user">
+						<group>
+							<group string="Receivings" style="width: 50%">
+								<field name="atm"/>
+								<field name="atm_receiving" invisible="atm == False"/>
+							</group>
+							<group string="Medical Care" style="width: 50%">
+								<field name="medical_care"/>
+								<field name="mc_no" invisible="medical_care == False"/>
+								<field name="medical_care_handover" invisible="medical_care == False"/>
+							</group>
+							<group string="Business card" style="width: 50%">
+								<field name="business_card"/>
+								<field name="bc_no" invisible="business_card == False"/>
+								<field name="business_card_receiving" invisible="business_card == False"/>
+							</group>
+							<group string="Access card" style="width: 50%">
+								<field name="access_card"/>
+								<field name="sr_access_card" invisible="access_card == False"/>
+								<field name="access_card_handover" invisible="access_card == False"/>
+							</group>
+							<group string="Premium card" style="width: 50%">
+								<field name="premium_card"/>
+								<field name="pc_limit" invisible="premium_card == False" />
+								<field name="pc_closed" invisible="premium_card == False" />
+							</group>
+							<group string="Uniform" style="width: 50%">
+								<field name="uniform_check"/>
+								<field name="uniform_check_handover" invisible="premium_card == False" />
+							</group>
+							<group string="Mobile" style="width: 50%">
+								<field name="mobile"/>
+					            <field name="mobile_model" invisible="mobile == False"/>
+					            <field name="mobile_serial" invisible="mobile == False"/>
+					            <field name="mobile_receiving_date" invisible="mobile == False"/>
+					            <field name="mobile_handed" invisible="mobile == False"/>
+					        </group>
+						    <!-- SIM -->
+						    <group string="SIM" style="width: 50%">
+						        <field name="sim"/>
+						        <field name="sim_number" invisible="sim == False"/>
+						        <field name="sim_package_limit" invisible="sim == False"/>
+						        <field name="sim_receiving_date" invisible="sim == False"/>
+						        <field name="sim_handed" invisible="sim == False"/>
+						    </group>
+						
+						    <!-- Car -->
+						    <group string="Car" style="width: 50%">
+						        <field name="car"/>
+						        <field name="car_model" invisible="car == False"/>
+						        <field name="car_serial" invisible="car == False"/>
+						        <field name="car_receiving_date" invisible="car == False"/>
+						        <field name="car_handed" invisible="car == False"/>
+						    </group>
+						
+						    <!-- Laptop -->
+						    <group string="Laptop" style="width: 50%">
+						        <field name="laptop"/>
+						        <field name="laptop_model" invisible="laptop == False"/>
+						        <field name="laptop_serial" invisible="laptop == False"/>
+						        <field name="laptop_receiving_date" invisible="laptop == False"/>
+						        <field name="laptop_handed" invisible="laptop == False"/>
+						    </group>
+						
+						    <!-- Tablet -->
+						    <group string="Tablet" style="width: 50%">
+						        <field name="tablet"/>
+						        <field name="tablet_model" invisible="tablet == False"/>
+						        <field name="tablet_serial" invisible="tablet == False"/>
+						        <field name="tablet_receiving_date" invisible="tablet == False"/>
+						        <field name="tablet_handed" invisible="tablet == False"/>
+						    </group>
+
+						</group>
+					
+					 </page>
+					<page string="Miscellaneous Receiving" groups="hr.group_hr_user">
+						<group string="Miscellaneous Receiving">
+						
+							<field name="miscellaneous_receiving_ids">
+								<list string="Miscellaneous Receiving" editable="bottom">
+									<field name="product_id"/>
+									<field name="description"/>
+									<field name="quantity"/>
+									<field name="receiving_date"/>
+									<field name="handed_over"/>
+									<field name="mho_date"/>
+								</list>
+								 <form>
+									 <group col="4">
+										<field name="product_id"/>
+										<field name="description"/>
+										<field name="quantity"/>
+										<field name="receiving_date"/>
+										<field name="handed_over"/>
+										<field name="mho_date"/>
+									 </group>
+								 </form>
+								
+							</field>
+						</group>
+					</page>
+
+				 </xpath>
+            </field>
+        </record>
+		
+		<record id="hr_employee_tree_view_inherit" model="ir.ui.view"> 
+			<field name="name">hr.employee.tree.view.inherit</field>
+			<field name="model">hr.employee</field>
+			<field name="inherit_id" ref="hr.view_employee_tree" />
+			<field name="arch" type="xml">
+				<field name="name" position="before">
+					<field name="emp_no" decoration-bf="1"/>
+				</field>
+			</field>
+		</record>		
+        <!--
+            Employee Search
+        -->
+
+        <!--<record id="view_employee_eg_filter" model="ir.ui.view">
+            <field name="name">Employee No.</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_filter"/>
+            <field name="arch" type="xml">
+				<field name="job_id" position="after">
+					<field name="emp_no"/>
+					<separator/>
+					<group expand="0" string="Group By">
+						<filter name="employee_no" string="Employee No." domain="[]" context="{'group_by': 'emp_no'}"/>
+					</group>
+				</field>
+
+                <xpath expr="field[@name='name']" position="after">
+                    <field name="name_ar" string="Arabic Name"/>
+                    <field name="no_employee" string="Employee Code"/>
+                </xpath>
+            </field>
+        </record>-->
+		
+		<record id="hr_employee_action_seq_tree" model="ir.actions.server">
+			<field name="name">Generate Employee No.</field>
+			<field name="model_id" ref="hr.model_hr_employee" />
+			<field name="binding_model_id" ref="hr.model_hr_employee" />
+			<field name="binding_view_types">list</field>
+			<field name="state">code</field>
+			<field name="code">
+				if records: records.action_generate()
+			</field>
+		</record>
+
+    </data>
+</odoo>

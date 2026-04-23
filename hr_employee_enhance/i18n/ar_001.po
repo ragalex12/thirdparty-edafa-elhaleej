@@ -1,0 +1,1397 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* hr_employee_enhance
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0-20201003\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-11-01 20:53+0000\n"
+"PO-Revision-Date: 2021-11-01 20:53+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: hr_employee_enhance
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.hr_contract_notice_period
+msgid "<span> days</span>"
+msgstr ""
+
+#. module: hr_employee_enhance
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.journal_config_settings_view_form
+msgid "<span>days</span>"
+msgstr ""
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_employee_family__blood_type__a_n
+msgid "A Negative"
+msgstr " A سالب"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_employee_family__blood_type__a_p
+msgid "A Positive"
+msgstr "A موجب"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_employee_family__blood_type__ab_n
+msgid "AB Negative"
+msgstr "AB سالب"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_employee_family__blood_type__ab_p
+msgid "AB Positive"
+msgstr "AB موجب"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__atm
+msgid "ATM"
+msgstr "ATM"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__atm_receiving
+msgid "ATM Receiving date"
+msgstr "تاريخ استلام ATM"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__access_card
+msgid "Access Card"
+msgstr "كارت دخول"
+
+#. module: hr_employee_enhance
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.hr_employee_inherit_form_view
+msgid "Access card"
+msgstr "كارت دخول"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__emp_nontech_skills__levels__advance
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__emp_tech_skills__levels__advance
+msgid "Advance"
+msgstr "متقدم"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__age
+msgid "Age"
+msgstr "العمر"
+
+#. module: hr_employee_enhance
+#: model:ir.model,name:hr_employee_enhance.model_hr_applicant
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_emp_nontech_skills__applicant_id
+msgid "Applicant"
+msgstr "المتقدم"
+
+#. module: hr_employee_enhance
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.view_hr_applicant_form
+msgid "Application Name"
+msgstr "اسم التطبيق"
+
+#. module: hr_employee_enhance
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.view_hr_applicant_form
+msgid "Application Summary"
+msgstr "مختصر التطبيق"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__name_ar
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.hr_employee_inherit_form_view
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.view_employee_eg_filter
+msgid "Arabic Name"
+msgstr "الاسم بالعربي"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__id_attachment_id
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__passport_attachment_id
+msgid "Attachment"
+msgstr "المرفق"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_employee_family__blood_type__b_n
+msgid "B Negative"
+msgstr "B سالب"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_employee_family__blood_type__b_p
+msgid "B Positive"
+msgstr "B موجب"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_certification__levels
+msgid "Bands/Levels of Completion"
+msgstr "مستويات الانجاز"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_employee__salary_type__bank
+msgid "Bank"
+msgstr "البنك"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__bank_account_id
+msgid "Bank Account Number"
+msgstr "رقم الحساب البنكي"
+
+#. module: hr_employee_enhance
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.view_hr_applicant_form
+msgid "Base Information"
+msgstr "معلومات اساسية"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__emp_nontech_skills__levels__basic
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__emp_tech_skills__levels__basic
+msgid "Basic"
+msgstr "اساسي"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_applicant__behance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__behance
+msgid "Behance Profile"
+msgstr "Behance ملف"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee_family__blood_type
+msgid "Blood Type"
+msgstr "فصيلة الدم"
+
+#. module: hr_employee_enhance
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.hr_employee_inherit_form_view
+msgid "Business Address"
+msgstr "عنوان العمل"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__business_card
+msgid "Business Card"
+msgstr "كروت العمل"
+
+#. module: hr_employee_enhance
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.hr_employee_inherit_form_view
+msgid "Business Email"
+msgstr "بريد العمل"
+
+#. module: hr_employee_enhance
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.hr_employee_inherit_form_view
+msgid "Business Location"
+msgstr "عنوان العمل"
+
+#. module: hr_employee_enhance
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.hr_employee_inherit_form_view
+msgid "Business Mobile"
+msgstr "محمول العمل"
+
+#. module: hr_employee_enhance
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.hr_employee_inherit_form_view
+msgid "Business Phone"
+msgstr "تليفون العمل"
+
+#. module: hr_employee_enhance
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.hr_employee_inherit_form_view
+msgid "Business card"
+msgstr "كروت العمل"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_employee__salary_type__cash
+msgid "Cash"
+msgstr "كاش"
+
+#. module: hr_employee_enhance
+#: model:ir.model,name:hr_employee_enhance.model_cert_cert
+msgid "Cert Cert"
+msgstr ""
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_certification__doc
+msgid "Certificates"
+msgstr "شهادات"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_applicant__certification_ids
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__certification_ids
+msgid "Certification"
+msgstr "شهادة"
+
+#. module: hr_employee_enhance
+#: model:ir.actions.act_window,name:hr_employee_enhance.action_emp_cert
+#: model:ir.ui.menu,name:hr_employee_enhance.emp_cert_menu
+#: model:ir.ui.menu,name:hr_employee_enhance.menu_emp_cert
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.hr_employee_inherit_form_view
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.view_hr_applicant_form
+msgid "Certifications"
+msgstr "شهادات"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_applicant__religion__c2
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_employee__religion__c2
+msgid "Christian"
+msgstr "مسيحي"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__pc_closed
+msgid "Closed"
+msgstr "مغلق"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__mc_no
+msgid "Code"
+msgstr "كود"
+
+#. module: hr_employee_enhance
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.hr_employee_inherit_form_view
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.view_hr_applicant_form
+msgid "Comm. & Social URL"
+msgstr "الاتصالات وشبكات التواصل"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__visa
+msgid "Company Cr Card"
+msgstr "كارت كريدت"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__co_insurance_no
+msgid "Company Insurance No."
+msgstr "رقم التأمين - الشركه"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_applicant__military__complete
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_employee__military__complete
+msgid "Complete the Military service"
+msgstr "انهي الخدمه العسكرية"
+
+#. module: hr_employee_enhance
+#: model:ir.model,name:hr_employee_enhance.model_res_config_settings
+msgid "Config Settings"
+msgstr "ضبط الإعدادات"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee_family__member_contact
+msgid "Contact No"
+msgstr "رقم الاتصال"
+
+#. module: hr_employee_enhance
+#: model:ir.model,name:hr_employee_enhance.model_hr_contract
+msgid "Contract"
+msgstr "العقد"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_institute__country_id
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_university__country_id
+msgid "Country"
+msgstr "البلد"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_applicant__country_of_birth
+msgid "Country of Birth"
+msgstr "بلد الميلاد"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_cert_cert__name
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_certification__course_id
+msgid "Course Name"
+msgstr "اسم الدورة"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_cert_cert__create_uid
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_emp_nontech_skills__create_uid
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_emp_tech_skills__create_uid
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_certification__create_uid
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_education__create_uid
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_profession__create_uid
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee_family__create_uid
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee_relation__create_uid
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_institute__create_uid
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_levels__create_uid
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_miscellaneous_receiving__create_uid
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_ptraining__create_uid
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_training__create_uid
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_university__create_uid
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_nontech_nontech__create_uid
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_tech_tech__create_uid
+msgid "Created by"
+msgstr "انشأ من قبل"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_cert_cert__create_date
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_emp_nontech_skills__create_date
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_emp_tech_skills__create_date
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_certification__create_date
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_education__create_date
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_profession__create_date
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee_family__create_date
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee_relation__create_date
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_institute__create_date
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_levels__create_date
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_miscellaneous_receiving__create_date
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_ptraining__create_date
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_training__create_date
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_university__create_date
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_nontech_nontech__create_date
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_tech_tech__create_date
+msgid "Created on"
+msgstr "تم إنشاؤها على"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_applicant__military__current
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_employee__military__current
+msgid "Currently serving"
+msgstr "يخدم حاليا"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee_family__birth_date
+msgid "DOB"
+msgstr "تاريخ الميلاد"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_applicant__birthday
+msgid "Date of Birth"
+msgstr "تاريخ الميلاد"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_education__type_id
+#: model:ir.ui.menu,name:hr_employee_enhance.menu_emp_degree
+msgid "Degree"
+msgstr "الدرجة"
+
+#. module: hr_employee_enhance
+#: model:ir.actions.act_window,name:hr_employee_enhance.action_emp_degree
+#: model:ir.ui.menu,name:hr_employee_enhance.emp_degree_menu
+msgid "Degrees"
+msgstr "الدرجات"
+
+#. module: hr_employee_enhance
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.hr_employee_inherit_form_view
+msgid "Dependence Details"
+msgstr "التفاصيل التابعة"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_levels__description
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_miscellaneous_receiving__description
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_product_product__description
+msgid "Description"
+msgstr "الوصف"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_cert_cert__display_name
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_emp_nontech_skills__display_name
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_emp_tech_skills__display_name
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_certification__display_name
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_education__display_name
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_profession__display_name
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_applicant__display_name
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_contract__display_name
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__display_name
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee_family__display_name
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee_relation__display_name
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_institute__display_name
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_levels__display_name
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_miscellaneous_receiving__display_name
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_ptraining__display_name
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_training__display_name
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_university__display_name
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_nontech_nontech__display_name
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_product_product__display_name
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_tech_tech__display_name
+msgid "Display Name"
+msgstr "الاسم المعروض"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_applicant__marital__divorced
+msgid "Divorced"
+msgstr "مطلق"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_applicant__military__no
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_employee__military__no
+msgid "Does not apply"
+msgstr "لا ينطبق"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__driving_expiry
+msgid "Driving Expiry Date"
+msgstr "تاريخ انتهاء رخصه القياده"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__driving_issued
+msgid "Driving Issued date"
+msgstr "تاريخ اصدار رخصة القيادة"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__driving_license
+msgid "Driving License"
+msgstr "رخصة القيادة"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__insurance_no
+msgid "EMP. S. Insurance No."
+msgstr "الرقم التاميني - موظف"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_applicant__education_ids
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__education_ids
+msgid "Education"
+msgstr "التعليم"
+
+#. module: hr_employee_enhance
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.hr_employee_inherit_form_view
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.view_hr_applicant_form
+msgid "Educational Qualification"
+msgstr "المؤهل العلمي"
+
+#. module: hr_employee_enhance
+#: model:ir.model,name:hr_employee_enhance.model_hr_employee
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_emp_nontech_skills__employee_id
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_emp_tech_skills__employee_id
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_certification__employee_id
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_education__employee_id
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_profession__employee_id
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee_family__employee_id
+msgid "Employee"
+msgstr "الموظف"
+
+#. module: hr_employee_enhance
+#: model:ir.model,name:hr_employee_enhance.model_employee_certification
+msgid "Employee Certification"
+msgstr "شهادات الموظف"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__no_employee
+#: model:ir.model.fields,help:hr_employee_enhance.field_hr_employee__no_employee
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.view_employee_eg_filter
+msgid "Employee Code"
+msgstr "كود الموظف"
+
+#. module: hr_employee_enhance
+#: model:ir.model,name:hr_employee_enhance.model_employee_education
+msgid "Employee Education"
+msgstr "تعليم الموظف"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,help:hr_employee_enhance.field_hr_employee__level_id
+msgid "Employee Level"
+msgstr "مستوي الموظف"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_ptraining__hr_employee_id
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_training__hr_employee_id
+msgid "Employee Name"
+msgstr "اسم الموظف - انجليزي"
+
+#. module: hr_employee_enhance
+#: model:ir.model,name:hr_employee_enhance.model_emp_nontech_skills
+msgid "Employee Non Tech Skills"
+msgstr "مهارات الموظف غير الفنية"
+
+#. module: hr_employee_enhance
+#: model:ir.model,name:hr_employee_enhance.model_hr_ptraining
+msgid "Employee Previous Training"
+msgstr "التدريبات السابقه للموظف"
+
+#. module: hr_employee_enhance
+#: model:ir.model,name:hr_employee_enhance.model_employee_profession
+msgid "Employee Profession"
+msgstr "مهنة الموظف"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_miscellaneous_receiving__hr_employee_id
+msgid "Employee Profile Ref."
+msgstr "مهنة الموظف مرجع"
+
+#. module: hr_employee_enhance
+#: model:ir.model,name:hr_employee_enhance.model_emp_tech_skills
+msgid "Employee Tech Skills"
+msgstr "مهارات الموظف الفني"
+
+#. module: hr_employee_enhance
+#: model:ir.model,name:hr_employee_enhance.model_hr_training
+msgid "Employee Training"
+msgstr "تدريب الموظفين"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,help:hr_employee_enhance.field_hr_employee__bank_account_id
+msgid "Employee bank salary account"
+msgstr "الحساب البنكي لراتب الموظف"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,help:hr_employee_enhance.field_hr_employee__joining_date
+msgid "Employee joining date related to the contract start date"
+msgstr "تاريخ انضمام الموظف المرتبط بتاريخ بدء العقد"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__ptraining_ids
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__training_ids
+msgid "Employee training Card"
+msgstr "بطاقة تدريب الموظف"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_profession__to_date
+msgid "End Date"
+msgstr "تاريخ الانتهاء"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_ptraining__presults__excellent
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_training__results__excellent
+msgid "Excellent"
+msgstr "ممتاز"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_applicant__military__exemption
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_employee__military__exemption
+msgid "Exemption"
+msgstr "معفاه"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_profession__doc
+msgid "Experience Certificates"
+msgstr "شهادات الخبرة"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__experience_period
+msgid "Experience period"
+msgstr "فترة الخبرة"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__id_expiry_date
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__passport_expiry_date
+msgid "Expiry Date"
+msgstr "تاريخ الانتهاء"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,help:hr_employee_enhance.field_hr_employee__id_expiry_date
+msgid "Expiry date of Identification ID"
+msgstr "تاريخ انتهاء معرف الهوية"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,help:hr_employee_enhance.field_hr_employee__passport_expiry_date
+msgid "Expiry date of Passport ID"
+msgstr "تاريخ انتهاء صلاحية جواز السفر"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_applicant__facebook
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__facebook
+msgid "Facebook"
+msgstr "فيسبوك"
+
+#. module: hr_employee_enhance
+#: model:ir.actions.act_window,name:hr_employee_enhance.action_hr_institute
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_education__institute_id
+#: model:ir.ui.menu,name:hr_employee_enhance.menu_hr_institute
+#: model:ir.ui.menu,name:hr_employee_enhance.menu_hr_rec_institute
+msgid "Faculty/Institute"
+msgstr "الجامعة / المعهد"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_ptraining__presults__failed
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_training__results__failed
+msgid "Failed"
+msgstr "راسب"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__fam_ids
+msgid "Family"
+msgstr "عائلة"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,help:hr_employee_enhance.field_hr_employee__fam_ids
+msgid "Family Information"
+msgstr "معلومات العائلة"
+
+#. module: hr_employee_enhance
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.view_hr_applicant_form
+msgid "Feedback of interviews..."
+msgstr "rudud alfiel ealaa almuqabalat ..."
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_applicant__gender__female
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_employee_family__gender__female
+msgid "Female"
+msgstr "أنثي"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_applicant__gender
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee_family__gender
+msgid "Gender"
+msgstr "الجنس"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_ptraining__presults__good
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_training__results__good
+msgid "Good"
+msgstr "جيد"
+
+#. module: hr_employee_enhance
+#: model:ir.actions.server,name:hr_employee_enhance.employee_data_reminder_ir_actions_server
+#: model:ir.cron,cron_name:hr_employee_enhance.employee_data_reminder
+#: model:ir.cron,name:hr_employee_enhance.employee_data_reminder
+msgid "HR Employee Data Expiration"
+msgstr "موظف بيانات الموارد البشرية انتهاء الصلاحية"
+
+#. module: hr_employee_enhance
+#: model:ir.model,name:hr_employee_enhance.model_hr_employee_family
+msgid "HR Employee Family"
+msgstr "عائلة موظف الموارد البشرية"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,help:hr_employee_enhance.field_hr_levels__name
+msgid "HR Level Code"
+msgstr "كود المستوي"
+
+#. module: hr_employee_enhance
+#: model:ir.actions.act_window,name:hr_employee_enhance.action_hr_levels
+#: model:ir.ui.menu,name:hr_employee_enhance.menu_hr_levels
+#: model:ir.ui.menu,name:hr_employee_enhance.menu_levels
+msgid "HR Levels"
+msgstr "المستويات"
+
+#. module: hr_employee_enhance
+#: model:ir.ui.menu,name:hr_employee_enhance.menu_hr_management
+msgid "HR Management"
+msgstr "إدارة الموارد البشرية"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__access_card_handover
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__handed_over
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__medical_care_handover
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__uniform_check_handover
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_miscellaneous_receiving__handed_over
+msgid "Handed Over"
+msgstr "تم التسليم"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_miscellaneous_receiving__mho_date
+msgid "Handed Over Date"
+msgstr "تاريخ التسليم"
+
+#. module: hr_employee_enhance
+#: model:ir.model,name:hr_employee_enhance.model_hr_institute
+msgid "Hr Institute"
+msgstr "المعاهد"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_cert_cert__id
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_emp_nontech_skills__id
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_emp_tech_skills__id
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_certification__id
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_education__id
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_profession__id
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_applicant__id
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_contract__id
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__id
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee_family__id
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee_relation__id
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_institute__id
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_levels__id
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_miscellaneous_receiving__id
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_ptraining__id
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_training__id
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_university__id
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_nontech_nontech__id
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_product_product__id
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_res_config_settings__id
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_tech_tech__id
+msgid "ID"
+msgstr "المُعرف"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__issued
+msgid "ID issued date"
+msgstr "تاريخ الإصدار"
+
+#. module: hr_employee_enhance
+#: code:addons/hr_employee_enhance/models/hr_employee.py:0
+#, python-format
+msgid "ID-%s Expired On %s"
+msgstr "انتهت صلاحية معرف ٪ s في ٪ s"
+
+#. module: hr_employee_enhance
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.hr_employee_inherit_form_view
+msgid "Identification ID"
+msgstr "معرف الهوية"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_applicant__identification_id
+msgid "Identification No"
+msgstr "رقم الهوية"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_applicant__instagram
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__instagram
+msgid "Instagram"
+msgstr "انستجرام"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__insurance_office
+msgid "Insurance Office"
+msgstr "مكتب التامينات"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__insurance_office_num
+msgid "Insurance Office No."
+msgstr "رقم مكتب التأمينات"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_miscellaneous_receiving__product_id
+msgid "Item"
+msgstr "بند"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_profession__job_id
+msgid "Job Title"
+msgstr "الوظيفه"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__joining_date
+msgid "Joining Date"
+msgstr "تاريخ الانضمام"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_cert_cert____last_update
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_emp_nontech_skills____last_update
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_emp_tech_skills____last_update
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_certification____last_update
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_education____last_update
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_profession____last_update
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_applicant____last_update
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_contract____last_update
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee____last_update
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee_family____last_update
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee_relation____last_update
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_institute____last_update
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_levels____last_update
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_miscellaneous_receiving____last_update
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_ptraining____last_update
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_training____last_update
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_university____last_update
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_nontech_nontech____last_update
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_product_product____last_update
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_res_config_settings____last_update
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_tech_tech____last_update
+msgid "Last Modified on"
+msgstr "آخر تعديل في"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_cert_cert__write_uid
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_emp_nontech_skills__write_uid
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_emp_tech_skills__write_uid
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_certification__write_uid
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_education__write_uid
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_profession__write_uid
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee_family__write_uid
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee_relation__write_uid
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_institute__write_uid
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_levels__write_uid
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_miscellaneous_receiving__write_uid
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_ptraining__write_uid
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_training__write_uid
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_university__write_uid
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_nontech_nontech__write_uid
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_tech_tech__write_uid
+msgid "Last Updated by"
+msgstr "آخر تحديث بواسطة"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_cert_cert__write_date
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_emp_nontech_skills__write_date
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_emp_tech_skills__write_date
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_certification__write_date
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_education__write_date
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_profession__write_date
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee_family__write_date
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee_relation__write_date
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_institute__write_date
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_levels__write_date
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_miscellaneous_receiving__write_date
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_ptraining__write_date
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_training__write_date
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_university__write_date
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_nontech_nontech__write_date
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_tech_tech__write_date
+msgid "Last Updated on"
+msgstr "آخر تحديث في"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_applicant__marital__cohabitant
+msgid "Legal Cohabitant"
+msgstr "المتعايش القانوني"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__level_id
+msgid "Level"
+msgstr "المستوي"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_levels__name
+msgid "Level Code"
+msgstr "كود المستوي"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_levels__salary_max
+msgid "Level Maximum Salary"
+msgstr "الحد الأقصى للراتب"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_levels__salary_min
+msgid "Level Minimum Salary"
+msgstr "الحد الأدني للراتب"
+
+#. module: hr_employee_enhance
+#: model:ir.model.constraint,message:hr_employee_enhance.constraint_hr_levels_to_salary_greater
+msgid "Level Minimum Salary should be less than Level Maximum Salary!"
+msgstr "يجب أن يكون المستوى الأدنى للراتب أقل من المستوى الأقصى للراتب!"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_emp_nontech_skills__levels
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_emp_tech_skills__levels
+msgid "Levels"
+msgstr "المستويات"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_applicant__linkedin
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__linkedin
+msgid "Linkedin Profile"
+msgstr "ملف تعريف لينكد إن"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_profession__location
+msgid "Location"
+msgstr "الموقع"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_training__lookupperiod
+msgid "Lookup Period Date"
+msgstr "تاريخ فترة البحث"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_applicant__gender__male
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_employee_family__gender__male
+msgid "Male"
+msgstr "ذكر"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_applicant__marital
+msgid "Marital Status"
+msgstr "الحالة الإجتماعية"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_applicant__marital__married
+msgid "Married"
+msgstr "متزوج"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee_family__medical
+msgid "Medical"
+msgstr "طبي"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__medical_care
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.hr_employee_inherit_form_view
+msgid "Medical Care"
+msgstr "الرعاية الطبية"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee_family__medical_percent
+msgid "Medical Percentage"
+msgstr "نسبة الطبي"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__emp_nontech_skills__levels__medium
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__emp_tech_skills__levels__medium
+msgid "Medium"
+msgstr "متوسط"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_applicant__military
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__military
+msgid "Military"
+msgstr "الخدمه العسكرية"
+
+#. module: hr_employee_enhance
+#: model:ir.model,name:hr_employee_enhance.model_hr_miscellaneous_receiving
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__miscellaneous_receiving_ids
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.hr_employee_inherit_form_view
+msgid "Miscellaneous Receiving"
+msgstr "استلامات أخري"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__personal_mobile
+msgid "Mobile"
+msgstr "التليفون المحمول"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_applicant__religion__m1
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_employee__religion__m1
+msgid "Muslim"
+msgstr "مسلم"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee_family__member_name
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_institute__name
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_nontech_nontech__name
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_tech_tech__name
+msgid "Name"
+msgstr "اسم"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_levels__n_a_salary
+msgid "National average salary /year"
+msgstr "متوسط الراتب محليا / سنة"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_res_config_settings__no_of_days
+msgid "No Of Days"
+msgstr "عدد الأيام"
+
+#. module: hr_employee_enhance
+#: model:ir.actions.act_window,name:hr_employee_enhance.action_nontech_skills
+#: model:ir.ui.menu,name:hr_employee_enhance.menu_nontech_skills
+#: model:ir.ui.menu,name:hr_employee_enhance.nontech_skills_menu
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.hr_employee_inherit_form_view
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.view_hr_applicant_form
+msgid "Non Technical Skills"
+msgstr "المهارات غير الفنية"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_emp_nontech_skills__nontech_id
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_applicant__nontechskill_ids
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__nontechskill_ids
+msgid "Non-Technical Skills"
+msgstr "المهارات غير الفنية"
+
+#. module: hr_employee_enhance
+#: model:ir.model,name:hr_employee_enhance.model_nontech_nontech
+msgid "Nontech Nontech"
+msgstr ""
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_contract__notice_days
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_res_config_settings__notice_period
+msgid "Notice Period"
+msgstr "فترة إشعار"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__bc_no
+msgid "Number of Packages"
+msgstr "عدد الحزم"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_employee_family__blood_type__o_n
+msgid "O Negative"
+msgstr "O سالب"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_employee_family__blood_type__o_p
+msgid "O Positive"
+msgstr "O موجب"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_applicant__religion__o3
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_employee__religion__o3
+msgid "Other"
+msgstr "أخري"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_ptraining__presults__passed
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_training__results__passed
+msgid "Passed"
+msgstr "مقبول"
+
+#. module: hr_employee_enhance
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.hr_employee_inherit_form_view
+msgid "Passport ID"
+msgstr "رقم جواز السفر"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__passport_issued
+msgid "Passport Issued date"
+msgstr "تاريخ اصدار الجواز"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_applicant__passport_id
+msgid "Passport No"
+msgstr "رقم جواز السفر"
+
+#. module: hr_employee_enhance
+#: code:addons/hr_employee_enhance/models/hr_employee.py:0
+#, python-format
+msgid "Passport-%s Expired On %s"
+msgstr "انتهت صلاحية جواز السفر ٪ s في ٪ s"
+
+#. module: hr_employee_enhance
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.hr_employee_inherit_form_view
+msgid "Payroll payment"
+msgstr "دفع الرواتب"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_ptraining__pperiod_from
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_training__period_from
+msgid "Period From"
+msgstr "الفترة من"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_ptraining__pperiod_to
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_training__period_to
+msgid "Period To"
+msgstr "الفترة الي"
+
+#. module: hr_employee_enhance
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.view_hr_applicant_form
+msgid "Personal Information"
+msgstr "معلومات شخصية"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,help:hr_employee_enhance.field_hr_employee__personal_mobile
+msgid "Personal mobile number of the employee"
+msgstr "رقم المحمول الشخصي للموظف"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_applicant__place_of_birth
+msgid "Place of Birth"
+msgstr "مكان الميلاد"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_applicant__military__postponed
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_employee__military__postponed
+msgid "Postponed"
+msgstr "مؤجل"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__premium_card
+msgid "Premium Card"
+msgstr "البطاقة المميزة"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__pc_limit
+msgid "Premium Card Limit"
+msgstr "حدود البطاقة المميزة"
+
+#. module: hr_employee_enhance
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.hr_employee_inherit_form_view
+msgid "Premium card"
+msgstr "البطاقة المميزة"
+
+#. module: hr_employee_enhance
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.hr_employee_inherit_form_view
+msgid "Previous Training"
+msgstr "التدريبات السابقة"
+
+#. module: hr_employee_enhance
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.hr_employee_inherit_form_view
+msgid "Previous Trainings"
+msgstr "التدريبات السابقة"
+
+#. module: hr_employee_enhance
+#: model:ir.model,name:hr_employee_enhance.model_product_product
+msgid "Product"
+msgstr "المنتج"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_applicant__profession_ids
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__profession_ids
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.hr_employee_inherit_form_view
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.view_hr_applicant_form
+msgid "Professional Experience"
+msgstr "الخبرة العملية"
+
+#. module: hr_employee_enhance
+#: model:ir.ui.menu,name:hr_employee_enhance.menu_qualifications
+#: model:ir.ui.menu,name:hr_employee_enhance.qualifications_menu
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.hr_employee_inherit_form_view
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.view_hr_applicant_form
+msgid "Qualifications"
+msgstr "المؤهلات"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_education__qualified_year
+msgid "Qualified Year"
+msgstr "تاريخ المؤهل"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_miscellaneous_receiving__quantity
+msgid "Quantity"
+msgstr "الكمية"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_miscellaneous_receiving__receiving_date
+msgid "Receiving Date"
+msgstr "تاريخ الإستلام"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__salary_type
+msgid "Receiving Salary By"
+msgstr "استلام الراتب بواسطه"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__business_card_receiving
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__visa_receiving
+msgid "Receiving date"
+msgstr "تاريخ الإستلام"
+
+#. module: hr_employee_enhance
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.hr_employee_inherit_form_view
+msgid "Receivings"
+msgstr "استلامات"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_applicant__recruitment_req_id
+msgid "Recruitment Request Code"
+msgstr "كود طلب التوظيف"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee_family__relation_id
+msgid "Relation"
+msgstr "صلة"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee_relation__name
+msgid "Relationship"
+msgstr "صلة"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,help:hr_employee_enhance.field_hr_employee_family__relation_id
+msgid "Relationship with the employee"
+msgstr "صلته بالموظف"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,help:hr_employee_enhance.field_hr_employee_relation__name
+msgid "Relationship with thw employee"
+msgstr "صلته بالموظف"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_applicant__religion
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__religion
+msgid "Religion"
+msgstr "الديانه"
+
+#. module: hr_employee_enhance
+#: model:ir.ui.menu,name:hr_employee_enhance.employee_report_menu
+msgid "Reports"
+msgstr "تقارير"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_ptraining__presults
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_training__results
+msgid "Results"
+msgstr "النتائج"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_ptraining__ptrain_id
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_training__train_id
+msgid "SR."
+msgstr "مسلسل"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_education__score
+msgid "Score"
+msgstr "نتيجة"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,help:hr_employee_enhance.field_hr_employee_family__employee_id
+msgid "Select corresponding Employee"
+msgstr "حدد الموظف المقابل"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__sr_access_card
+msgid "Serial Number"
+msgstr "المسلسل"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_applicant__signal
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__signal
+msgid "Signal"
+msgstr "سيجنال"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_applicant__marital__single
+msgid "Single"
+msgstr "أعزب"
+
+#. module: hr_employee_enhance
+#: model:ir.ui.menu,name:hr_employee_enhance.menu_skills
+#: model:ir.ui.menu,name:hr_employee_enhance.skills_menu
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.hr_employee_inherit_form_view
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.view_hr_applicant_form
+msgid "Skills"
+msgstr "المهارات"
+
+#. module: hr_employee_enhance
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.hr_employee_inherit_form_view
+msgid "Social Insurance"
+msgstr "التامينات الاجتماعية"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_profession__from_date
+msgid "Start Date"
+msgstr "تاريخ البدايه"
+
+#. module: hr_employee_enhance
+#: model:ir.model.constraint,message:hr_employee_enhance.constraint_employee_profession_to_date_greater
+msgid "Start Date of Professional Experience should be less than End Date!"
+msgstr "yajib 'an yakun tarikh bad' alkhibrat almihniat 'aqala min tarikh alaintiha'i!"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_institute__state_id
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_university__state_id
+msgid "State"
+msgstr "ولايه / مدينه"
+
+#. module: hr_employee_enhance
+#: model:ir.model,name:hr_employee_enhance.model_tech_tech
+msgid "Tech Tech"
+msgstr ""
+
+#. module: hr_employee_enhance
+#: model:ir.actions.act_window,name:hr_employee_enhance.action_tech_skills
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_emp_tech_skills__tech_id
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_applicant__techskill_ids
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__techskill_ids
+#: model:ir.ui.menu,name:hr_employee_enhance.menu_tech_skills
+#: model:ir.ui.menu,name:hr_employee_enhance.tech_skills_menu
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.hr_employee_inherit_form_view
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.view_hr_applicant_form
+msgid "Technical Skills"
+msgstr "مهارات تكنولوجيه"
+
+#. module: hr_employee_enhance
+#: model:ir.model.constraint,message:hr_employee_enhance.constraint_hr_employee_no_employee_uniq
+msgid "The Employee Code must be unique!"
+msgstr "يجب أن يكون رمز الموظف فريدًا!"
+
+#. module: hr_employee_enhance
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.hr_employee_inherit_form_view
+msgid "Training"
+msgstr "التدريب"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_ptraining__ptraining_center
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_training__training_center
+msgid "Training Center"
+msgstr "مركز التدريب"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_ptraining__ptraining_program
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_training__training_program
+msgid "Training Program"
+msgstr "برنامج التدريب"
+
+#. module: hr_employee_enhance
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.hr_employee_inherit_form_view
+msgid "Trainings"
+msgstr "التدريبات"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_ptraining__ptraining_officer
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_training__training_officer
+msgid "Tranier"
+msgstr "المدرب"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_education__doc
+msgid "Transcripts/Cert."
+msgstr "الشهادات/ بيان الدرجات"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_applicant__twitter
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__twitter
+msgid "Twitter"
+msgstr "تويتر"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__uniform_check
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.hr_employee_inherit_form_view
+msgid "Uniform"
+msgstr "زى موحد"
+
+#. module: hr_employee_enhance
+#: model:ir.actions.act_window,name:hr_employee_enhance.action_hr_university
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_education__university_id
+#: model:ir.ui.menu,name:hr_employee_enhance.menu_hr_rec_university
+#: model:ir.ui.menu,name:hr_employee_enhance.menu_hr_university
+msgid "University"
+msgstr "الجامعه"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_university__name
+msgid "University Name"
+msgstr "اسم الجامعه"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_ptraining__presults__vgood
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_training__results__vgood
+msgid "Very Good"
+msgstr "جيد جدا"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_applicant__whatsapp
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_employee__whatsapp
+msgid "WhatsApp"
+msgstr "واتس اب"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields.selection,name:hr_employee_enhance.selection__hr_applicant__marital__widower
+msgid "Widower"
+msgstr "أرمل"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_certification__year
+msgid "Year of completion"
+msgstr "سنة الانجاز "
+
+#. module: hr_employee_enhance
+#: code:addons/hr_employee_enhance/models/hr_employee.py:0
+#, python-format
+msgid ""
+"You are trying to delete a Skill                     which is referenced by "
+"an Employee."
+msgstr "أنت تحاول حذف مهارة أشار إليها الموظف."
+
+#. module: hr_employee_enhance
+#: code:addons/hr_employee_enhance/models/hr_employee.py:0
+#, python-format
+msgid "You are trying to delete a Skill which is referenced by an Employee."
+msgstr "أنت تحاول حذف مهارة أشار إليها الموظف."
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,help:hr_employee_enhance.field_hr_employee__passport_attachment_id
+msgid "You can attach the copy of Passport"
+msgstr "يمكنك إرفاق نسخة من جواز السفر"
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,help:hr_employee_enhance.field_hr_employee__id_attachment_id
+msgid "You can attach the copy of your Id"
+msgstr "يمكنك إرفاق نسخة من هويتك"
+
+#. module: hr_employee_enhance
+#: code:addons/hr_employee_enhance/models/hr_employee.py:0
+#, python-format
+msgid "You must define an Applied Job and a Contact Name for this applicant."
+msgstr "يجب عليك تحديد الوظيفة التطبيقية واسم جهة الاتصال لهذا المتقدم."
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_emp_tech_skills__applicant_id
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_certification__applicant_id
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_education__applicant_id
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_employee_profession__applicant_id
+msgid "applicant"
+msgstr "متقدم"
+
+#. module: hr_employee_enhance
+#: model_terms:ir.ui.view,arch_db:hr_employee_enhance.view_hr_applicant_form
+msgid "eg.: Rec. Form - IT155"
+msgstr "على سبيل المثال : نموذج رقم IT155"
+
+#. module: hr_employee_enhance
+#: model:ir.model,name:hr_employee_enhance.model_hr_employee_relation
+msgid "hr.employee.relation"
+msgstr ""
+
+#. module: hr_employee_enhance
+#: model:ir.model,name:hr_employee_enhance.model_hr_levels
+msgid "hr.levels"
+msgstr ""
+
+#. module: hr_employee_enhance
+#: model:ir.model,name:hr_employee_enhance.model_hr_university
+msgid "hr.university"
+msgstr ""
+
+#. module: hr_employee_enhance
+#: model:ir.model.fields,field_description:hr_employee_enhance.field_hr_applicant__name_ar
+msgid "ِApplicant Arabic name"
+msgstr "اسم المتقدم بالعربي"
