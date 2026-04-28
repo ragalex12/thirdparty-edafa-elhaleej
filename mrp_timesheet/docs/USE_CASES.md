@@ -1,248 +1,168 @@
-# Manufacturing Timesheet — Use Cases
+# Manufacturing Timesheet – Use Case Examples
 
-Each use case shows the **accounting entries** produced so you can trace exactly what the module posts.
-
----
-
-## Use Case 1: Basic MO — Regular Time
-
-**Scenario:** A worker logs 4 hours on a Manufacturing Order at SAR 100/h.
-
-### Configuration
-- Labor WIP Account: `510100 – Manufacturing WIP`
-- Labor Clearing Account: `215100 – Payroll Accrual`
-- Employee hourly_cost: `100.00 SAR`
-
-### Steps
-1. Open the MO → Timesheets tab → Add line: Employee=Ahmed, Hours=4, Description="Assembly".
-2. Save.
-
-### Journal Entry created instantly
-```
-Date     Account                         DR        CR      Analytic
-----     -------                         --        --      --------
-2025-03  510100  Manufacturing WIP      400.00            MO-Analytic (100%)
-2025-03  215100  Payroll Accrual                  400.00  MO-Analytic (100%)
-```
-Ref: `LABOR/WH1/MO/00042/2025-03-15`  
-Narration: `Employee: Ahmed | Hours: 4.00 | Type: Regular | Cost: 400.00 SAR | Triggered by: Ahmed (uid=12)`
-
-### When payroll runs (Step 2 — outside this module)
-```
-Date     Account                         DR        CR
-----     -------                         --        --
-2025-03  215100  Payroll Accrual        400.00
-2025-03  310100  Wages Payable                    400.00
-```
-After payroll: Clearing balance = 0 ✓
+This document describes typical use cases and how to achieve them with the **Manufacturing Timesheet** module.
 
 ---
 
-## Use Case 2: Overtime Hours
+## Use case 1: Track and cost labor on a custom assembly order
 
-**Scenario:** Same worker logs 3 overtime hours on the same MO. Company overtime multiplier = 1.5×.
+**Scenario:** You build custom furniture. Each order is a Manufacturing Order. Workers log actual hours on the MO; you want that labor to increase the cost of the finished product.
 
-### Steps
-1. Add a second line: Hours=3, **tick Is Overtime**.
-2. Save.
+**Steps:**
 
-### Journal Entry
-```
-Cost = 3 × 100 × 1.5 = 450.00 SAR
+1. **Configuration**
+   - Set **Production Labor Expense Account** on the company (e.g. “Production labor”).
+   - Set **Hourly Cost** for each workshop employee (e.g. 18.00 for assistants, 28.00 for senior assemblers).
+   - Ensure **Stock Journal** and product category **Stock Valuation Account** are set.
 
-DR  510100  Manufacturing WIP     450.00
-CR  215100  Payroll Accrual                450.00
-```
-Narration: `... | Type: Overtime | Cost: 450.00 SAR | ...`
+2. **On each MO**
+   - Create or open the MO for the custom piece.
+   - Set **Analytic Account** (e.g. “Custom orders”).
+   - In the **Timesheets** tab, add lines:
+     - Employee: John (28.00/h), Description: “Assembly”, Hours: 3.0  
+     - Employee: Maria (18.00/h), Description: “Sanding”, Hours: 1.5  
 
----
+3. **Result**
+   - **Timesheet Labor Cost** = 3.0×28 + 1.5×18 = 84 + 27 = **111.00**.
+   - When you **Mark as Done**, a journal entry is created: inventory (finished product) is debited 111.00, Production labor expense is credited 111.00. The cost of the produced good includes this labor.
 
-## Use Case 3: Holiday Hours
-
-**Scenario:** A line is marked as holiday (2.0×). Is Overtime is also ticked — holiday takes precedence.
-
-```
-Cost = 2h × 100 × 2.0 = 400.00 SAR  (not 1.5×, holiday wins)
-
-DR  510100  Manufacturing WIP     400.00
-CR  215100  Payroll Accrual                400.00
-```
-Narration: `... | Type: Holiday | Cost: 400.00 SAR | ...`
+**Benefit:** You see real labor per order and it is reflected in inventory value and cost of goods.
 
 ---
 
-## Use Case 4: Editing a Timesheet Line (Reversal + Recreate)
+## Use case 2: Different hourly rates per employee
 
-**Scenario:** You originally logged 2 hours but the actual time was 5 hours. You edit the line.
+**Scenario:** Technicians have different hourly costs; you want the MO labor cost to use each employee’s rate.
 
-### Original JE (on create)
-```
-DR  510100  Manufacturing WIP     200.00
-CR  215100  Payroll Accrual                200.00
-Ref: LABOR/WH1/MO/00042/2025-03-15
-```
+**Steps:**
 
-### After changing Hours from 2 → 5 (automatic reversal)
-```
-Reversal JE (auto):
-DR  215100  Payroll Accrual       200.00
-CR  510100  Manufacturing WIP              200.00
-Ref: REV/LABOR/WH1/MO/00042/2025-03-15
+1. In **Employees**, set **Hourly Cost** per person (e.g. Junior: 15.00, Senior: 35.00, Specialist: 50.00).
+2. On the MO, in the **Timesheets** tab, always select the correct **Employee** for each line (and enter hours).
+3. The module uses that employee’s **Hourly Cost** for that line. **Timesheet Labor Cost** is the sum over all lines.
 
-New JE (auto):
-DR  510100  Manufacturing WIP     500.00
-CR  215100  Payroll Accrual                500.00
-Ref: LABOR/WH1/MO/00042/2025-03-15
-```
-
-Net effect: WIP = 500, Clearing = 500 (correct final state).
+**Benefit:** No need to maintain separate “labor products” per rate; one place (employee) defines the cost per hour.
 
 ---
 
-## Use Case 5: Deleting a Timesheet Line
+## Use case 3: Mix work-center cost and manual timesheet labor
 
-**Scenario:** A line was added by mistake. You delete it.
+**Scenario:** Your BoM has operations with work centers (automatic cost), but some work is done off the routing (e.g. quality checks, rework). You want to add that extra time and cost on the MO.
 
-### On delete (automatic reversal before deletion)
-```
-Reversal JE:
-DR  215100  Payroll Accrual       200.00
-CR  510100  Manufacturing WIP              200.00
-Ref: REV/LABOR/...
-```
+**Steps:**
 
-Net effect: WIP = 0, Clearing = 0 (as if the line was never added).
+1. Configure work centers and BoM operations as usual (work center cost per hour, duration).
+2. On the MO, open the **Timesheets** tab and add lines for the **non-routed** work (e.g. “Final QC”, “Rework”).
+3. Set **Employee** and **Hours**; **Hourly Cost** comes from the employee.
+4. When you **Mark as Done**, standard valuation posts component + work center cost; the module adds one extra journal entry for the **timesheet** labor only.
 
----
-
-## Use Case 6: Multiple Workers, Multiple Days
-
-**Scenario:** Production order WH1/MO/00042 runs over 3 days with 3 employees.
-
-| Date | Employee | Hours | Rate | Cost |
-|------|----------|-------|------|------|
-| 2025-03-10 | Ahmed (Assembler) | 4 | 100 | 400 |
-| 2025-03-10 | Sara (Technician) | 3 | 120 | 360 |
-| 2025-03-11 | Ahmed | 6 | 100 | 600 |
-| 2025-03-12 | Khalid (Specialist) | 2 | 150 | 300 |
-
-Each save creates its own JE immediately. **Total WIP debit = 1,660 SAR.**
-
-### Timesheet Labor Cost on MO = 1,660.00 SAR
-
-### On payroll: single clearing debit of 1,660.00 SAR
+**Benefit:** You keep work-center costing and add real extra labor (e.g. overtime, rework) without changing the BoM.
 
 ---
 
-## Use Case 7: Project-Based Timesheet (No MO)
+## Use case 4: Review labor cost before closing the MO
 
-**Scenario:** A consulting project tracks labor costs without Manufacturing Orders.
+**Scenario:** You want to see total labor cost before marking the MO as done, and optionally adjust time entries.
 
-### Configuration
-- Open the project → Settings tab → Enable **Generate Labor Journal Entries**
-- Optionally set project-level WIP/Clearing overrides
+**Steps:**
 
-### Steps
-1. Log time on the project in Timesheets (standard Odoo timesheet).
-2. Save — JE is created using project accounts (or company defaults).
+1. On the MO, fill the **Timesheets** tab (date, employee, description, hours).
+2. Check **Timesheet Labor Cost** on the form (updated automatically).
+3. If the total is wrong, edit the timesheet lines (fix hours or employee) or add/remove lines.
+4. When the total is correct, click **Mark as Done**. Labor is posted once with that total.
 
-```
-DR  510100  Manufacturing WIP     300.00    ← or project override account
-CR  215100  Payroll Accrual                300.00
-```
-
-> **Note:** Analytic distribution uses the timesheet line's analytic account when no MO analytic account is set.
+**Benefit:** No surprise after closing; you can correct time before posting.
 
 ---
 
-## Use Case 8: Per-Project Account Override
+## Use case 5: One MO, several workers and days
 
-**Scenario:** Project "EXPO-2025" should charge to a different WIP account than the default.
+**Scenario:** One production order is worked on by several people over several days. You want one total labor cost for the MO.
 
-### Configuration on Project
-- Labor WIP Account (Override): `510200 – Project Cost EXPO`
-- Labor Clearing Account (Override): leave blank → falls back to company default
+**Steps:**
 
-### JE for timesheets on EXPO-2025
-```
-DR  510200  Project Cost EXPO     200.00    ← project override
-CR  215100  Payroll Accrual                200.00    ← company default
-```
+1. On the MO, set **Analytic Account**.
+2. In **Timesheets**, add one line per person per day (or per task), e.g.:
+   - Mon: Alice 4h, Bob 2h  
+   - Tue: Alice 2h, Bob 4h  
+   - Wed: Bob 3h  
+3. **Timesheet Labor Cost** = sum of (hours × hourly cost) for all lines.
+4. **Mark as Done** once when the order is finished; one journal entry posts the full labor cost.
 
----
-
-## Use Case 9: Workcenter Account Override
-
-**Scenario:** Work orders on "CNC Machine" should debit a specific machine cost account.
-
-### Configuration on Workcenter
-- Labor Account (Override): `510300 – CNC Machine Labor`
-
-### JE for timesheets linked to MOs with CNC work orders
-```
-DR  510300  CNC Machine Labor     150.00    ← workcenter override
-CR  215100  Payroll Accrual                150.00    ← company default
-```
+**Benefit:** Full traceability (who, when, how many hours) and a single labor cost per MO for accounting.
 
 ---
 
-## Use Case 10: Missing Configuration (Safe Degradation)
+## Use case 6: No employee hourly cost – use product or amount
 
-**Scenario:** Clearing account is not set. A timesheet line is saved.
+**Scenario:** You do not set **Hourly Cost** on employees; you prefer to use a service product’s cost or the line amount.
 
-**Result:**
-- `labor_cost` is still computed correctly (e.g. 200.00 SAR).
-- No JE is created (silent skip — no error, no crash).
-- The **Labor Clearing Balance Check** wizard will show 0 for this period.
-- You can configure the accounts later and the next edit to the line will generate the JE.
+**Steps:**
 
----
+1. Leave **Hourly Cost** empty on employees (or set it only for some).
+2. On the timesheet line you can:
+   - Set **Product** to a service product with a **Cost** (standard price); the module uses **Hours × Product cost** when employee cost is 0.
+   - Or ensure the line has **Amount** set (e.g. from another process); the module uses **|Amount|** for that line.
+3. Labor cost is still summed and posted when you **Mark as Done**.
 
-## Use Case 11: Clearing Account Balance Check
-
-**Scenario:** End of month. You want to confirm payroll cleared all timesheet accruals.
-
-### Steps
-1. Go to **Manufacturing → Reporting → Labor Clearing Balance Check**.
-2. Set Date From: `2025-03-01`, Date To: `2025-03-31`.
-3. Click **Check Balance**.
-
-### Example result
-| Period | Accrued (CR) | Cleared by Payroll (DR) | Outstanding |
-|--------|-------------|------------------------|-------------|
-| March 2025 | 2,460.00 | 2,460.00 | **0.00** ✓ |
-| April 2025 | 800.00 | 0.00 | **800.00** ← payroll not yet run |
-
-Outstanding > 0 in a prior closed period indicates a reconciliation gap.
+**Benefit:** Flexibility to drive cost from product or amount when employee rate is not used.
 
 ---
 
-## Use Case 12: Multi-Company Isolation
+## Use case 7: Analyze time and cost by analytic account
 
-**Scenario:** Company A and Company B share the same Odoo instance. Workers in Company A should not see MO timesheets from Company B.
+**Scenario:** You use one analytic account per production line or project and want to see total time and cost per account.
 
-**How it's enforced:**
-- Global `ir.rule` on `account.analytic.line` restricts visibility to MOs whose company is in the current user's allowed companies.
-- `check_company=True` on all `Many2one` account fields prevents cross-company account selection in the UI.
-- JE creation always uses `company_id = timesheet_line.company_id`.
+**Steps:**
 
-No additional configuration required — this is enforced automatically.
+1. Create analytic accounts (e.g. “Line A”, “Line B”, “Project X”).
+2. On each MO, set **Analytic Account** and log timesheet lines (they inherit the MO’s analytic account).
+3. Use **Accounting** (or **Timesheets**) reports filtered by analytic account to see hours and cost per line/project.
+4. The labor journal entry credits **Production Labor Expense Account** and the move is linked to the MO; you can still analyze by analytic account from the timesheet lines.
+
+**Benefit:** Same MO timesheet data supports both production costing and analytic reporting.
 
 ---
 
-## Summary Table
+## Use case 8: Update product cost from BoM with materials AND labor
 
-| Use Case | Key Feature | JE Created? |
-|----------|------------|-------------|
-| Regular MO time | `create()` trigger | Yes |
-| Overtime | `is_overtime` flag × 1.5 | Yes |
-| Holiday | `is_holiday` flag × 2.0 | Yes (overrides overtime) |
-| Edit hours | `write()` trigger | Old reversed + new |
-| Delete line | `unlink()` trigger | Old reversed |
-| Multiple workers | Per-line JEs | One per line |
-| Project (no MO) | `generate_labor_je=True` | Yes |
-| Project override | Project account fields | Yes (different accounts) |
-| Workcenter override | `labor_account_id` | Yes (different WIP) |
-| Missing config | Silent degradation | No (no crash) |
-| Month-end check | Clearing balance wizard | N/A (reporting) |
-| Multi-company | `ir.rule` + `check_company` | N/A (security) |
+**Scenario:** You want the product's `standard_price` (cost) to reflect both material cost (from BoM) and average labor (from past MOs with timesheets), so quotes and valuation are accurate.
+
+**Steps:**
+
+1. **Produce several MOs** with timesheet data:
+   - Complete 3-5 MOs for the product.
+   - Log timesheet hours on each MO (Timesheets tab).
+   - Mark each as Done (labor is posted to inventory).
+
+2. **Update cost from BoM:**
+   - Go to **Manufacturing → Configuration → Bills of Materials**.
+   - Open the BoM for that product.
+   - Click **"Update Cost (Materials + Labor)"** button (top-right, calculator icon).
+
+3. **Result:**
+   - Material cost: calculated from BoM explosion (all components × costs).
+   - Labor cost: average from the past completed MOs (total labor ÷ total qty).
+   - Product's **Cost** is updated to: `(material + avg labor) / BoM qty`.
+   - Chatter on product shows breakdown:
+     - Material: 120.00 (from 5 components)
+     - Labor: 8.50/unit (avg from 4 past MOs)
+     - Old cost: 120.00 → New cost: 128.50
+
+**Benefit:** Product cost now includes both materials (from BoM design) and labor (from actual production data). Use for pricing, profitability analysis, and accurate inventory valuation.
+
+---
+
+## Summary
+
+| Use case | Main feature used |
+|----------|-------------------|
+| Custom assembly labor on MO | Timesheets tab + labor posting |
+| Different rates per employee | Employee Hourly Cost |
+| Extra labor beyond work centers | Timesheets tab alongside work orders |
+| Check cost before closing | Timesheet Labor Cost on MO |
+| Several workers/days on one MO | Multiple lines in Timesheets tab |
+| Cost from product or amount | Product cost / line amount when no employee rate |
+| Analyze by line/project | Analytic account on MO + reports |
+| Update product cost from BoM + labor | BoM "Update Cost (Materials + Labor)" button |
+
+For configuration and field locations, see the [User Guide](USER_GUIDE.md).

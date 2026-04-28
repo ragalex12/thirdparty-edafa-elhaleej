@@ -1,257 +1,142 @@
-# Manufacturing Timesheet — User Guide
+# Manufacturing Timesheet – User Guide
 
-**Module version:** 19.0.8.0  
-**Applies to:** Odoo 19 Community/Enterprise
+This guide explains how to configure and use the **Manufacturing Timesheet** module to log time on Manufacturing Orders and have that time affect production cost.
 
 ---
 
 ## 1. Prerequisites
 
-Before using this module you need:
-
-| App | Purpose |
-|-----|---------|
-| Manufacturing (`mrp`) | Manufacturing Orders |
-| Timesheets (`hr_timesheet`) | Timesheet lines |
-| Stock Accounting (`stock_account`) | Accounting journals |
-| HR (`hr`) | Employee records |
-| Project (`project`) | Project-based JEs (optional) |
-| Accounting (`account`) | Chart of accounts, journal entries |
-
-Users who configure accounts must be in the **Accounting / Administrator** group.  
-Users who log time only need standard Manufacturing user rights — the module uses `sudo()` internally for JE creation.
+- **Manufacturing** app installed (for Manufacturing Orders).
+- **Timesheets** (or **HR Timesheet**) app installed.
+- **Accounting** and **Inventory** with automatic valuation (so **Stock Journal** and valuation accounts are available).
 
 ---
 
-## 2. First-time Configuration
+## 2. Configuration
 
-### 2.1 Open the Labor Cost Accounting tab
+### 2.1 Production labor expense account
 
-`Settings → Companies → [Your company] → Labor Cost Accounting tab`
+This account is **credited** when timesheet labor cost is posted (inventory is debited).
 
-> **Tip:** This tab is only visible to users with the Accounting / Administrator role.
+1. Go to **Settings**.
+2. Open **Companies** and select your company.
+3. Find **Production Labor Expense Account** (near **Currency** / **Stock Journal**).
+4. Select an **expense** account (e.g. “Production labor”, “WIP labor”, or a dedicated cost account). Create one in **Accounting → Configuration → Chart of Accounts** if needed.
 
----
+Without this, the module cannot post the labor journal entry when you mark an MO as done.
 
-### 2.2 Set the two accounts
+### 2.2 Stock journal
 
-The module uses a **two-account transit model**:
+The labor journal entry uses the same **Stock Journal** as inventory valuation.
 
-| Field | Account type | Example code | Description |
-|-------|-------------|-------------|-------------|
-| **Labor WIP Account** | Asset / Current Asset | `510100` | Debited immediately when a timesheet line is saved. Represents direct labor absorbed into the product's production cost. |
-| **Labor Clearing Account** | Liability / Current Liability | `215100` | Credited immediately when a timesheet line is saved. A transit account that is zeroed-out when payroll runs. |
+1. In **Settings → Companies**, set **Stock Journal** (or set it per product category if your setup uses that).
+2. If you use the **Company Stock Journal (UI)** addon, the field is on the company form.
 
-**Why two accounts?**  
-This is the standard two-step payroll accrual approach:
-```
-Step 1 (timesheet saved)   DR Labor WIP 510100   CR Labor Clearing 215100
-Step 2 (payroll confirmed) DR Labor Clearing      CR Wages Payable / Bank
-```
-After payroll, Clearing = 0, WIP carries the cost, Wages Payable shows cash owed.
+### 2.3 Employee hourly cost (optional but recommended)
 
----
+The module adds **Hourly Cost** on the employee form (Odoo Community does not include it by default).
 
-### 2.3 Set the Labor Cost Journal
+1. Go to **Employees**.
+2. Open an employee.
+3. Find **Hourly Cost** (after **Job Position**). Enter the cost per hour in company currency (e.g. 25.00).
+4. Save.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| **Labor Cost Journal** | General / Miscellaneous journal | The journal used for all automatic labor JEs. Falls back to the company stock journal if not set. |
+This rate is used for timesheet lines linked to that employee when computing labor cost. If you leave it empty, the system uses the timesheet line’s **Product** cost or **Amount** when available.
 
-> **Tip:** Create a dedicated journal called "Labor Cost" so labor entries are easily filtered in the General Ledger.
+### 2.4 Analytic account on the MO (optional)
 
----
+To use the **Timesheets** tab and link lines to the MO:
 
-### 2.4 Set rate multipliers (optional)
-
-| Field | Default | When applied |
-|-------|---------|-------------|
-| **Overtime Rate Multiplier** | 1.5 | When **Is Overtime** is ticked on a timesheet line |
-| **Holiday Rate Multiplier** | 2.0 | When **Is Holiday** is ticked (takes precedence over overtime) |
-
-Set to `1.0` to disable a multiplier.
+1. In **Accounting**, create an **Analytic Account** (e.g. “Manufacturing” or per project).
+2. On the Manufacturing Order, set **Analytic Account** (shown after **Product**). You can leave it empty if you only use work-center operations and do not use the timesheet tab.
 
 ---
 
-### 2.5 Set employee hourly cost
+## 3. Daily use
 
-`Employees → [Employee] → HR Settings tab → Hourly Cost`
+### 3.1 Updating product cost from BoM (Materials + Labor)
 
-The system resolves the rate in this priority order:
+This feature calculates and updates a product's `standard_price` based on its Bill of Materials plus average labor from past completed MOs.
 
-1. `employee.hourly_cost` — set directly on the employee
-2. `employee.timesheet_cost` — if the HR Payroll module adds this field
-3. `product.standard_price` — on the timesheet line's product
-4. `0.0` — no JE created (labor cost = 0)
+1. Go to **Manufacturing → Configuration → Bills of Materials**.
+2. Open a BoM.
+3. Click **"Update Cost (Materials + Labor)"** button (top-right, calculator icon).
+4. The system:
+   - Explodes the BoM to get all raw material costs.
+   - Queries past completed MOs for that product to get average timesheet labor per unit.
+   - Calculates: `Cost per unit = (total materials + avg labor) / BoM quantity`
+   - Updates the product's **Cost** field.
+   - Posts a message to the product with the breakdown.
+5. Check the product form (**Products → Products → [Product]**) to see the updated **Cost**.
+6. Check the product's **Chatter** to see the detailed breakdown (material components, labor average, old vs new cost).
 
----
+**When to use:**
+- After you've completed several MOs with timesheet data and want to update the product's standard cost to reflect real production cost (materials + labor).
+- Before quoting or pricing: ensure the product cost includes both materials and labor.
 
-### 2.6 Optional: Per-project JE toggle
+**Note:** If no past MOs exist with timesheet labor, the cost will be materials only (labor = 0).
 
-`Project → [Project] → Settings tab → Labor Cost Accounting`
+### 3.2 Logging time on a Manufacturing Order
 
-| Field | Description |
-|-------|-------------|
-| **Generate Labor Journal Entries** | Enable to auto-create JEs for timesheets on this project (even without an MO link) |
-| **Labor WIP Account (Override)** | Override company WIP account for this project only |
-| **Labor Clearing Account (Override)** | Override company Clearing account for this project only |
-
----
-
-### 2.7 Optional: Per-workcenter account override
-
-`Manufacturing → Configuration → Work Centers → [Workcenter] → Costing tab`
-
-| Field | Description |
-|-------|-------------|
-| **Labor Account (Override)** | Overrides the WIP debit account for timesheet lines on work orders using this workcenter |
-
----
-
-## 3. Account Override Hierarchy
-
-For each JE the system resolves accounts in this order:
-
-```
-1. Project override    project.labor_wip_account_id / labor_clearing_account_id
-2. Workcenter override mrp.workcenter.labor_account_id (WIP/debit only)
-3. Company default     res.company.labor_wip_account_id / labor_clearing_account_id
-```
-
----
-
-## 4. Daily Use
-
-### 4.1 Logging time on a Manufacturing Order
-
-1. Open **Manufacturing → Operations → Manufacturing Orders**.
-2. Open or create an MO. Set **Analytic Account** (optional but recommended for reporting).
+1. Open **Manufacturing → Operations → Manufacturing Orders** and open an MO (or create one).
+2. Set **Analytic Account** if you want to use the Timesheets tab.
 3. Open the **Timesheets** tab.
-4. Click **Add a line**:
+4. Click **Add a line** (or use the editable list):
+   - **Date**: day worked.
+   - **User**: filled by default; change if needed.
+   - **Employee**: select the employee (used for **Hourly Cost**).
+   - **Description**: short note (e.g. “Assembly”, “Quality check”).
+   - **Hours**: time spent (e.g. 2.5).
+5. Save. You can add more lines for the same or other days/employees.
 
-| Field | Description |
-|-------|-------------|
-| **Date** | Day worked |
-| **Employee** | Worker (rate comes from their Hourly Cost) |
-| **Description** | Short note: "Assembly", "Quality check", etc. |
-| **Hours** | Time spent (e.g. `2.5`) |
-| **Is Overtime** | Tick to apply Overtime Rate Multiplier |
-| **Is Holiday** | Tick to apply Holiday Rate Multiplier (overrides overtime) |
+**Timesheet Labor Cost** (on the MO form) updates automatically: it is the sum of (hours × hourly cost) per line (or line amount if set).
 
-5. **Save the record.** The JE is created and posted immediately — no need to mark the MO as done.
+### 3.3 Completing the order and posting labor cost
 
-The **Labor Cost** column updates automatically per line. The **Timesheet Labor Cost** field on the MO shows the running total.
+1. When the order is ready, click **Mark as Done** (or **Produce All** as in your flow).
+2. The system:
+   - Completes the MO and posts standard inventory moves/valuation.
+   - If there are timesheet lines with a positive labor cost and labor has not been posted yet, it creates **one** journal entry:
+     - **Debit**: Stock Valuation account (of the finished product’s category).
+     - **Credit**: Production Labor Expense Account.
+3. Labor is posted only **once** per MO. The link to the journal entry appears on the MO (**Timesheet Labor Journal Entry**).
 
----
+### 3.4 Checking labor cost and accounting
 
-### 4.2 What happens when you save a timesheet line
-
-```
-On save:
-  1. labor_cost = unit_amount × hourly_rate × multiplier
-  2. Check accounts: WIP, Clearing, Journal (project → workcenter → company)
-  3. If all three are configured:
-       DR  Labor WIP Account    (e.g. 510100)    +labor_cost
-       CR  Labor Clearing Acct  (e.g. 215100)    +labor_cost
-  4. JE is posted immediately, analytic distribution set to MO's analytic account
-  5. labor_move_id links the timesheet line to the JE
-```
+- On the MO: **Timesheet Labor Cost** shows the total labor from timesheets; **Timesheet Labor Journal Entry** opens the posted move.
+- In **Accounting**: find the journal entry by reference (e.g. “MO WH-MO00042 – Timesheet labor”) or via the link on the MO.
 
 ---
 
-### 4.3 Editing a timesheet line
-
-If you change **Hours**, **Employee**, **Is Overtime**, **Is Holiday**, **Product**, or **Date** on a saved line:
-
-1. The existing JE is **automatically reversed** (a reversal entry is posted).
-2. A **new JE** is created with the corrected amount.
-
-You can see both the original JE and its reversal in **Accounting → Journal Entries** filtered by reference `LABOR/...` and `REV/LABOR/...`.
-
----
-
-### 4.4 Deleting a timesheet line
-
-Deleting a line triggers an automatic reversal of its JE first, keeping the ledger clean.
-
----
-
-### 4.5 Audit trail
-
-Every JE narration includes:
-
-```
-Employee: Ahmed Al-Rashid | Hours: 4.00 | Type: Overtime | Cost: 600.00 SAR | Triggered by: Ahmed (uid=12)
-```
-
-Reversal narration:
-```
-Reversal of labor JE for timesheet: Assembly step 3 | Triggered by: Ahmed (uid=12)
-```
-
----
-
-### 4.6 When MO is marked Done
-
-When you click **Mark as Done**, the module runs a reconciliation pass (`_post_timesheet_labor_cost_if_any`) that checks for any timesheet lines without a JE (e.g. lines added before accounts were configured) and generates their JEs at that point.
-
-This is a safety net — in normal usage JEs are already created in real time as lines are saved.
-
----
-
-## 5. Checking the Clearing Account Balance
-
-`Manufacturing → Reporting → Labor Clearing Balance Check`
-
-This wizard shows:
-
-| Column | Description |
-|--------|-------------|
-| **Period** | Calendar month |
-| **Accrued (CR)** | Total credited by timesheet JEs (Step 1) |
-| **Cleared by Payroll (DR)** | Total debited by payroll JEs (Step 2) |
-| **Outstanding** | CR − DR. Should be 0 after payroll runs. |
-
-A positive outstanding means payroll has not yet cleared the accrual for that period.
-
----
-
-## 6. Smart Button on MO
-
-On the Manufacturing Order form, a **Labor Cost** smart button appears (visible to Accounting users) when the MO has timesheet lines. It shows the total labor cost at a glance.
-
----
-
-## 7. Where to Find Everything
+## 4. Where to find what
 
 | What | Where |
-|------|-------|
-| Labor WIP Account | Settings → Companies → Labor Cost Accounting tab |
-| Labor Clearing Account | Settings → Companies → Labor Cost Accounting tab |
-| Labor Cost Journal | Settings → Companies → Labor Cost Accounting tab |
-| Overtime/Holiday multipliers | Settings → Companies → Labor Cost Accounting tab |
-| Employee Hourly Cost | Employees → [Employee] → HR Settings tab |
-| Per-project JE toggle | Project → [Project] → Settings tab |
-| Workcenter account override | Manufacturing → Configuration → Work Centers → Costing tab |
-| Timesheets tab on MO | Manufacturing Order form → Timesheets tab |
-| Labor Cost (per line) | Timesheets tab → Labor Cost column (optional) |
-| JE link (per line) | Timesheets tab → JE column (optional) |
-| Total labor cost | MO form → Timesheet Labor Cost field |
-| Labor JE | Accounting → Journal Entries → search "LABOR/" |
-| Reversal JE | Accounting → Journal Entries → search "REV/LABOR/" |
-| Clearing balance | Manufacturing → Reporting → Labor Clearing Balance Check |
+|------|--------|
+| Production Labor Expense Account | Settings → Companies → [Company] |
+| Stock Journal | Settings → Companies → [Company] (or product category) |
+| Hourly Cost (employee) | Employees → [Employee] → after Job Position |
+| Analytic Account (per MO) | Manufacturing Order form → after Product |
+| Timesheets tab | Manufacturing Order form → “Timesheets” tab |
+| Timesheet Labor Cost | Manufacturing Order form → near Analytic Account |
+| Timesheet Labor Journal Entry | Manufacturing Order form → link to the posted move |
 
 ---
 
-## 8. Troubleshooting
+## 5. Tips
 
-| Symptom | Cause | Fix |
-|---------|-------|-----|
-| Timesheet saved but no JE created | Accounts not configured | Set WIP + Clearing accounts and Journal on company |
-| JE created but wrong amount | Employee hourly_cost = 0 | Set Hourly Cost on the employee form |
-| Multiplier not applied | Wrong flag or multiplier = 1.0 | Tick Is Overtime / Is Holiday on the line; check company multiplier values |
-| JE in wrong account | No project/workcenter override needed | Remove the override or correct the hierarchy |
-| Clearing balance non-zero | Payroll not yet run for that period | Normal — it will be cleared when payroll posts |
-| Cannot see Labor Cost tab | Not in Accounting group | Ask your admin for Accounting / Manager access |
-| Constraint error on accounts | WIP and Clearing set to same account | They must be different accounts |
-| Constraint error on clearing account type | Account type is not a liability | Use a Current Liability or Payable account for the clearing account |
+- Set **Hourly Cost** for all employees who log time on MOs so labor cost is accurate.
+- Use a **dedicated analytic account** per project or production line to analyze time and cost by MO.
+- Labor is posted when you **Mark as Done**. To correct or re-post, you would need to reverse the labor move and reset the MO (or handle corrections in accounting); the module does not allow posting labor twice on the same MO.
+- If you use **work orders** with work center costing, that cost is separate; this module adds **additional** cost from the **Timesheets** tab (e.g. for non-routed labor or overtime).
+
+---
+
+## 6. Troubleshooting
+
+| Problem | What to check |
+|---------|----------------|
+| “Please set the Production labor expense account…” | Set **Production Labor Expense Account** on the company. |
+| “No Stock Journal configured…” | Set **Stock Journal** on the company (or category). |
+| “The product category … has no Stock Valuation Account” | Set **Stock Valuation Account** on the finished product’s category (Inventory valuation). |
+| Timesheet Labor Cost is 0 | Ensure **Hourly Cost** is set on the employee (or **Amount** / **Product** on the line). |
+| Labor not posted | Ensure the MO was **Marked as Done** and that **Timesheet Labor Cost** &gt; 0 before marking done. Labor is only posted once per MO. |

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 from odoo.tools import float_round
 
 
@@ -51,22 +52,17 @@ class MrpProduction(models.Model):
         for order in self:
             order.timesheet_count = len(order.timesheet_ids)
 
-    @api.depends(
-        'timesheet_ids',
-        'timesheet_ids.labor_cost',
-        'timesheet_ids.unit_amount',
-        'timesheet_ids.employee_id',
-        'timesheet_ids.is_overtime',
-        'timesheet_ids.is_holiday',
-    )
+    @api.depends('timesheet_ids', 'timesheet_ids.unit_amount', 'timesheet_ids.employee_id', 'timesheet_ids.product_id', 'timesheet_ids.amount')
     def _compute_timesheet_labor_cost(self):
         for order in self:
             order.timesheet_labor_cost = order._get_timesheet_labor_total()
 
     def _get_timesheet_labor_total(self):
-        """Sum labor_cost from all timesheet lines (uses Step 2 computed field)."""
+        """Compute total labor cost from timesheet lines (hours × hourly cost per line)."""
         self.ensure_one()
-        total = sum(self.timesheet_ids.mapped('labor_cost'))
+        total = 0.0
+        for line in self.timesheet_ids:
+            total += line._get_timesheet_labor_cost_for_production()
         return float_round(total, precision_digits=self.company_id.currency_id.decimal_places)
 
     def _post_inventory(self, cancel_backorder=False):
@@ -76,27 +72,68 @@ class MrpProduction(models.Model):
         return res
 
     def _post_timesheet_labor_cost_if_any(self):
-        """Task 69 – Reconciliation mode: generate JEs for all unposted timesheet lines.
-
-        Called automatically by _post_inventory() when MO is marked Done.
-        - Skips lines that already have a labor_move_id (idempotent).
-        - Sets timesheet_cost_posted = True only when at least one JE is posted.
-        - Re-entrant safe: lines already posted via the real-time trigger (Step 4)
-          are skipped silently, so this serves as a reconciliation pass.
-        """
+        """Create a journal entry for timesheet labor cost when MO is done (only once)."""
         self.ensure_one()
-        if not self.timesheet_ids:
+        if self.timesheet_cost_posted or not self.timesheet_ids:
+            return
+        labor_total = self._get_timesheet_labor_total()
+        if labor_total <= 0:
             return
 
-        posted_count = 0
-        for line in self.timesheet_ids:
-            if line.labor_move_id:
-                # Already posted by real-time trigger — count it
-                posted_count += 1
-                continue
-            move = line._generate_labor_cost_move()
-            if move:
-                posted_count += 1
+        company = self.company_id
+        labor_account = company.production_labor_expense_account_id
+        if not labor_account:
+            raise UserError(
+                'Please set the "Production labor expense account" in Accounting settings '
+                '(or in Company) to post timesheet labor cost.'
+            )
 
-        if posted_count and not self.timesheet_cost_posted:
-            self.with_context(skip_labor_je=True).write({'timesheet_cost_posted': True})
+        # Use the finished product's stock valuation account for the debit (increase inventory value)
+        finished_product = self.product_id
+        if not finished_product:
+            return
+        stock_valuation_account = finished_product.categ_id.property_stock_valuation_account_id
+        if not stock_valuation_account:
+            raise UserError(
+                'The product category "%s" has no Stock Valuation Account. '
+                'Configure it to post timesheet labor cost.'
+                % finished_product.categ_id.name
+            )
+
+        journal = company.account_stock_journal_id
+        if not journal:
+            raise UserError(
+                'No Stock Journal configured for company "%s". Set it in Settings > Companies or in Inventory settings.'
+                % company.name
+            )
+        # Create one JE: Debit Stock Valuation (inventory), Credit Labor expense
+        move_vals = {
+            'move_type': 'entry',
+            'date': self.date_finished or fields.Date.context_today(self),
+            'journal_id': journal.id,
+            'company_id': company.id,
+            'ref': 'MO %s – Timesheet labor' % self.name,
+            'line_ids': [
+                (0, 0, {
+                    'name': 'Timesheet labor – %s' % self.name,
+                    'account_id': stock_valuation_account.id,
+                    'debit': labor_total,
+                    'credit': 0.0,
+                    'currency_id': company.currency_id.id,
+                }),
+                (0, 0, {
+                    'name': 'Timesheet labor – %s' % self.name,
+                    'account_id': labor_account.id,
+                    'debit': 0.0,
+                    'credit': labor_total,
+                    'currency_id': company.currency_id.id,
+                }),
+            ],
+        }
+        account_move = self.env['account.move'].create(move_vals)
+        account_move._post()
+
+        self.write({
+            'timesheet_cost_posted': True,
+            'timesheet_labor_move_id': account_move.id,
+        })

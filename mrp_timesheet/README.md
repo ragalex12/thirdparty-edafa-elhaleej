@@ -1,163 +1,65 @@
-# Manufacturing Timesheet — Labor Cost Integration
+# Manufacturing Timesheet
 
-Integrates timesheet time-tracking with Manufacturing Orders in Odoo 19 and automatically posts **real-time labor cost journal entries** to the General Ledger using a two-step payroll reconciliation model.
-
----
-
-## Features
-
-| Feature | Description |
-|---------|-------------|
-| Timesheet tab on MO | Log employee hours directly on a Manufacturing Order |
-| Real-time JE generation | Each saved timesheet line creates Debit WIP / Credit Clearing JE immediately |
-| Overtime & Holiday rates | Per-line flags apply company-configured rate multipliers (1.5× / 2.0×) |
-| Per-project JEs | Projects can opt-in to generate JEs without needing an MO |
-| Account override hierarchy | Project → Workcenter → Company default |
-| JE reversal on edit/delete | Changing or deleting a line automatically reverses the prior JE |
-| Clearing balance wizard | Manufacturing → Reporting → Labor Clearing Balance Check |
-| Security | `sudo()` for JE creation, caller audit trail in narration, multi-company `ir.rule` |
-
----
+Adds a **Timesheet** tab on the Manufacturing Order form to view and log time spent on each MO, and **posts timesheet labor cost to production cost** when the MO is done.
 
 ## Dependencies
 
-- `mrp` — Manufacturing
-- `hr_timesheet` — Timesheets
-- `stock_account` — Inventory valuation / journals
-- `hr` — Employees
-- `project` — Projects (for project-based JEs)
-
----
+- **mrp** (Manufacturing)
+- **hr_timesheet** (Timesheets)
+- **stock_account** (Inventory valuation, for labor cost journal entry)
 
 ## Installation
 
-1. Copy this folder into your Odoo addons path (`localaddons/` or `addons/`).
-2. Restart Odoo.
-3. Update the app list and install **Manufacturing Timesheet**.
-
----
+1. Copy this folder into your Odoo addons path (e.g. `addons` or `localaddons`).
+2. Update the app list and install **Manufacturing Timesheet**.
 
 ## Configuration
 
-### Task 91 – Accounting Setup
+1. **Production labor expense account**  
+   Go to **Settings → Companies → [Your company]** and set **Production Labor Expense Account**. This account is **credited** when timesheet labor cost is posted (inventory is debited). Use an expense account (e.g. “Production labor” or “WIP labor”).
 
-Before using the labor cost features you must configure three accounts and one journal on your company.
+2. **Stock journal**  
+   Required for posting labor (same as for inventory valuation). Set **Stock Journal** on the company or on the product category if not already set.
 
-#### Step 1 — Open company settings
+3. **Employee hourly cost** (optional)  
+   This module adds **Hourly Cost** on the **Employee** form (after Job Position) because it is not in Community by default. Set it per employee for labor cost calculation. If not set, the timesheet line’s **Product** cost or **amount** is used.
 
-`Settings → Companies → [Your Company] → Labor Cost Accounting tab`
+## Features
 
-> This tab is visible only to users in the **Accounting / Administrator** group.
+### 1. Timesheet tracking on Manufacturing Orders
+1. Open a Manufacturing Order.
+2. Set **Analytic Account** on the MO (optional; required to log time).
+3. Open the **Timesheets** tab: add lines (date, user/employee, description, hours).
+4. **Timesheet Labor Cost** is computed automatically (hours × employee/product hourly cost or line amount).
+5. When you **Mark as Done** (Produce All), a **journal entry** is created once:  
+   - **Debit** Stock Valuation (finished product category)  
+   - **Credit** Production Labor Expense Account  
+   So the time consumed **affects production cost** (inventory value increases by labor).
 
-#### Step 2 — Set the three accounts
-
-| Field | Account type | Purpose |
-|-------|-------------|---------|
-| **Labor WIP Account** | Asset (WIP / Current Asset) | **Debited** when a timesheet line is saved. Represents direct labor absorbed into production cost. Example: `510100 – Manufacturing WIP` |
-| **Labor Clearing Account** | Liability (Current Liability / Payable) | **Credited** when a timesheet line is saved. Cleared when payroll runs. Example: `215100 – Payroll Accrual` |
-| **Labor Cost Journal** | General / Miscellaneous | Journal used for automatic labor JEs. Falls back to the company stock journal if not set. |
-
-#### Step 3 — Set rate multipliers (optional)
-
-| Field | Default | Purpose |
-|-------|---------|---------|
-| Overtime Rate Multiplier | 1.5 | Applied when `Is Overtime` is ticked on a timesheet line |
-| Holiday Rate Multiplier | 2.0 | Applied when `Is Holiday` is ticked (takes precedence over overtime) |
-
-#### Step 4 — Set employee hourly cost
-
-`Employees → [Employee] → HR Settings → Hourly Cost`
-
-Priority: `employee.hourly_cost` → `employee.timesheet_cost` → `product.standard_price`
-
----
-
-## Two-step Payroll Reconciliation Flow
-
-```
-Step 1 – Timesheet saved (this module)
-  DR  Labor WIP Account         510100   +200 SAR
-  CR  Labor Clearing Account    215100   +200 SAR
-      (Payroll not yet run — accrual sits on clearing)
-
-Step 2 – Payroll confirmed (hr_payroll_account)
-  DR  Labor Clearing Account    215100   −200 SAR   ← cancels Step 1 accrual
-  CR  Wages Payable / Bank      310100   +200 SAR   ← actual cash obligation
-```
-
-**Net result after both steps:**
-- Clearing account balance = **0** (fully reconciled)
-- WIP carries the true direct labor cost
-- Wages Payable / Bank reflects cash owed to employees
-
-Use **Manufacturing → Reporting → Labor Clearing Balance Check** to monitor the outstanding balance on the clearing account at any time.
-
----
-
-## Per-project Labor JEs (without MO)
-
-1. Open a project: `Project → [Project] → Settings tab → Labor Cost Accounting`
-2. Enable **Generate Labor Journal Entries**
-3. Optionally set account overrides (override the company defaults for this project)
-4. Any timesheet line saved on this project will now auto-generate a JE
-
----
-
-## Account Override Hierarchy
-
-For each JE the system resolves accounts in this order:
-
-```
-1. Project override   (project.labor_wip_account_id / labor_clearing_account_id)
-2. Workcenter override (mrp.workcenter.labor_account_id — WIP only)
-3. Company default    (res.company.labor_wip_account_id / labor_clearing_account_id)
-```
-
----
-
-## Audit Trail
-
-Every auto-generated JE narration includes the real caller's identity before `sudo()` is applied:
-
-```
-Employee: Ahmed Al-Rashid | Hours: 4.00 | Type: Regular | Cost: 400.00 SAR | Triggered by: Ahmed (uid=12)
-```
-
-Reversals include:
-```
-Reversal of labor JE for timesheet: Assembly step 3 | Triggered by: Ahmed (uid=12)
-```
-
----
-
-## Security
-
-| Layer | Mechanism |
-|-------|-----------|
-| UI visibility | `groups="account.group_account_manager"` on all account config fields |
-| JE creation | `sudo()` — manufacturing workers don't need accounting rights |
-| Audit | Real caller name + uid embedded in JE narration before sudo() |
-| Multi-company | Global `ir.rule` prevents cross-company MO timesheet access |
-| Field integrity | `check_company=True` on all `Many2one` account fields |
-
----
-
-## Models
-
-| Model | Added fields |
-|-------|-------------|
-| `res.company` | `labor_wip_account_id`, `labor_clearing_account_id`, `labor_cost_journal_id`, `overtime_rate_multiplier`, `holiday_rate_multiplier` |
-| `hr.employee` | `hourly_cost` |
-| `mrp.production` | `analytic_account_id`, `timesheet_ids`, `timesheet_labor_cost`, `timesheet_cost_posted`, `timesheet_labor_move_id` |
-| `account.analytic.line` | `mrp_production_id`, `is_overtime`, `is_holiday`, `labor_cost`, `labor_move_id` |
-| `project.project` | `generate_labor_je`, `labor_wip_account_id` (override), `labor_clearing_account_id` (override) |
-| `mrp.workcenter` | `labor_account_id` (WIP override) |
-| `mrp.labor.clearing.check.wizard` | Balance check wizard |
-
----
+### 2. Update product cost from BoM (Materials + Labor)
+1. Go to **Manufacturing → Configuration → Bills of Materials**.
+2. Open a BoM.
+3. Click the **"Update Cost (Materials + Labor)"** button (top-right, calculator icon).
+4. The system:
+   - Explodes the BoM to calculate **total material cost** from all components.
+   - Queries past completed MOs to calculate **average labor cost per unit** from timesheets.
+   - Updates the product's **Cost** (`standard_price`) = (material + labor) / quantity.
+   - Posts a detailed breakdown to the product's chatter (material breakdown, labor average, old vs new cost).
+5. Use this to keep product costs accurate based on actual production data.
 
 ## Documentation
 
-- **[User Guide](docs/USER_GUIDE.md)** — Step-by-step for accountants and production managers
-- **[Use Cases](docs/USE_CASES.md)** — Real-world scenarios with journal entry examples
-- **[Developer Guide](docs/OPENPROJECT_SETUP_GUIDE.md)** — OpenProject setup and infrastructure notes
+- **[User Guide](docs/USER_GUIDE.md)** – Configuration, daily use, where to find settings and fields, troubleshooting.
+- **[Use case examples](docs/USE_CASES.md)** – Typical scenarios (custom assembly, different rates per employee, mixing work-center and timesheet labor, reviewing cost before closing, etc.).
+
+## Technical
+
+- **Models:** 
+  - `mrp.production`: analytic_account_id, timesheet_ids, timesheet_labor_cost, timesheet_cost_posted, timesheet_labor_move_id
+  - `mrp.bom`: action_update_cost_from_bom_and_labor()
+  - `account.analytic.line`: mrp_production_id, _get_timesheet_labor_cost_for_production()
+  - `hr.employee`: hourly_cost (added for Community)
+  - `res.company`: production_labor_expense_account_id
+- **Labor cost:** Sum over lines of `amount` (if set) or `unit_amount ×` (employee hourly cost or product cost).
+- **MO posting:** Override of `_post_inventory`; creates one posted account.move for timesheet labor.
+- **BoM cost update:** Uses `bom.explode()` for materials + query past MOs for avg labor, updates `product.standard_price`.
