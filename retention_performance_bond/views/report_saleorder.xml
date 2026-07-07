@@ -11,15 +11,15 @@
             <tbody>
               <tr>
                 <td>Contract No</td>
-                <td><span t-esc="o.contract_ref or ''"/></td>
+                <td><span t-esc="doc.contract_ref or ''"/></td>
                 <td>PO No</td>
-                <td><span t-esc="o.po_ref or ''"/></td>
+                <td><span t-esc="doc.po_ref or ''"/></td>
               </tr>
               <tr>
                 <td>Inv Ref</td>
-                <td><span t-esc="o.invoice_ref or ''"/></td>
+                <td><span t-esc="doc.invoice_ref or ''"/></td>
                 <td>Covered Period</td>
-                <td><span t-esc="o.covered_period or ''"/></td>
+                <td><span t-esc="doc.covered_period or ''"/></td>
               </tr>
             </tbody>
           </table>
@@ -31,21 +31,21 @@
             <tbody>
               <tr>
                 <td>Gross (Untaxed)</td>
-                <td><span t-field="o.gross_untaxed"/></td>
+                <td><span t-field="doc.gross_untaxed"/></td>
                 <td></td>
                 <td></td>
               </tr>
               <tr>
                 <td>Tax Base After Deductions</td>
-                <td><span t-field="o.tax_base_after_deductions"/></td>
+                <td><span t-field="doc.tax_base_after_deductions"/></td>
                 <td>Tax</td>
-                <td><span t-field="o.amount_tax"/></td>
+                <td><span t-field="doc.amount_tax"/></td>
               </tr>
               <tr>
                 <td>Total</td>
-                <td><span t-field="o.amount_total"/></td>
+                <td><span t-field="doc.amount_total"/></td>
                 <td>Net Collect Now</td>
-                <td><span t-field="o.net_collect_now"/></td>
+                <td><span t-field="doc.net_collect_now"/></td>
               </tr>
             </tbody>
           </table>
@@ -57,15 +57,15 @@
             <tbody>
               <tr>
                 <td>Performance Bond %</td>
-                <td><span t-esc="'{:.2f}'.format((o.performance_bond_percent or 0.0) * 100)"/>%</td>
+                <td><span t-esc="'{:.2f}'.format((doc.performance_bond_percent or 0.0) * 100)"/>%</td>
                 <td>Performance Bond Amount</td>
-                <td><span t-field="o.performance_bond_amount"/></td>
+                <td><span t-field="doc.performance_bond_amount"/></td>
               </tr>
               <tr>
                 <td>Retention %</td>
-                <td><span t-esc="'{:.2f}'.format((o.retention_percent or 0.0) * 100)"/>%</td>
+                <td><span t-esc="'{:.2f}'.format((doc.retention_percent or 0.0) * 100)"/>%</td>
                 <td>Retention Amount</td>
-                <td><span t-field="o.retention_amount"/></td>
+                <td><span t-field="doc.retention_amount"/></td>
               </tr>
             </tbody>
           </table>
