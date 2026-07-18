@@ -55,11 +55,10 @@ def _main():
     )
 
     # --- Analytic + project
+    # account.analytic.plan has no company_id in Odoo 19.
     plan = env["account.analytic.plan"].search([], limit=1)
     if not plan:
-        plan = env["account.analytic.plan"].create(
-            {"name": "GPC Demo Plan", "company_id": company.id}
-        )
+        plan = env["account.analytic.plan"].create({"name": "GPC Demo Plan"})
     analytic = env["account.analytic.account"].search(
         [("name", "=", DEMO_TAG), ("company_id", "in", [False, company.id])], limit=1
     )
@@ -94,7 +93,7 @@ def _main():
     if not product:
         raise RuntimeError("No storable product found — add a storable product first.")
 
-    # Ensure positive cost basis
+    # Ensure a positive standard cost so SVLs are non-zero.
     if not product.standard_price:
         product.standard_price = 10.0
 
@@ -103,44 +102,36 @@ def _main():
     qty_out = 2.0
     unit_cost = 5.0
 
-    # --- Receipt (stock in)
-    in_move = env["stock.move"].create(
-        {
-            "product_id": product.id,
-            "location_id": sup_loc.id,
-            "location_dest_id": stock_loc.id,
-            "product_uom": uom.id,
-            "product_uom_qty": qty_in,
-            "picking_type_id": ptype_in.id,
-            "price_unit": unit_cost,
-            "value_manual": unit_cost * qty_in,
-        }
-    )
+    # --- Receipt (stock in) — use picking-based workflow so SVLs are created correctly.
     in_pick = env["stock.picking"].create(
         {
             "picking_type_id": ptype_in.id,
             "location_id": sup_loc.id,
             "location_dest_id": stock_loc.id,
             "company_id": company.id,
+            "move_ids": [
+                Command.create(
+                    {
+                        "name": product.display_name,
+                        "product_id": product.id,
+                        "product_uom": uom.id,
+                        "product_uom_qty": qty_in,
+                        "location_id": sup_loc.id,
+                        "location_dest_id": stock_loc.id,
+                        "price_unit": unit_cost,
+                    }
+                )
+            ],
         }
     )
-    in_move.picking_id = in_pick.id
-    in_move._action_confirm()
-    in_move._action_assign()
-    in_move.picked = True
-    in_move._action_done()
+    in_pick.action_confirm()
+    in_pick.action_assign()
+    for move in in_pick.move_ids:
+        move.quantity = move.product_uom_qty
+        move.picked = True
+    in_pick.button_validate()
 
     # --- Delivery (stock out) — done picking with GPC fields
-    out_move = env["stock.move"].create(
-        {
-            "product_id": product.id,
-            "location_id": stock_loc.id,
-            "location_dest_id": cust_loc.id,
-            "product_uom": uom.id,
-            "product_uom_qty": qty_out,
-            "picking_type_id": ptype_out.id,
-        }
-    )
     out_pick = env["stock.picking"].create(
         {
             "picking_type_id": ptype_out.id,
@@ -149,14 +140,26 @@ def _main():
             "company_id": company.id,
             "gpc_issue_project_id": project.id,
             "gpc_issue_analytic_account_id": analytic.id,
+            "move_ids": [
+                Command.create(
+                    {
+                        "name": product.display_name,
+                        "product_id": product.id,
+                        "product_uom": uom.id,
+                        "product_uom_qty": qty_out,
+                        "location_id": stock_loc.id,
+                        "location_dest_id": cust_loc.id,
+                    }
+                )
+            ],
         }
     )
-    out_move.picking_id = out_pick.id
-    out_move._action_confirm()
-    out_move._action_assign()
-    out_move.quantity = qty_out
-    out_move.picked = True
-    out_move._action_done()
+    out_pick.action_confirm()
+    out_pick.action_assign()
+    for move in out_pick.move_ids:
+        move.quantity = move.product_uom_qty
+        move.picked = True
+    out_pick.button_validate()
 
     env.cr.commit()
 

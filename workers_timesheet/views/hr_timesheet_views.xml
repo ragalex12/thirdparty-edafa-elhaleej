@@ -1,15 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <!--
-        NOTE:
-        Your Odoo instance doesn't have the standard hr_timesheet view XMLIDs
-        (form/tree/search) that this module used to inherit from.
-        To avoid installation failures, we temporarily ship no view inheritance here.
+        <!-- Odoo 19: inherit hr_timesheet views (XML IDs from hr_timesheet/views/hr_timesheet_views.xml) -->
 
-        After installation, enable developer mode, open the timesheet views and copy
-        their External IDs, then we can re-add inherited views targeting the correct XMLIDs.
-        -->
+        <record id="workers_timesheet_view_account_analytic_line_tree" model="ir.ui.view">
+            <field name="name">account.analytic.line.list.workers.timesheet</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='unit_amount']" position="after">
+                    <field name="work_status" optional="show" readonly="readonly_timesheet"/>
+                    <field name="worker_sheet_code" optional="show" readonly="readonly_timesheet"/>
+                    <field name="metre_quantity" optional="hide" readonly="readonly_timesheet"/>
+                    <field name="include_in_payroll" optional="show" readonly="readonly_timesheet"/>
+                    <field name="department_id" optional="hide" readonly="1"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="workers_timesheet_view_account_analytic_line_form" model="ir.ui.view">
+            <field name="name">account.analytic.line.form.workers.timesheet</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="inside">
+                    <group string="Worker &amp; payroll" col="2">
+                        <field name="work_status" readonly="readonly_timesheet"/>
+                        <field name="worker_sheet_code" readonly="readonly_timesheet"/>
+                        <field name="metre_quantity" readonly="readonly_timesheet"
+                            invisible="worker_sheet_code != 'C'"/>
+                        <field name="include_in_payroll" readonly="readonly_timesheet"/>
+                        <field name="department_id" readonly="1"/>
+                    </group>
+                    <label for="work_note" string="Work note"/>
+                    <field name="work_note" nolabel="1" placeholder="Notes about the work performed"
+                        readonly="readonly_timesheet"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="workers_timesheet_view_account_analytic_line_search" model="ir.ui.view">
+            <field name="name">account.analytic.line.search.workers.timesheet</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='task_id']" position="after">
+                    <field name="work_status"/>
+                    <field name="worker_sheet_code"/>
+                    <field name="include_in_payroll"/>
+                </xpath>
+                <xpath expr="//filter[@name='mine']" position="after">
+                    <separator/>
+                    <filter name="work_status_normal" string="Normal hours" domain="[('work_status', '=', 'normal')]"/>
+                    <filter name="work_status_overtime" string="Overtime" domain="[('work_status', '=', 'overtime')]"/>
+                    <filter name="work_status_holiday" string="Holiday" domain="[('work_status', '=', 'holiday')]"/>
+                    <separator/>
+                    <filter name="in_payroll" string="In payroll" domain="[('include_in_payroll', '=', True)]"/>
+                    <filter name="not_in_payroll" string="Not in payroll" domain="[('include_in_payroll', '=', False)]"/>
+                </xpath>
+                <xpath expr="//group[@name='groupby']" position="inside">
+                    <filter string="Work status" name="groupby_work_status" domain="[]" context="{'group_by': 'work_status'}"/>
+                    <filter string="Worker sheet code" name="groupby_worker_sheet_code" domain="[]" context="{'group_by': 'worker_sheet_code'}"/>
+                </xpath>
+            </field>
+        </record>
     </data>
 </odoo>
-

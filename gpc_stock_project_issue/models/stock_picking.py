@@ -44,6 +44,7 @@ class StockPicking(models.Model):
     gpc_issue_move_state = fields.Selection(
         related="gpc_issue_move_id.state",
         string="GPC issue — entry state",
+        store=True,
         readonly=True,
     )
 
@@ -72,8 +73,10 @@ class StockPicking(models.Model):
         for picking in self:
             if picking.state != "done":
                 raise UserError(
-                    _("Only transfers in Done state can use GPC project issue. (Current state: %s)")
-                    % (picking.state,)
+                    _(
+                        "Only transfers in Done state can use GPC project issue. (Current state: %(state)s)",
+                        state=picking.state,
+                    )
                 )
             if not picking.picking_type_id.gpc_project_issue_enabled:
                 raise UserError(
@@ -246,7 +249,8 @@ class StockPicking(models.Model):
             _("Valued amount: %(amount)s %(currency)s", amount=total_value, currency=currency.name),
             _("Included moves: %(count)s", count=len(basis["included_moves"])),
         ]
-        narration = "\n".join(narration_parts)
+        # account.move.narration is an HTML field in Odoo 19; use <br/> for line breaks.
+        narration = "<br/>".join(narration_parts)
         analytic = self.gpc_issue_analytic_account_id
         debit_line = {
             "account_id": debit_account.id,
@@ -276,6 +280,9 @@ class StockPicking(models.Model):
                 Command.create(credit_line),
             ],
         }
+        # sudo() is required here: stock users (group_stock_user) do not normally have
+        # create access on account.move.  The eligibility and accounting-config guards
+        # above ensure the entry is only created in valid, company-safe conditions.
         Move = self.env["account.move"].sudo().with_company(company)
         move = Move.create(move_vals)
         self.gpc_issue_move_id = move

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Allowances from contract -->
+        <record id="gulf_rule_travel_allowance" model="hr.salary.rule">
+            <field name="name">Travel Allowance</field>
+            <field name="sequence" eval="10"/>
+            <field name="code">GULF_TRAVEL</field>
+            <field name="category_id" ref="hr_payroll_community.ALW"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.travel_allowance or 0.0</field>
+        </record>
+        <record id="gulf_rule_other_allowance" model="hr.salary.rule">
+            <field name="name">Other Allowance</field>
+            <field name="sequence" eval="11"/>
+            <field name="code">GULF_OTHER_ALW</field>
+            <field name="category_id" ref="hr_payroll_community.ALW"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.other_allowance or 0.0</field>
+        </record>
+        <!-- Variable inputs per payslip period -->
+        <record id="gulf_rule_overtime" model="hr.salary.rule">
+            <field name="name">Overtime</field>
+            <field name="sequence" eval="20"/>
+            <field name="code">GULF_OT</field>
+            <field name="category_id" ref="hr_payroll_community.ALW"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = (inputs.OT_AMT and inputs.OT_AMT.amount) or 0.0</field>
+        </record>
+        <record id="gulf_rule_bonus" model="hr.salary.rule">
+            <field name="name">Bonus / Increase</field>
+            <field name="sequence" eval="21"/>
+            <field name="code">GULF_BONUS</field>
+            <field name="category_id" ref="hr_payroll_community.ALW"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = (inputs.BONUS and inputs.BONUS.amount) or 0.0</field>
+        </record>
+        <record id="gulf_rule_deduction" model="hr.salary.rule">
+            <field name="name">Other Deduction</field>
+            <field name="sequence" eval="50"/>
+            <field name="code">GULF_DED</field>
+            <field name="category_id" ref="hr_payroll_community.DED"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = -((inputs.DED_OTHER and inputs.DED_OTHER.amount) or 0.0)</field>
+        </record>
+        <record id="gulf_input_ot" model="hr.rule.input">
+            <field name="code">OT_AMT</field>
+            <field name="name">Overtime Amount</field>
+            <field name="input_id" ref="gulf_rule_overtime"/>
+        </record>
+        <record id="gulf_input_bonus" model="hr.rule.input">
+            <field name="code">BONUS</field>
+            <field name="name">Bonus / Increase</field>
+            <field name="input_id" ref="gulf_rule_bonus"/>
+        </record>
+        <record id="gulf_input_ded" model="hr.rule.input">
+            <field name="code">DED_OTHER</field>
+            <field name="name">Other Deduction</field>
+            <field name="input_id" ref="gulf_rule_deduction"/>
+        </record>
+        <record id="structure_gulf_standard" model="hr.payroll.structure">
+            <field name="code">GULF</field>
+            <field name="name">Gulf Standard Payroll</field>
+            <field name="parent_id" ref="hr_payroll_community.structure_base"/>
+            <field eval="[(6, 0, [ref('gulf_rule_travel_allowance'), ref('gulf_rule_other_allowance'), ref('gulf_rule_overtime'), ref('gulf_rule_bonus'), ref('gulf_rule_deduction')])]" name="rule_ids"/>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+        <record id="contract_template_gulf_uat" model="hr.version">
+            <field name="name">Gulf Payroll Template UAT</field>
+            <field name="struct_id" ref="structure_gulf_standard"/>
+            <field name="wage" eval="10000.0"/>
+            <field name="travel_allowance" eval="500.0"/>
+            <field name="other_allowance" eval="200.0"/>
+            <field name="schedule_pay">monthly</field>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+    </data>
+</odoo>

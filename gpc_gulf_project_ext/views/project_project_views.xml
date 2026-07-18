@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="project_project_view_form_gpc_gulf" model="ir.ui.view">
+        <field name="name">project.project.form.gpc.gulf</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="itech_construction_project.project_details_view_inherit_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='project_valuebvat']" position="before">
+                <field name="contract_amount" groups="project.group_project_manager"/>
+            </xpath>
+            <xpath expr="//field[@name='project_valuebvat']" position="attributes">
+                <attribute name="groups">project.group_project_manager</attribute>
+            </xpath>
+            <xpath expr="//field[@name='project_valueavat']" position="attributes">
+                <attribute name="groups">project.group_project_manager</attribute>
+            </xpath>
+            <xpath expr="//page[.//field[@name='project_valuebvat']]" position="attributes">
+                <attribute name="groups">project.group_project_manager</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

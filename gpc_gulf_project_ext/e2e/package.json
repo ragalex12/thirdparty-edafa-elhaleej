@@ -1,0 +1,15 @@
+{
+  "name": "gpc-gulf-project-ext-e2e",
+  "private": true,
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:screenshots": "playwright test tests/gulf-project-phase1-screenshots.spec.ts",
+    "test:legacy-assets": "playwright test tests/legacy-asset-import-verification.spec.ts",
+    "seed": "sudo -u odoo odoo shell -c /etc/odoo/odoo.conf -d trgulf_Mrp --no-http < ../scripts/seed_playwright_data.py"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "dotenv": "^16.4.5"
+  }
+}

@@ -11,6 +11,7 @@ class AccountMove(models.Model):
         comodel_name="stock.picking",
         string="Project issue picking",
         copy=False,
+        check_company=True,
         index=True,
         help="Picking this entry was generated for (Task 5 traceability).",
     )

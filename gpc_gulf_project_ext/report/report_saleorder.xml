@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_saleorder_document_gpc_gulf" inherit_id="sale.report_saleorder_document">
+        <xpath expr="//th[@name='th_description']" position="after">
+            <th name="th_length" class="text-end text-nowrap">Length</th>
+            <th name="th_width" class="text-end text-nowrap">W/H</th>
+            <th name="th_area" class="text-end text-nowrap">Area</th>
+        </xpath>
+        <xpath expr="//td[@name='td_product_name']" position="after">
+            <td name="td_length" class="text-end text-nowrap">
+                <span t-if="not line.display_type" t-esc="'%.2f' % (line.length_cm or 0.0)"/>
+            </td>
+            <td name="td_width" class="text-end text-nowrap">
+                <span t-if="not line.display_type" t-esc="'%.2f' % (line.width_cm or 0.0)"/>
+            </td>
+            <td name="td_area" class="text-end text-nowrap">
+                <span t-if="not line.display_type" t-esc="'%.4f' % (line.area_sqm or 1.0)"/>
+            </td>
+        </xpath>
+    </template>
+</odoo>

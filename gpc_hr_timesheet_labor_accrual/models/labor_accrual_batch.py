@@ -8,6 +8,9 @@ from odoo.exceptions import UserError, ValidationError
 
 _logger = logging.getLogger(__name__)
 
+# Set ir.config_parameter key to "1" to log per-line analytic resolution when generating draft moves.
+_DEBUG_ANALYTIC_PARAM = "gpc_hr_timesheet_labor_accrual.debug_analytic"
+
 
 class LaborAccrualBatch(models.Model):
     _name = "labor.accrual.batch"
@@ -260,8 +263,135 @@ class LaborAccrualBatch(models.Model):
             total = currency.round(total)
         return total
 
+    def _labor_accrual_analytic_debug_enabled(self):
+        return (
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param(_DEBUG_ANALYTIC_PARAM, "0")
+            in ("1", "true", "True", "yes", "Yes")
+        )
+
+    def _labor_accrual_log_analytic_resolution(
+        self,
+        batch_line,
+        ts,
+        project,
+        selected_aa,
+        source,
+        ts_account_ids,
+        project_account_ids,
+    ):
+        if not self._labor_accrual_analytic_debug_enabled():
+            return
+        _logger.info(
+            "Labor accrual analytic resolve | batch_id=%s batch_line_id=%s timesheet_id=%s "
+            "project_id=%s selected_analytic_account_id=%s source=%s "
+            "timesheet_analytic_account_ids=%s project_analytic_account_ids=%s",
+            self.id,
+            batch_line.id,
+            ts.id if ts else None,
+            project.id if project else None,
+            selected_aa.id if selected_aa else False,
+            source,
+            ts_account_ids,
+            project_account_ids,
+        )
+
+    def _get_single_analytic_account_for_labor_accrual_line(self, batch_line):
+        """Return (analytic_account | empty, source_label).
+
+        Business rule: **exactly one** analytic account per accrual source line.
+        Priority:
+          1. Timesheet line — ``_get_analytic_accounts()`` must contain 0 or 1 account;
+             if >1 → :class:`UserError` (no silent collapse / composite keys).
+          2. Project ``account_id`` (primary project analytic on ``project.project``).
+          3. Else other project plan columns via ``_get_analytic_accounts()`` — again 0 or 1 only.
+
+        Task / employee are **not** consulted here (timesheet already embeds project/task context in Odoo).
+
+        :returns: (record ``account.analytic.account`` or empty, str source tag)
+        """
+        self.ensure_one()
+        ts = batch_line.timesheet_line_id
+        project = batch_line.project_id
+        empty_aa = self.env["account.analytic.account"].browse()
+
+        if ts and hasattr(ts, "_get_analytic_accounts"):
+            ts_accs = ts._get_analytic_accounts()
+            ts_ids = ts_accs.ids
+            if len(ts_accs) > 1:
+                self._labor_accrual_log_analytic_resolution(
+                    batch_line, ts, project, empty_aa, "conflict_timesheet", ts_ids, []
+                )
+                raise UserError(
+                    _(
+                        "Labor accrual cannot build this journal entry: timesheet line “%(ts)s” "
+                        "resolves to multiple analytic accounts (%(ids)s). "
+                        "Business rule: one analytic account per accrual line. "
+                        "Split the timesheet or leave a single analytic on the line."
+                    )
+                    % {"ts": ts.display_name, "ids": ", ".join(map(str, ts_ids))}
+                )
+            if len(ts_accs) == 1:
+                aa = ts_accs[0]
+                self._labor_accrual_log_analytic_resolution(
+                    batch_line, ts, project, aa, "timesheet", ts_ids, []
+                )
+                return aa, "timesheet"
+
+        proj_ids = []
+        if project:
+            if project.account_id:
+                aa = project.account_id
+                self._labor_accrual_log_analytic_resolution(
+                    batch_line, ts, project, aa, "project.account_id", [], [aa.id]
+                )
+                return aa, "project.account_id"
+            if hasattr(project, "_get_analytic_accounts"):
+                paccs = project._get_analytic_accounts()
+                proj_ids = paccs.ids
+                if len(paccs) > 1:
+                    self._labor_accrual_log_analytic_resolution(
+                        batch_line, ts, project, empty_aa, "conflict_project", [], proj_ids
+                    )
+                    raise UserError(
+                        _(
+                            "Labor accrual cannot build this journal entry: project “%(proj)s” "
+                            "has multiple analytic accounts (%(ids)s) and no single "
+                            "“Project Account” (account_id) is set. "
+                            "Set one project analytic account or reduce analytic plans to one."
+                        )
+                        % {"proj": project.display_name, "ids": ", ".join(map(str, proj_ids))}
+                    )
+                if len(paccs) == 1:
+                    aa = paccs[0]
+                    self._labor_accrual_log_analytic_resolution(
+                        batch_line, ts, project, aa, "project.other_plan", [], proj_ids
+                    )
+                    return aa, "project.other_plan"
+
+        self._labor_accrual_log_analytic_resolution(
+            batch_line, ts, project, empty_aa, "none", [], proj_ids
+        )
+        return empty_aa, "none"
+
+    def _get_analytic_distribution_for_batch_line(self, batch_line):
+        """Return ``{str(account_id): 100.0}`` for **one** analytic account, or ``None``.
+
+        Never returns composite keys (e.g. ``\"54,55\"``) or multiple top-level keys.
+        """
+        aa, _src = self._get_single_analytic_account_for_labor_accrual_line(batch_line)
+        if aa:
+            return {str(aa.id): 100.0}
+        return None
+
     def _prepare_labor_accrual_move_vals(self, debit_account, credit_account, journal, total):
-        """Build vals for one miscellaneous entry: aggregate debit / credit (Phase 1)."""
+        """Build vals for one miscellaneous entry.
+
+        Debit side: one line per unique analytic distribution group (grouped from batch lines).
+        Credit side: one aggregated offset line without analytic (clearing/WIP account).
+        Rounding: last debit group absorbs any cent difference so debit total == credit total.
+        """
         self.ensure_one()
         company = self.company_id
         currency = company.currency_id
@@ -285,11 +415,63 @@ class LaborAccrualBatch(models.Model):
             "total": total,
             "cur": currency.name if currency else "",
         }
-        line_name_debit = _("Labor accrual expense (batch total)")
-        line_name_credit = _("Labor accrual offset (batch total)")
         line_common = {
             "currency_id": currency.id if currency else False,
         }
+
+        # Group batch lines by analytic distribution key so each analytic gets its own debit line.
+        # key: tuple of sorted distribution items (hashable) → [running_amount, dist_dict_or_None]
+        analytic_groups = {}
+        for batch_line in self.line_ids:
+            dist = self._get_analytic_distribution_for_batch_line(batch_line)
+            group_key = tuple(sorted(dist.items())) if dist else None
+            if group_key not in analytic_groups:
+                analytic_groups[group_key] = [0.0, dist]
+            analytic_groups[group_key][0] += batch_line.amount
+
+        # Round each group amount; adjust the last group to guarantee debit == credit.
+        group_entries = list(analytic_groups.values())
+        if currency:
+            for entry in group_entries:
+                entry[0] = currency.round(entry[0])
+            rounded_sum = sum(e[0] for e in group_entries)
+            if rounded_sum != total and group_entries:
+                group_entries[-1][0] = currency.round(
+                    group_entries[-1][0] + (total - rounded_sum)
+                )
+
+        line_ids = []
+        for group_amount, dist in group_entries:
+            debit_line = {
+                **line_common,
+                "account_id": debit_account.id,
+                "name": _("Labor accrual expense (batch total)"),
+                "debit": group_amount,
+                "credit": 0.0,
+            }
+            if dist:
+                debit_line["analytic_distribution"] = dist
+            if self._labor_accrual_analytic_debug_enabled():
+                _logger.info(
+                    "Labor accrual draft JE debit line vals | batch_id=%s amount=%s "
+                    "analytic_distribution=%s group_key=%s",
+                    self.id,
+                    group_amount,
+                    debit_line.get("analytic_distribution"),
+                    tuple(sorted(dist.items())) if dist else None,
+                )
+            line_ids.append((0, 0, debit_line))
+
+        line_ids.append((
+            0, 0, {
+                **line_common,
+                "account_id": credit_account.id,
+                "name": _("Labor accrual offset (batch total)"),
+                "debit": 0.0,
+                "credit": total,
+            }
+        ))
+
         return {
             "move_type": "entry",
             "journal_id": journal.id,
@@ -298,30 +480,7 @@ class LaborAccrualBatch(models.Model):
             "date": self.period_end,
             "ref": ref[:256] if len(ref) > 256 else ref,
             "narration": narration,
-            "line_ids": [
-                (
-                    0,
-                    0,
-                    {
-                        **line_common,
-                        "account_id": debit_account.id,
-                        "name": line_name_debit,
-                        "debit": total,
-                        "credit": 0.0,
-                    },
-                ),
-                (
-                    0,
-                    0,
-                    {
-                        **line_common,
-                        "account_id": credit_account.id,
-                        "name": line_name_credit,
-                        "debit": 0.0,
-                        "credit": total,
-                    },
-                ),
-            ],
+            "line_ids": line_ids,
         }
 
     def action_generate_draft_move(self):
@@ -353,6 +512,17 @@ class LaborAccrualBatch(models.Model):
         vals = self._prepare_labor_accrual_move_vals(
             debit_account, credit_account, journal, total
         )
+        if self._labor_accrual_analytic_debug_enabled():
+            _logger.info(
+                "Labor accrual draft move vals preview | batch_id=%s total=%s line_commands=%s",
+                self.id,
+                total,
+                [
+                    (cmd[2].get("debit"), cmd[2].get("credit"), cmd[2].get("analytic_distribution"))
+                    for cmd in vals.get("line_ids", [])
+                    if cmd[0] == 0 and isinstance(cmd[2], dict)
+                ],
+            )
         move = self.env["account.move"].create(vals)
         self.move_id = move
         return True
@@ -371,7 +541,9 @@ class LaborAccrualBatch(models.Model):
                 % (move.state,)
             )
 
-        move._post()
+        move.with_context(
+            skip_tier_validation_state_on_write=True,
+        )._post()
 
         self.write(
             {
@@ -415,7 +587,9 @@ class LaborAccrualBatch(models.Model):
         )
         if not reversals:
             raise UserError(_("The reversal entry could not be created."))
-        reversals._post()
+        reversals.with_context(
+            skip_tier_validation_state_on_write=True,
+        )._post()
 
         self.write(
             {

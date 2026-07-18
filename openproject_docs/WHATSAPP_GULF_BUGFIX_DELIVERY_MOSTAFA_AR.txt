@@ -1,0 +1,23 @@
+السلام عليكم مصطفى 👋
+
+✅ *تم إصلاح واختبار مشكلتين على Gulf Odoo*
+
+*البيئة:* gpc.odoo.com.se — trgulf_Mrp
+
+*1) طباعة Quotation PDF*
+• كان يظهر: KeyError: 'o'
+• تم الإصلاح في retention_performance_bond
+• تم اختبار S00030 ✅
+
+*2) Project Dashboard*
+• كان يظهر: OwlError
+• تم الإصلاح في gpc_gulf_project_ext
+• Project Details + Description + Contract Amount ✅
+• اختبار Playwright 4/4 ✅
+
+*OpenProject:*
+https://master.tailcf9988.ts.net:10081/work_packages/255
+
+يرجى التحقق على الموقع (Hard Refresh على Dashboard).
+
+تحياتي ✨

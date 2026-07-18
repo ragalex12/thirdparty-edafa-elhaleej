@@ -1,0 +1,7 @@
+node_modules/
+test-results/
+playwright-report/
+.env.local
+screenshots/
+.last-multi-analytic-move-id.txt
+.last-five-projects-move-id.txt

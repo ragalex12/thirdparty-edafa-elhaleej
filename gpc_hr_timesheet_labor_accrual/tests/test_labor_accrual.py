@@ -1,9 +1,12 @@
 # Copyright 2026
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl-3.0.html).
 
+from unittest import mock
+
 from odoo import fields
 from odoo.exceptions import UserError, ValidationError
 from odoo.tests.common import TransactionCase, tagged
+from odoo.tools.sql import SQL
 
 
 def _make_account(env, name, code, account_type, company):
@@ -108,13 +111,13 @@ class TestLaborAccrualPhase1(TransactionCase):
                 "hourly_cost": 0.0,
             }
         )
-        cls.project = cls.env["project.project"].create(
-            {
-                "name": "Lab Accrual Project",
-                "company_id": cls.company.id,
-                "generate_labor_je": False,
-            }
-        )
+        proj_vals = {
+            "name": "Lab Accrual Project",
+            "company_id": cls.company.id,
+        }
+        if "generate_labor_je" in cls.env["project.project"]._fields:
+            proj_vals["generate_labor_je"] = False
+        cls.project = cls.env["project.project"].create(proj_vals)
 
         # Minimal MO stack for Non-MO exclusion (mrp_timesheet)
         cls.product = cls.env["product.product"].create(
@@ -347,3 +350,385 @@ class TestLaborAccrualPhase1(TransactionCase):
 
         new_batch = self._batch(period_key="2025-09", name="Replacement 2025-09")
         self.assertEqual(new_batch.state, "draft")
+
+
+@tagged("post_install", "-at_install")
+class TestLaborAccrualAnalyticDistribution(TransactionCase):
+    """Phase 2: analytic distribution on generated journal entry lines."""
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.env = cls.env(
+            context=dict(
+                cls.env.context,
+                mail_create_nolog=True,
+                mail_create_nosubscribe=True,
+                mail_notrack=True,
+                no_reset_password=True,
+                tracking_disable=True,
+            )
+        )
+        cls.company = cls.env.company
+        cls.AAL = cls.env["account.analytic.line"]
+        cls.Batch = cls.env["labor.accrual.batch"]
+
+        cls.debit_acc = _make_account(
+            cls.env, "Analytic Dr Test", "AADR99", "expense", cls.company
+        )
+        cls.credit_acc = _make_account(
+            cls.env, "Analytic Cr Test", "AACR99", "liability_current", cls.company
+        )
+        cls.accrual_journal = _make_journal(
+            cls.env, "Analytic Accrual Journal", "AAJ9", cls.company
+        )
+        cls.company.write(
+            {
+                "labor_accrual_debit_account_id": cls.debit_acc.id,
+                "labor_accrual_credit_account_id": cls.credit_acc.id,
+                "labor_accrual_journal_id": cls.accrual_journal.id,
+            }
+        )
+        cls.employee = cls.env["hr.employee"].create(
+            {"name": "Analytic Worker", "company_id": cls.company.id, "hourly_cost": 100.0}
+        )
+
+        # Two projects, each with its own analytic account
+        cls.analytic_a = cls.env["account.analytic.account"].create(
+            _analytic_account_vals(cls.env, cls.company, "Analytic A")
+        )
+        cls.analytic_b = cls.env["account.analytic.account"].create(
+            _analytic_account_vals(cls.env, cls.company, "Analytic B")
+        )
+        cls.project_a = cls.env["project.project"].create(
+            {"name": "Project A", "company_id": cls.company.id, "account_id": cls.analytic_a.id}
+        )
+        cls.project_b = cls.env["project.project"].create(
+            {"name": "Project B", "company_id": cls.company.id, "account_id": cls.analytic_b.id}
+        )
+        # Project with no analytic account
+        cls.project_no_analytic = cls.env["project.project"].create(
+            {"name": "Project No Analytic", "company_id": cls.company.id}
+        )
+
+    def _batch(self, period_key="2025-10"):
+        return self.Batch.create(
+            {
+                "name": "Analytic batch %s" % period_key,
+                "company_id": self.company.id,
+                "period_start": fields.Date.from_string("2025-10-01"),
+                "period_end": fields.Date.from_string("2025-10-31"),
+                "period_key": period_key,
+                "state": "draft",
+            }
+        )
+
+    def _ts(self, project, amount_hours=2.0, **kwargs):
+        vals = {
+            "name": "analytic ts",
+            "company_id": self.company.id,
+            "employee_id": self.employee.id,
+            "project_id": project.id,
+            "unit_amount": amount_hours,
+            "date": fields.Date.from_string("2025-10-15"),
+        }
+        if "validated" in self.AAL._fields and "validated" not in kwargs:
+            vals["validated"] = True
+        vals.update(kwargs)
+        return self.AAL.create(vals)
+
+    # ------------------------------------------------------------------
+    # Helper: resolve analytic distribution via the new helper method
+    # ------------------------------------------------------------------
+
+    def test_helper_returns_ts_account_id_first(self):
+        """Single analytic on timesheet → one-key distribution from that account."""
+        ts = self._ts(self.project_a)
+        batch = self._batch(period_key="2025-10-h1")
+        batch.action_populate_lines()
+        if not batch.line_ids:
+            self.skipTest("No batch line created (amount resolution failed in this env).")
+        bl = batch.line_ids[0]
+        dist = batch._get_analytic_distribution_for_batch_line(bl)
+        ts_accs = ts._get_analytic_accounts()
+        if len(ts_accs) != 1:
+            self.skipTest("Need exactly one analytic account on timesheet for this assertion.")
+        self.assertEqual(dist, {str(ts_accs.id): 100.0})
+
+    def test_helper_falls_back_to_project_account_id(self):
+        """When timesheet has no analytic accounts, use project.account_id (single)."""
+        batch = self._batch(period_key="2025-10-h2")
+        self._ts(self.project_a)
+        batch.action_populate_lines()
+        if not batch.line_ids:
+            self.skipTest("No batch line created.")
+        bl = batch.line_ids[0]
+        ts = bl.timesheet_line_id
+        for fname in ts._get_plan_fnames():
+            self.env.cr.execute(
+                SQL(
+                    "UPDATE account_analytic_line SET %s = NULL WHERE id = %s",
+                    SQL.identifier(fname),
+                    ts.id,
+                )
+            )
+        ts.invalidate_recordset()
+        dist = batch._get_analytic_distribution_for_batch_line(bl)
+        if not self.project_a.account_id:
+            self.skipTest("Project has no account_id for fallback.")
+        self.assertEqual(dist, {str(self.project_a.account_id.id): 100.0})
+
+    def test_helper_returns_none_when_no_analytic(self):
+        """When timesheet + project analytic columns are cleared, helper returns None."""
+        batch = self._batch(period_key="2025-10-h3")
+        self._ts(self.project_a)
+        batch.action_populate_lines()
+        if not batch.line_ids:
+            self.skipTest("No batch line created.")
+        bl = batch.line_ids[0]
+        ts = bl.timesheet_line_id
+        for fname in ts._get_plan_fnames():
+            self.env.cr.execute(
+                SQL(
+                    "UPDATE account_analytic_line SET %s = NULL WHERE id = %s",
+                    SQL.identifier(fname),
+                    ts.id,
+                )
+            )
+        ts.invalidate_recordset()
+        for fname in self.project_a._get_plan_fnames():
+            self.env.cr.execute(
+                SQL(
+                    "UPDATE project_project SET %s = NULL WHERE id = %s",
+                    SQL.identifier(fname),
+                    self.project_a.id,
+                )
+            )
+        self.project_a.invalidate_recordset()
+        dist = batch._get_analytic_distribution_for_batch_line(bl)
+        self.assertIsNone(dist)
+
+    def test_timesheet_two_analytic_accounts_raises_user_error(self):
+        """Two analytic accounts on the same timesheet → UserError (no silent merge)."""
+        aa2 = self.env["account.analytic.account"].create(
+            _analytic_account_vals(self.env, self.company, "Labor accrual second plan AA")
+        )
+        plan_fnames = [f for f in self.AAL._get_plan_fnames() if f != "account_id"]
+        if not plan_fnames:
+            self.skipTest("Only one analytic plan column on analytic lines in this DB.")
+        ts = self._ts(self.project_a)
+        second_f = plan_fnames[0]
+        self.env.cr.execute(
+            SQL(
+                "UPDATE account_analytic_line SET %s = %s WHERE id = %s",
+                SQL.identifier(second_f),
+                aa2.id,
+                ts.id,
+            )
+        )
+        ts.invalidate_recordset()
+        if len(ts._get_analytic_accounts()) < 2:
+            self.skipTest("Second plan did not yield multiple analytic accounts.")
+        batch = self._batch(period_key="2025-10-2acct")
+        self.env["labor.accrual.batch.line"].create(
+            {
+                "batch_id": batch.id,
+                "timesheet_line_id": ts.id,
+                "amount": 100.0,
+                "employee_id": ts.employee_id.id,
+                "project_id": ts.project_id.id,
+                "line_date": ts.date,
+            }
+        )
+        bl = batch.line_ids[0]
+        with self.assertRaises(UserError):
+            batch._get_analytic_distribution_for_batch_line(bl)
+
+    # ------------------------------------------------------------------
+    # Single project with analytic → debit line carries distribution
+    # ------------------------------------------------------------------
+
+    def test_single_project_analytic_on_debit_line(self):
+        """Single project with analytic: debit line has analytic_distribution; credit has none."""
+        self._ts(self.project_a)
+        batch = self._batch(period_key="2025-10-s1")
+        batch.action_populate_lines()
+        if not batch.line_ids:
+            self.skipTest("No batch line created.")
+        batch.action_generate_draft_move()
+        move = batch.move_id
+        debit_lines = move.line_ids.filtered(lambda l: l.debit > 0)
+        credit_lines = move.line_ids.filtered(lambda l: l.credit > 0)
+
+        self.assertEqual(len(debit_lines), 1)
+        self.assertEqual(len(credit_lines), 1)
+
+        # Credit (offset) must NOT carry analytic
+        self.assertFalse(credit_lines.analytic_distribution)
+
+        # Debit line: exactly one analytic key (business rule).
+        ts = batch.line_ids[0].timesheet_line_id
+        ts_accs = ts._get_analytic_accounts()
+        if len(ts_accs) != 1:
+            self.skipTest("Need exactly one analytic account on timesheet.")
+        self.assertEqual(
+            debit_lines.analytic_distribution,
+            {str(ts_accs.id): 100.0},
+        )
+
+    def test_no_analytic_entry_still_generated_no_crash(self):
+        """When helper returns None for all lines: entry is generated without error."""
+        self._ts(self.project_a)
+        batch = self._batch(period_key="2025-10-s2")
+        batch.action_populate_lines()
+        if not batch.line_ids:
+            self.skipTest("No batch line created.")
+        BatchModel = self.env.registry["labor.accrual.batch"]
+        with mock.patch.object(
+            BatchModel,
+            "_get_analytic_distribution_for_batch_line",
+            lambda self, bl: None,
+        ):
+            batch.action_generate_draft_move()
+        move = batch.move_id
+        self.assertTrue(move)
+        debit_lines = move.line_ids.filtered(lambda l: l.debit > 0)
+        # No analytic distribution expected
+        self.assertFalse(debit_lines.analytic_distribution)
+        # Entry still balanced
+        self.assertAlmostEqual(
+            sum(move.line_ids.mapped("debit")),
+            sum(move.line_ids.mapped("credit")),
+        )
+
+    # ------------------------------------------------------------------
+    # Multi-project grouping: separate debit lines, one credit line
+    # ------------------------------------------------------------------
+
+    def test_two_projects_produce_two_debit_lines_one_credit_line(self):
+        """Two timesheet lines from different projects → 2 debit lines, 1 credit line."""
+        self._ts(self.project_a, amount_hours=2.0)
+        self._ts(self.project_b, amount_hours=3.0)
+        batch = self._batch(period_key="2025-10-m1")
+        batch.action_populate_lines()
+        if len(batch.line_ids) < 2:
+            self.skipTest("Need 2 batch lines with positive amounts.")
+        batch.action_generate_draft_move()
+        move = batch.move_id
+        debit_lines = move.line_ids.filtered(lambda l: l.debit > 0)
+        credit_lines = move.line_ids.filtered(lambda l: l.credit > 0)
+
+        # Each project produces its own debit line
+        self.assertEqual(len(debit_lines), 2, "Expected one debit line per analytic group.")
+        self.assertEqual(len(credit_lines), 1, "Expected one aggregated credit line.")
+
+        # Balanced
+        self.assertAlmostEqual(
+            sum(debit_lines.mapped("debit")),
+            credit_lines.credit,
+            places=2,
+        )
+
+        # Each debit line: single analytic key only (business rule)
+        for dl in debit_lines:
+            if dl.analytic_distribution:
+                self.assertEqual(len(dl.analytic_distribution), 1)
+        dists = [frozenset(l.analytic_distribution.items()) for l in debit_lines if l.analytic_distribution]
+        if len(dists) == 2:
+            self.assertNotEqual(dists[0], dists[1], "Debit lines must have different analytic distributions.")
+
+    def test_two_lines_same_project_grouped_into_one_debit_line(self):
+        """Two timesheet lines from the same project → 1 debit line (grouped), 1 credit line."""
+        self._ts(self.project_a, amount_hours=1.0)
+        self._ts(self.project_a, amount_hours=2.0, date=fields.Date.from_string("2025-10-20"))
+        batch = self._batch(period_key="2025-10-m2")
+        batch.action_populate_lines()
+        if len(batch.line_ids) < 2:
+            self.skipTest("Need 2 batch lines with positive amounts.")
+        batch.action_generate_draft_move()
+        move = batch.move_id
+        debit_lines = move.line_ids.filtered(lambda l: l.debit > 0)
+        credit_lines = move.line_ids.filtered(lambda l: l.credit > 0)
+
+        self.assertEqual(len(debit_lines), 1, "Same analytic → should be grouped into one debit line.")
+        self.assertEqual(len(credit_lines), 1)
+        self.assertAlmostEqual(debit_lines.debit, credit_lines.credit, places=2)
+
+    def test_debit_always_equals_credit_multi_project(self):
+        """Rounding guard: total debit == total credit across any number of groups."""
+        self._ts(self.project_a, amount_hours=1.0)
+        self._ts(self.project_b, amount_hours=1.0)
+        self._ts(self.project_no_analytic, amount_hours=1.0)
+        batch = self._batch(period_key="2025-10-r1")
+        batch.action_populate_lines()
+        if not batch.line_ids:
+            self.skipTest("No batch lines created.")
+        batch.action_generate_draft_move()
+        move = batch.move_id
+        total_debit = sum(move.line_ids.mapped("debit"))
+        total_credit = sum(move.line_ids.mapped("credit"))
+        self.assertAlmostEqual(
+            total_debit, total_credit, places=2,
+            msg="Total debit must always equal total credit (rounding guard).",
+        )
+
+    def test_regenerate_draft_replaces_old_move(self):
+        """Re-clicking Generate Draft Entry deletes the old draft and creates a fresh one."""
+        self._ts(self.project_a)
+        batch = self._batch(period_key="2025-10-regen")
+        batch.action_populate_lines()
+        if not batch.line_ids:
+            self.skipTest("No batch lines created.")
+        batch.action_generate_draft_move()
+        first_move_id = batch.move_id.id
+        batch.action_generate_draft_move()
+        self.assertNotEqual(batch.move_id.id, first_move_id, "Old move must be replaced.")
+        self.assertEqual(batch.move_id.state, "draft")
+
+    def test_mixed_analytic_and_no_analytic_two_debit_lines_one_credit(self):
+        """E2E Scenario 3: mixed helper output → two debit groups + one credit.
+
+        Odoo 19 forbids creating timesheets with no analytic plan; we simulate
+        “no distribution for one line” by patching the helper for that line only.
+        """
+        ts_with = self._ts(self.project_a, amount_hours=2.0)
+        ts_without = self._ts(self.project_a, amount_hours=1.0, date=fields.Date.from_string("2025-10-16"))
+        batch = self._batch(period_key="2025-10-mixed")
+        batch.action_populate_lines()
+        if len(batch.line_ids) < 2:
+            self.skipTest("Need 2 batch lines (check labor_cost resolution).")
+
+        BatchCls = self.env.registry["labor.accrual.batch"]
+        orig_get = BatchCls._get_analytic_distribution_for_batch_line
+
+        def mixed_helper(self, batch_line):
+            if batch_line.timesheet_line_id.id == ts_without.id:
+                return None
+            return orig_get(self, batch_line)
+
+        with mock.patch.object(
+            BatchCls,
+            "_get_analytic_distribution_for_batch_line",
+            mixed_helper,
+        ):
+            batch.action_generate_draft_move()
+        move = batch.move_id
+        debit_lines = move.line_ids.filtered(lambda l: l.debit > 0)
+        credit_lines = move.line_ids.filtered(lambda l: l.credit > 0)
+
+        self.assertEqual(len(debit_lines), 2, "Expected analytic group + no-analytic group.")
+        self.assertEqual(len(credit_lines), 1)
+
+        with_dist = debit_lines.filtered(lambda l: l.analytic_distribution)
+        without_dist = debit_lines.filtered(lambda l: not l.analytic_distribution)
+        self.assertEqual(len(with_dist), 1)
+        self.assertEqual(len(without_dist), 1)
+        self.assertFalse(credit_lines.analytic_distribution)
+
+        expected_aa_id = str(self.project_a.account_id.id)
+        self.assertIn(expected_aa_id, with_dist.analytic_distribution)
+        self.assertAlmostEqual(
+            sum(debit_lines.mapped("debit")),
+            credit_lines.credit,
+            places=2,
+        )

@@ -422,6 +422,10 @@ class TierValidation(models.AbstractModel):
         return self[self._state_field]
 
     def _tier_validation_check_state_on_write(self, vals):
+        # Allow automated accounting flows (e.g. labor accrual batch posting) to post
+        # draft entries without interactive tier approval when explicitly requested.
+        if self.env.context.get("skip_tier_validation_state_on_write"):
+            return
         for rec in self:
             if rec._check_state_conditions(vals):
                 if rec.need_validation:

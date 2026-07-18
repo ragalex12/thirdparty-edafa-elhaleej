@@ -1,0 +1,20 @@
+# On master server — allow OpenProject port from Tailscale network
+# Run as root on master (100.76.217.35 / hostname: master):
+#   scp /opt/localaddons/openproject_scripts/apply_master_firewall.sh sabry@master:/tmp/
+#   ssh sabry@master 'sudo bash /tmp/apply_master_firewall.sh'
+# Or copy-paste the iptables/ufw commands below.
+
+# 1) Check OpenProject is listening
+ss -tlnp | grep 10081 || netstat -tlnp | grep 10081
+
+# 2) Allow Tailscale interface (pick what applies)
+
+# UFW:
+# ufw allow in on tailscale0 to any port 10081 proto tcp
+# ufw reload
+
+# iptables:
+# iptables -I INPUT -i tailscale0 -p tcp --dport 10081 -j ACCEPT
+
+# 3) Test from another tailscale node:
+# curl -sk -u "apikey:TOKEN" "https://100.76.217.35:10081/api/v3/projects/19" -H "Accept: application/json"

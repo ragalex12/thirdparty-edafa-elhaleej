@@ -1,0 +1,17 @@
+{
+  "name": "gpc-worker-timesheet-labor-accrual-bridge-e2e",
+  "private": true,
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:screenshots": "playwright test tests/odoo-staging-screenshots.spec.ts",
+    "test:screenshots:workflow": "playwright test tests/labor-accrual-workflow-screenshots.spec.ts",
+    "test:multi-analytic": "playwright test tests/labor-accrual-multi-analytic-screenshot.spec.ts",
+    "test:five-projects": "playwright test tests/labor-accrual-five-projects-screenshot.spec.ts",
+    "test:journal-screenshots": "playwright test tests/labor-accrual-journal-analytic-screenshots.spec.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "dotenv": "^16.4.5"
+  }
+}

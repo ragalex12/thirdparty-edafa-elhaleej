@@ -1,0 +1,14 @@
+# Client answers sync — completed
+
+Date: 2026-07-03
+Status: Synced to OpenProject via SSH (master)
+
+Script: sync_client_answers_wp135.py
+
+WP #135: https://master.tailcf9988.ts.net:10081/work_packages/135
+WP #140: https://master.tailcf9988.ts.net:10081/work_packages/140
+WP #136: https://master.tailcf9988.ts.net:10081/work_packages/136
+WP #137: https://master.tailcf9988.ts.net:10081/work_packages/137
+WP #138: https://master.tailcf9988.ts.net:10081/work_packages/138
+
+Local reference: openproject_docs/REQUIREMENTS_REVIEW_CLIENT_ANSWERS_AR.md

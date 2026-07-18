@@ -1,0 +1,10 @@
+تقدير وقت مشاريع الخليج (WP#135) — ملخص سريع:
+
+Community (1-4): 7-14 يوم عمل
+Legacy (5): 5-10 أيام
+الاثنان: 12-25 يوم حسب التكامل
++ UAT 20-30%
+
+القرارات أولاً: https://master.tailcf9988.ts.net:10081/work_packages/140
+
+التفاصيل: openproject_docs/REQUIREMENTS_REVIEW_TIME_ESTIMATE_AR.txt

@@ -1,0 +1,4 @@
+Final Delivery WP: https://master.tailcf9988.ts.net:10081/work_packages/163
+Nextcloud: Gulf-Industrial-Projects/WP135-Final-Delivery (22 files on master Nextcloud)
+Nextcloud access: http://127.0.0.1:8082 on master (admin) — Files app
+Date: 2026-07-03
