@@ -83,6 +83,15 @@ if [[ -d "$LOCALADDONS/gpc_gulf_project_ext/e2e/screenshots/gulf-phase1" ]]; the
     "${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_BASE}/gpc_gulf_project_ext/e2e/screenshots/"
 fi
 
+if [[ -d "$LOCALADDONS/edafa_legacy_asset_import/e2e/screenshots/asset-import" ]]; then
+  echo "Copying asset import Playwright screenshots to master ..."
+  ssh "${SSH_OPTS[@]}" "${REMOTE_USER}@${REMOTE_HOST}" \
+    "mkdir -p ${REMOTE_BASE}/edafa_legacy_asset_import/e2e/screenshots"
+  scp "${SSH_OPTS[@]}" -r \
+    "$LOCALADDONS/edafa_legacy_asset_import/e2e/screenshots/asset-import" \
+    "${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_BASE}/edafa_legacy_asset_import/e2e/screenshots/"
+fi
+
 if [[ -d "$LOCALADDONS/openproject_docs/gulf_delivery/bundle" ]] || [[ -d "$LOCALADDONS/openproject_docs/gulf_delivery" ]]; then
   echo "Copying Gulf delivery docs/bundle to master ..."
   ssh "${SSH_OPTS[@]}" "${REMOTE_USER}@${REMOTE_HOST}" \

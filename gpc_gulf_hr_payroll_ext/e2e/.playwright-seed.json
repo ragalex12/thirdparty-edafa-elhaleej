@@ -1,0 +1,11 @@
+{
+  "employee_id": 358,
+  "employee_name": "GPC Gulf Payroll UAT Employee",
+  "version_id": 809,
+  "structure_id": 2,
+  "structure_name": "Gulf Standard Payroll",
+  "expected_net": 12900.0,
+  "company_name": "\u0645\u0624\u0633\u0633\u0629 \u0641\u064a\u0635\u0644 \u0627\u0644\u0645\u062d\u0645\u062f\u064a \u0627\u0644\u062a\u062c\u0627\u0631\u064a\u0629 \u0644\u0635\u0627\u062d\u0628\u0647\u0627 \u0641\u064a\u0635\u0644 \u0623\u062d\u0645\u062f \u0627\u0644\u0645\u062d\u0645\u062f\u064a",
+  "seed_user_login": "support@edafa.sa",
+  "payslip_id": 3
+}
