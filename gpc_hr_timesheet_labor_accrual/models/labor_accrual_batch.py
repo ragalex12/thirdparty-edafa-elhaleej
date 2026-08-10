@@ -297,6 +297,28 @@ class LaborAccrualBatch(models.Model):
             project_account_ids,
         )
 
+    def _analytic_ids_from_distribution(self, distribution):
+        """Parse Odoo 19 ``analytic_distribution`` into distinct analytic account ids.
+
+        Keys may be a single id (``\"54\"``) or a comma-joined multi-plan key (``\"54,55\"``).
+        """
+        ids = []
+        for key in (distribution or {}):
+            if key is None or key is False:
+                continue
+            for part in str(key).split(","):
+                part = part.strip()
+                if part.isdigit():
+                    ids.append(int(part))
+        # Preserve order, unique
+        seen = set()
+        out = []
+        for i in ids:
+            if i not in seen:
+                seen.add(i)
+                out.append(i)
+        return out
+
     def _get_single_analytic_account_for_labor_accrual_line(self, batch_line):
         """Return (analytic_account | empty, source_label).
 
@@ -304,8 +326,10 @@ class LaborAccrualBatch(models.Model):
         Priority:
           1. Timesheet line — ``_get_analytic_accounts()`` must contain 0 or 1 account;
              if >1 → :class:`UserError` (no silent collapse / composite keys).
-          2. Project ``account_id`` (primary project analytic on ``project.project``).
-          3. Else other project plan columns via ``_get_analytic_accounts()`` — again 0 or 1 only.
+          2. Timesheet ``analytic_distribution`` (Odoo 19 JSON) when plan M2O columns are empty
+             — must resolve to exactly one account id.
+          3. Project ``account_id`` (primary project analytic on ``project.project``).
+          4. Else other project plan columns via ``_get_analytic_accounts()`` — again 0 or 1 only.
 
         Task / employee are **not** consulted here (timesheet already embeds project/task context in Odoo).
 
@@ -315,6 +339,7 @@ class LaborAccrualBatch(models.Model):
         ts = batch_line.timesheet_line_id
         project = batch_line.project_id
         empty_aa = self.env["account.analytic.account"].browse()
+        AnalyticAccount = self.env["account.analytic.account"]
 
         if ts and hasattr(ts, "_get_analytic_accounts"):
             ts_accs = ts._get_analytic_accounts()
@@ -338,6 +363,29 @@ class LaborAccrualBatch(models.Model):
                     batch_line, ts, project, aa, "timesheet", ts_ids, []
                 )
                 return aa, "timesheet"
+
+        # Odoo 17+ / 19: analytic may live only on analytic_distribution JSON
+        if ts and "analytic_distribution" in ts._fields and ts.analytic_distribution:
+            dist_ids = self._analytic_ids_from_distribution(ts.analytic_distribution)
+            if len(dist_ids) > 1:
+                self._labor_accrual_log_analytic_resolution(
+                    batch_line, ts, project, empty_aa, "conflict_timesheet_distribution", dist_ids, []
+                )
+                raise UserError(
+                    _(
+                        "Labor accrual cannot build this journal entry: timesheet line “%(ts)s” "
+                        "has analytic_distribution with multiple accounts (%(ids)s). "
+                        "Business rule: one analytic account per accrual line."
+                    )
+                    % {"ts": ts.display_name, "ids": ", ".join(map(str, dist_ids))}
+                )
+            if len(dist_ids) == 1:
+                aa = AnalyticAccount.browse(dist_ids[0]).exists()
+                if aa:
+                    self._labor_accrual_log_analytic_resolution(
+                        batch_line, ts, project, aa, "timesheet.analytic_distribution", dist_ids, []
+                    )
+                    return aa, "timesheet.analytic_distribution"
 
         proj_ids = []
         if project:
@@ -376,14 +424,33 @@ class LaborAccrualBatch(models.Model):
         return empty_aa, "none"
 
     def _get_analytic_distribution_for_batch_line(self, batch_line):
-        """Return ``{str(account_id): 100.0}`` for **one** analytic account, or ``None``.
+        """Return ``{str(account_id): 100.0}`` for **one** analytic account.
+
+        Raises :class:`UserError` when no analytic can be resolved — never silently
+        posts a debit line without analytic (hides configuration errors).
 
         Never returns composite keys (e.g. ``\"54,55\"``) or multiple top-level keys.
         """
-        aa, _src = self._get_single_analytic_account_for_labor_accrual_line(batch_line)
+        aa, src = self._get_single_analytic_account_for_labor_accrual_line(batch_line)
         if aa:
             return {str(aa.id): 100.0}
-        return None
+        ts = batch_line.timesheet_line_id
+        project = batch_line.project_id
+        raise UserError(
+            _(
+                "Labor accrual cannot build this journal entry: no analytic account for "
+                "batch line (employee=%(emp)s, project=%(proj)s, timesheet=%(ts)s, "
+                "source=%(src)s). Set analytic on the timesheet (account / analytic "
+                "distribution) or the project’s Project Account. "
+                "Refusing to post without analytic — no silent fallback."
+            )
+            % {
+                "emp": batch_line.employee_id.display_name if batch_line.employee_id else "-",
+                "proj": project.display_name if project else "-",
+                "ts": ts.display_name if ts else "-",
+                "src": src,
+            }
+        )
 
     def _prepare_labor_accrual_move_vals(self, debit_account, credit_account, journal, total):
         """Build vals for one miscellaneous entry.
@@ -419,12 +486,24 @@ class LaborAccrualBatch(models.Model):
             "currency_id": currency.id if currency else False,
         }
 
+        if not debit_account or not debit_account.id:
+            raise UserError(
+                _("Labor accrual debit account is missing on company “%s”.")
+                % company.display_name
+            )
+        if not credit_account or not credit_account.id:
+            raise UserError(
+                _("Labor accrual credit account is missing on company “%s”.")
+                % company.display_name
+            )
+
         # Group batch lines by analytic distribution key so each analytic gets its own debit line.
-        # key: tuple of sorted distribution items (hashable) → [running_amount, dist_dict_or_None]
+        # key: tuple of sorted distribution items (hashable) → [running_amount, dist_dict]
+        # Missing analytic raises UserError inside _get_analytic_distribution_for_batch_line.
         analytic_groups = {}
         for batch_line in self.line_ids:
             dist = self._get_analytic_distribution_for_batch_line(batch_line)
-            group_key = tuple(sorted(dist.items())) if dist else None
+            group_key = tuple(sorted(dist.items()))
             if group_key not in analytic_groups:
                 analytic_groups[group_key] = [0.0, dist]
             analytic_groups[group_key][0] += batch_line.amount
@@ -448,17 +527,17 @@ class LaborAccrualBatch(models.Model):
                 "name": _("Labor accrual expense (batch total)"),
                 "debit": group_amount,
                 "credit": 0.0,
+                "analytic_distribution": dist,
             }
-            if dist:
-                debit_line["analytic_distribution"] = dist
             if self._labor_accrual_analytic_debug_enabled():
                 _logger.info(
                     "Labor accrual draft JE debit line vals | batch_id=%s amount=%s "
-                    "analytic_distribution=%s group_key=%s",
+                    "account_id=%s analytic_distribution=%s group_key=%s",
                     self.id,
                     group_amount,
+                    debit_account.id,
                     debit_line.get("analytic_distribution"),
-                    tuple(sorted(dist.items())) if dist else None,
+                    tuple(sorted(dist.items())),
                 )
             line_ids.append((0, 0, debit_line))
 
@@ -471,7 +550,6 @@ class LaborAccrualBatch(models.Model):
                 "credit": total,
             }
         ))
-
         return {
             "move_type": "entry",
             "journal_id": journal.id,

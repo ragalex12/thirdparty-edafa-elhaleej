@@ -478,8 +478,8 @@ class TestLaborAccrualAnalyticDistribution(TransactionCase):
             self.skipTest("Project has no account_id for fallback.")
         self.assertEqual(dist, {str(self.project_a.account_id.id): 100.0})
 
-    def test_helper_returns_none_when_no_analytic(self):
-        """When timesheet + project analytic columns are cleared, helper returns None."""
+    def test_helper_raises_when_no_analytic(self):
+        """When timesheet + project analytic columns are cleared, helper raises UserError."""
         batch = self._batch(period_key="2025-10-h3")
         self._ts(self.project_a)
         batch.action_populate_lines()
@@ -495,6 +495,11 @@ class TestLaborAccrualAnalyticDistribution(TransactionCase):
                     ts.id,
                 )
             )
+        if "analytic_distribution" in ts._fields:
+            self.env.cr.execute(
+                "UPDATE account_analytic_line SET analytic_distribution = NULL WHERE id = %s",
+                (ts.id,),
+            )
         ts.invalidate_recordset()
         for fname in self.project_a._get_plan_fnames():
             self.env.cr.execute(
@@ -505,8 +510,8 @@ class TestLaborAccrualAnalyticDistribution(TransactionCase):
                 )
             )
         self.project_a.invalidate_recordset()
-        dist = batch._get_analytic_distribution_for_batch_line(bl)
-        self.assertIsNone(dist)
+        with self.assertRaises(UserError):
+            batch._get_analytic_distribution_for_batch_line(bl)
 
     def test_timesheet_two_analytic_accounts_raises_user_error(self):
         """Two analytic accounts on the same timesheet → UserError (no silent merge)."""
@@ -576,8 +581,8 @@ class TestLaborAccrualAnalyticDistribution(TransactionCase):
             {str(ts_accs.id): 100.0},
         )
 
-    def test_no_analytic_entry_still_generated_no_crash(self):
-        """When helper returns None for all lines: entry is generated without error."""
+    def test_no_analytic_raises_user_error(self):
+        """Missing analytic must raise UserError — never post JE without analytic."""
         self._ts(self.project_a)
         batch = self._batch(period_key="2025-10-s2")
         batch.action_populate_lines()
@@ -586,21 +591,12 @@ class TestLaborAccrualAnalyticDistribution(TransactionCase):
         BatchModel = self.env.registry["labor.accrual.batch"]
         with mock.patch.object(
             BatchModel,
-            "_get_analytic_distribution_for_batch_line",
-            lambda self, bl: None,
+            "_get_single_analytic_account_for_labor_accrual_line",
+            lambda self, bl: (self.env["account.analytic.account"].browse(), "none"),
         ):
-            batch.action_generate_draft_move()
-        move = batch.move_id
-        self.assertTrue(move)
-        debit_lines = move.line_ids.filtered(lambda l: l.debit > 0)
-        # No analytic distribution expected
-        self.assertFalse(debit_lines.analytic_distribution)
-        # Entry still balanced
-        self.assertAlmostEqual(
-            sum(move.line_ids.mapped("debit")),
-            sum(move.line_ids.mapped("credit")),
-        )
-
+            with self.assertRaises(UserError):
+                batch.action_generate_draft_move()
+        self.assertFalse(batch.move_id)
     # ------------------------------------------------------------------
     # Multi-project grouping: separate debit lines, one credit line
     # ------------------------------------------------------------------
@@ -658,7 +654,6 @@ class TestLaborAccrualAnalyticDistribution(TransactionCase):
         """Rounding guard: total debit == total credit across any number of groups."""
         self._ts(self.project_a, amount_hours=1.0)
         self._ts(self.project_b, amount_hours=1.0)
-        self._ts(self.project_no_analytic, amount_hours=1.0)
         batch = self._batch(period_key="2025-10-r1")
         batch.action_populate_lines()
         if not batch.line_ids:
@@ -671,6 +666,10 @@ class TestLaborAccrualAnalyticDistribution(TransactionCase):
             total_debit, total_credit, places=2,
             msg="Total debit must always equal total credit (rounding guard).",
         )
+        # Every debit line must carry account_id + analytic_distribution
+        for line in move.line_ids.filtered(lambda l: l.debit > 0):
+            self.assertTrue(line.account_id, "Debit line missing account_id")
+            self.assertTrue(line.analytic_distribution, "Debit line missing analytic_distribution")
 
     def test_regenerate_draft_replaces_old_move(self):
         """Re-clicking Generate Draft Entry deletes the old draft and creates a fresh one."""
@@ -685,12 +684,8 @@ class TestLaborAccrualAnalyticDistribution(TransactionCase):
         self.assertNotEqual(batch.move_id.id, first_move_id, "Old move must be replaced.")
         self.assertEqual(batch.move_id.state, "draft")
 
-    def test_mixed_analytic_and_no_analytic_two_debit_lines_one_credit(self):
-        """E2E Scenario 3: mixed helper output → two debit groups + one credit.
-
-        Odoo 19 forbids creating timesheets with no analytic plan; we simulate
-        “no distribution for one line” by patching the helper for that line only.
-        """
+    def test_mixed_missing_analytic_raises_user_error(self):
+        """Any batch line without analytic must abort JE generation (no silent empty group)."""
         ts_with = self._ts(self.project_a, amount_hours=2.0)
         ts_without = self._ts(self.project_a, amount_hours=1.0, date=fields.Date.from_string("2025-10-16"))
         batch = self._batch(period_key="2025-10-mixed")
@@ -703,7 +698,8 @@ class TestLaborAccrualAnalyticDistribution(TransactionCase):
 
         def mixed_helper(self, batch_line):
             if batch_line.timesheet_line_id.id == ts_without.id:
-                return None
+                # Simulate unresolved analytic by calling the raise path
+                raise UserError("simulated missing analytic")
             return orig_get(self, batch_line)
 
         with mock.patch.object(
@@ -711,24 +707,6 @@ class TestLaborAccrualAnalyticDistribution(TransactionCase):
             "_get_analytic_distribution_for_batch_line",
             mixed_helper,
         ):
-            batch.action_generate_draft_move()
-        move = batch.move_id
-        debit_lines = move.line_ids.filtered(lambda l: l.debit > 0)
-        credit_lines = move.line_ids.filtered(lambda l: l.credit > 0)
-
-        self.assertEqual(len(debit_lines), 2, "Expected analytic group + no-analytic group.")
-        self.assertEqual(len(credit_lines), 1)
-
-        with_dist = debit_lines.filtered(lambda l: l.analytic_distribution)
-        without_dist = debit_lines.filtered(lambda l: not l.analytic_distribution)
-        self.assertEqual(len(with_dist), 1)
-        self.assertEqual(len(without_dist), 1)
-        self.assertFalse(credit_lines.analytic_distribution)
-
-        expected_aa_id = str(self.project_a.account_id.id)
-        self.assertIn(expected_aa_id, with_dist.analytic_distribution)
-        self.assertAlmostEqual(
-            sum(debit_lines.mapped("debit")),
-            credit_lines.credit,
-            places=2,
-        )
+            with self.assertRaises(UserError):
+                batch.action_generate_draft_move()
+        self.assertFalse(batch.move_id)
