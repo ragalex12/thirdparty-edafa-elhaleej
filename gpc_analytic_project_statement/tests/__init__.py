@@ -1,1 +1,2 @@
 from . import test_analytic_project_statement
+from . import test_analytic_project_statement_extended
