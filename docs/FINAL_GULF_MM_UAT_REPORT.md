@@ -198,6 +198,8 @@ Replacement UI proof (not home-page substitutes):
 
 JSON of the same rows: `sql/statement_rows.json` (5 rows, 3 Timesheet/no GL, 2 JE AAL, 0 AML duplicates).
 
+Retroactive / company / statement replacements: `30`–`42` (DB selector `trgcc_mm_uat`, candidate 153, batch 6, JE `SLR/2026/08/0001`, AAL 383 Financial Account 410028, wizard, Aug before/after, Feb material, 65/65 tests, wrong-company guard).
+
 # SQL Evidence
 
 `/home/sabry/evidence/gulf_mm_uat_20260811/sql/` plus `before_after/e2e_result.json`.
@@ -208,72 +210,152 @@ JSON of the same rows: `sql/statement_rows.json` (5 rows, 3 Timesheet/no GL, 2 J
 - E2E: Worker accrual populate summary in Odoo logs
 - Tests: `/home/sabry/evidence/gulf_mm_uat_20260811/logs/tests.log`
 
-# Automated Tests
+# Transcript Gap Review
 
-Re-run on `trgcc_mm_uat` only (log: `logs/tests.log`):
+Meeting asked for: missing-GL **why**, where Include in Payroll is used, retroactive solution, company-context safety, statement on old + remediated data. Those are covered below.
 
-**0 failed, 0 error(s) of 54 tests.**
+Industrial P&L Excel is **not** in this scope (client refused).
 
-| Module | Tests | Result |
-|--------|------:|--------|
-| gpc_analytic_project_statement | 22 | PASS (1 justified SKIP) |
-| gpc_hr_timesheet_labor_accrual | 35 | PASS (1 justified SKIP) |
-| workers_timesheet | 7 | PASS |
+# Historical Missing-GL Root Causes
 
-Fixes (tests only; no production schema change, no fake AAL `analytic_distribution` column):
+Full table: `docs/HISTORICAL_AAL_ROOT_CAUSE.md` and `evidence/.../HISTORICAL_AAL_ROOT_CAUSE.md`.
 
-- Statement `setUpClass` now uses `TransactionCase` + Odoo 19 analytic **plan without `company_id`**.
-- Labor helper no longer `UPDATE account_analytic_line.analytic_distribution` (column does not exist). `analytic_distribution` is asserted on **`account.move.line`**. Posted AAL is checked via `account_id`, `general_account_id`, `move_line_id`.
-- Statement proves AAL-primary, Timesheet / no GL, posted JE once, no AML/AAL double count.
+20 AAL with analytic `account_id` and `general_account_id` NULL.
 
-Justified SKIPs:
+| Primary cause | Count | IDs |
+|---------------|------:|-----|
+| Anomalous hours (legacy, never accrued, hourly_cost=0) | 7 | 29, 30, 32, 48, 49, 53, 58 |
+| No amount source (`hourly_cost=0`) | 3 | 54, 55, 59 |
+| `include_in_payroll` false | 3 | 155, 158, 161 |
+| JE never generated (cancelled/empty August batch) | 4 | 153, 154, 156, 157 |
+| Accrued; source timesheet has no GL **by design** | 2 | 159, 160 (GL on AAL 162/163) |
+| Zero hours | 1 | 313 |
 
-1. `test_line_specific_date_when_supported` — AAL-primary uses `account.analytic.line.date`; this schema stores the **journal date** on AAL, not AML `line_date`.
-2. `test_populate_excludes_mo_timesheet_when_field_exists` — `account.analytic.line` has **no** `mrp_production_id` on this DB (`mrp_timesheet` not installed).
+**Why:** Odoo timesheets stay analytic-only until a **new** JE-linked AAL is posted. Labor stack was not on production. Original employees have `hourly_cost=0`.
+
+# Include in Payroll End-to-End Trace
+
+```mermaid
+flowchart LR
+  TS["Timesheet AAL\ninclude_in_payroll"] --> DOM["Bridge domain\ninclude_in_payroll=True"]
+  DOM --> POP["action_populate_lines"]
+  POP --> BL["labor.accrual.batch.line"]
+  BL --> GEN["action_generate_draft_move"]
+  GEN --> AML["account.move.line\nanalytic_distribution"]
+  AML --> POST["action_post_move\n_post soft=False"]
+  POST --> JEAAL["JE AAL\ngeneral_account_id + move_line_id"]
+```
+
+| Step | Model / field / method | File |
+|------|------------------------|------|
+| Flag on form | `account.analytic.line.include_in_payroll` | `workers_timesheet/models/account_analytic_line.py` 52–56; views `hr_timesheet_views.xml` 15, 32 |
+| Default / onchange | `_include_in_payroll_from_project`, `_onchange_project_id`, `create`, `write` | same file 90–125 |
+| Project opt-out | `project.project.exclude_from_payroll` | `workers_timesheet/models/project_project.py` |
+| Eligibility domain | `_get_eligible_timesheet_domain` + `("include_in_payroll", "=", True)` | `gpc_hr_timesheet_labor_accrual/.../labor_accrual_batch.py` 216–239; bridge `gpc_worker_timesheet_labor_accrual_bridge/models/labor_accrual_batch.py` 15–23 |
+| Populate | `action_populate_lines` | bridge 74–146 |
+| Company accounts/journal | `_get_company_labor_accrual_config` (company-ownership guard) | labor batch 295–349 |
+| Draft JE | `action_generate_draft_move` → `_prepare_labor_accrual_move_vals` | 657–698, 548–655; debit AML `analytic_distribution` |
+| Post | `action_post_move` → `account.move._post(soft=False)` | 717+ |
+| Financial account | Posted AAL `general_account_id` / `move_line_id` (not rewritten on the timesheet) | UAT AAL 162/163 and 382/383 |
+
+Runtime proof: Sept batch 5 skipped 161 (payroll false); Aug batch 6 skipped 155/158; 153/154 populated.
+
+# Retroactive Remediation UAT
+
+Backup before remediation:
+
+`/var/backups/gulf_mm_uat/trgcc_mm_uat_before_retro_20260811_231409.dump`  
+size **9782815** bytes, timestamp **2026-08-11 23:14:11 +03:00**
+
+| | Before | After |
+|--|-------:|------:|
+| Timesheets (employee set) | 20 | 20 |
+| AAL with GL | 6 | 8 |
+| Timesheets still no GL | 20 | 20 (by design) |
+
+- Selected: **153, 154** (8h/6h, payroll true, amount -400/-240)
+- Held out of sample: **156, 157** (same pattern, not mass-posted)
+- Excluded anomalies: 29, 30, 32, 48, 49, 53, 58 and 25h/40h/43h/100h/200h/260h
+- Excluded no-rate: 54, 55, 59 (`hourly_cost=0` — would invent rates)
+- Excluded payroll false: 155, 158, 161
+- Excluded zero hours: 313
+- Already posted Sept: 159, 160
+
+- Batch **6** `period_key=2026-08` posted
+- Move **291** `SLR/2026/08/0001` posted, total **640.00**
+- AML 1121 Dr 400 account 131 analytic `{73:100}`; AML 1120 Dr 240 account 131 `{74:100}`; AML 1122 Cr 640 account 57 **no analytic**
+- Resulting AAL **383** / **382**: `general_account_id=131`, `move_line_id` 1121/1120
+- Source 153/154 remain `general_account_id` NULL
+
+JSON: `before_after/retro_result.json`
+
+# Multi-Company Safety
+
+- Batch and populate domain filter `company_id` = batch company.
+- Company form domains: accounts `company_ids in [id]`; journal `company_id = id`.
+- **Generate-time guard** (new): journal must be batch company; debit/credit accounts must belong to batch company; timesheet lines from another company raise `UserError`.
+- Tests: `test_generate_blocks_foreign_company_journal`, `test_generate_blocks_foreign_company_debit_account`, `test_generate_blocks_timesheet_from_other_company` — all PASS.
+- UAT has a single company **GCC** (id 1). Wrong-company case is proven by automated tests (SQL bypass of ORM then generate must block).
+
+# Historical Statement Validation
+
+Aug **before** JE: 7 rows, all `Timesheet / no GL`, source `aal`, no SLR/2026/08.
+
+Aug **after**: same 7 + **2** rows `SLR/2026/08/0001` account `410028 Basic Salary - Projects`, source `aal`, `aml_id` set. `aug_aml_fallback_count=0`. JE not doubled.
+
+Feb material: AAL 12 `INV/2026/00003` / 13 `INV/2026/00009` account `500001 INCOME FROM PROJECTS`, source `aal`.
+
+Sept (unchanged): Timesheet/no GL + `SLR/2026/09/0001` once per project debit.
+
+# Final Automated Tests
+
+`trgcc_mm_uat`: **0 failed, 0 error(s) of 65 tests.**
+
+Justified SKIP (2): AAL journal date vs AML line_date; no `mrp_production_id`.
+
+# Explicitly Refused Scope
+
+Industrial P&L Excel Report — **`REFUSED_BY_CLIENT_FOR_CURRENT_SCOPE`**
+
+Not implemented: Materials / Direct Labor / Overhead / Sales / Net Profit columns, Mohammad’s XLSX, account-code mappings for that report.
 
 # Known Limitations
 
-- Timesheet rows and JE AAL both appear on the statement (hours vs posted cost). That is a listing, not an Industrial P&L.
+- Timesheet rows and JE AAL both appear on the statement (hours vs posted cost). Listing, not an Industrial P&L.
 - `_post(soft=False)` required on this Odoo 19+e.
-- `validated=True` required for populate (field exists on this DB).
-- Odoo 19 `account.analytic.line` has no SQL column `analytic_distribution` (that JSON is on `account.move.line`).
-
-# Out-of-Scope Change Request
-
-Industrial P&L Excel report:
-`CHANGE_REQUEST_REQUIRED`
-
-Finance must define mappings for Materials, Direct Labor, Manufacturing Overhead, Revenue. No hardcoded guesses.
+- `validated=True` required for populate.
+- Odoo 19 AAL has no SQL column `analytic_distribution` (JSON is on AML).
+- Original GCC `hourly_cost=0` blocks JE for cloned Jan–Apr timesheets without Finance rates.
 
 # Production Deployment Plan
 
-WAIT FOR SABRY APPROVAL.
+WAIT FOR SABRY **EXPLICIT** APPROVAL. Do not deploy yet.
 
 1. Backup `trgcc` again.
 2. Deploy branch modules to `/opt/localaddons`.
-3. `-i` on a **new** clone first, then production only after sign-off.
+3. `-i` on a **new** clone first.
 4. Configure company labor accounts (131 / 57 / SLR) only after Finance confirms.
-5. Do **not** populate historical 200h/260h lines.
+5. Do **not** populate 200h/260h/anomalous lines. Do **not** invent hourly_cost.
 
 # Rollback Plan
 
-- UAT: drop `trgcc_mm_uat` (not production). Restore dump `trgcc_20260811_223821.dump` if needed.
-- Production: no changes to roll back. If later deployed: uninstall/upgrade reverse + restore the pre-deploy dump.
+- UAT: restore `trgcc_mm_uat_before_retro_20260811_231409.dump` or original `trgcc_20260811_223821.dump`.
+- Production: no changes to roll back.
 
 # OpenProject
 
 - Parent: [#88](https://master.tailcf9988.ts.net:10081/work_packages/88)
 - This work: [#441](https://master.tailcf9988.ts.net:10081/work_packages/441)
-- Related comment on [#405](https://master.tailcf9988.ts.net:10081/work_packages/405) — **not closed**
+- [#405](https://master.tailcf9988.ts.net:10081/work_packages/405) — **not closed**
 
 # Git Commits
 
 https://github.com/sabryyoussef/edafa_elhaleej/tree/gulf-mm-uat-20260811
 
-`f5bb343`, `571a56e`, `2420797`, `accd2fe`, plus the test-schema adaptation commit on this branch.
+`f5bb343`, `571a56e`, `2420797`, `accd2fe`, `597db40`, plus company-guard and docs commits on this branch.
 
 # Final Verdict
 
-`GULF_MM_UAT_PASS_READY_FOR_PROD_APPROVAL`
+`GULF_MM_UAT_COMPLETE_READY_FOR_PROD_APPROVAL`
 
-Production recommendation remains **do not deploy** until Sabry gives explicit approval. Industrial P&L Excel stays `CHANGE_REQUEST_REQUIRED`.
+Production recommendation: **do not deploy** until Sabry gives explicit production approval.
