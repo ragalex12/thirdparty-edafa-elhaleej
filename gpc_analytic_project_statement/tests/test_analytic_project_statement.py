@@ -417,3 +417,50 @@ class TestAnalyticProjectStatementPhase1(AccountTestInvoicingCommon):
         self.assertEqual(ext, "xlsx")
         self.assertTrue(content)
         self.assertGreater(len(content), 500)
+
+    def test_timesheet_without_gl_uses_label(self):
+        employee = self.env["hr.employee"].create({"name": "Stmt TS Emp"})
+        self.env["account.analytic.line"].create(
+            {
+                "name": "uat timesheet no gl",
+                "account_id": self.analytic_aa.id,
+                "employee_id": employee.id,
+                "amount": -80.0,
+                "unit_amount": 8.0,
+                "company_id": self.company.id,
+                "date": fields.Date.from_string("2020-06-15"),
+            }
+        )
+        w = self._wizard(
+            date_from=fields.Date.from_string("2020-06-01"),
+            date_to=fields.Date.from_string("2020-06-30"),
+            journal_ids=[(5, 0, 0)],
+        )
+        rows = w._get_report_phase1_rows()
+        ts_rows = [r for r in rows if r.get("move_name") == "uat timesheet no gl"]
+        self.assertEqual(len(ts_rows), 1)
+        self.assertEqual(ts_rows[0]["account"], "Timesheet / no GL")
+        self.assertAlmostEqual(ts_rows[0]["debit"], 80.0, places=2)
+
+    def test_no_duplicate_when_aal_represents_aml(self):
+        move = self._post_balanced_move(
+            self.journal_a,
+            fields.Date.from_string("2020-09-11"),
+            70.0,
+            {str(self.analytic_aa.id): 100.0},
+        )
+        exp = move.line_ids.filtered(lambda l: l.account_id == self.expense)[:1]
+        w = self._wizard(
+            date_from=fields.Date.from_string("2020-09-01"),
+            date_to=fields.Date.from_string("2020-09-30"),
+        )
+        rows = w._get_report_phase1_rows()
+        if exp and exp.move_id:
+            related = [
+                r
+                for r in rows
+                if r.get("aml_id") == exp.id or r.get("move_name") == move.name
+            ]
+            sources = {r.get("source") for r in related}
+            self.assertLessEqual(len(sources), 1, "AML and AAL must not both emit the same JE line")
+            self.assertEqual(len(related), 1)

@@ -119,24 +119,26 @@ class TestLaborAccrualPhase1(TransactionCase):
             proj_vals["generate_labor_je"] = False
         cls.project = cls.env["project.project"].create(proj_vals)
 
-        # Minimal MO stack for Non-MO exclusion (mrp_timesheet)
+        # Optional MO stack (only when mrp is installed)
         cls.product = cls.env["product.product"].create(
             {
                 "name": "LabAccr FG",
-                # Odoo 19: product.template.type uses consu/service/combo (not legacy "product")
                 "type": "consu",
             }
         )
-        cls.bom = cls.env["mrp.bom"].create(
-            {
-                "product_tmpl_id": cls.product.product_tmpl_id.id,
-                "product_qty": 1.0,
-                "product_uom_id": cls.env.ref("uom.product_uom_unit").id,
-            }
-        )
-        cls.analytic_mo = cls.env["account.analytic.account"].create(
-            _analytic_account_vals(cls.env, cls.company, "Lab MO Analytic")
-        )
+        cls.bom = False
+        cls.analytic_mo = False
+        if "mrp.bom" in cls.env:
+            cls.bom = cls.env["mrp.bom"].create(
+                {
+                    "product_tmpl_id": cls.product.product_tmpl_id.id,
+                    "product_qty": 1.0,
+                    "product_uom_id": cls.env.ref("uom.product_uom_unit").id,
+                }
+            )
+            cls.analytic_mo = cls.env["account.analytic.account"].create(
+                _analytic_account_vals(cls.env, cls.company, "Lab MO Analytic")
+            )
 
     def _batch(self, period_key="2025-06", **kwargs):
         vals = {
@@ -350,6 +352,65 @@ class TestLaborAccrualPhase1(TransactionCase):
 
         new_batch = self._batch(period_key="2025-09", name="Replacement 2025-09")
         self.assertEqual(new_batch.state, "draft")
+
+    def test_period_key_syncs_from_period_start_on_create(self):
+        batch = self._batch(
+            period_key="2026-01",
+            period_start=fields.Date.from_string("2026-02-01"),
+            period_end=fields.Date.from_string("2026-02-28"),
+        )
+        self.assertEqual(batch.period_key, "2026-02")
+
+    def test_period_key_syncs_when_dates_written(self):
+        batch = self._batch()
+        self.assertEqual(batch.period_key, "2025-06")
+        batch.write(
+            {
+                "period_start": fields.Date.from_string("2026-01-01"),
+                "period_end": fields.Date.from_string("2026-01-31"),
+            }
+        )
+        self.assertEqual(batch.period_key, "2026-01")
+
+    def test_cross_month_range_rejected(self):
+        with self.assertRaises(ValidationError):
+            self._batch(
+                period_start=fields.Date.from_string("2026-01-01"),
+                period_end=fields.Date.from_string("2026-02-28"),
+            )
+
+    def test_wizard_cross_month_rejected(self):
+        wiz = self.env["labor.accrual.batch.wizard"].create(
+            {
+                "company_id": self.company.id,
+                "period_start": fields.Date.from_string("2026-01-14"),
+                "period_end": fields.Date.from_string("2026-02-21"),
+            }
+        )
+        with self.assertRaises(UserError):
+            wiz.action_create_batch_and_populate_lines()
+
+    def test_populate_uses_dates_not_stale_label(self):
+        """Jan 14 / Jan 21 lines are selected only when the date window is January."""
+        jan14 = self._create_ts_line(
+            unit_amount=8.0, date=fields.Date.from_string("2026-01-14")
+        )
+        jan21 = self._create_ts_line(
+            unit_amount=6.0, date=fields.Date.from_string("2026-01-21")
+        )
+        feb01 = self._create_ts_line(
+            unit_amount=8.0, date=fields.Date.from_string("2026-02-01")
+        )
+        batch = self._batch(
+            period_start=fields.Date.from_string("2026-01-01"),
+            period_end=fields.Date.from_string("2026-01-31"),
+        )
+        self.assertEqual(batch.period_key, "2026-01")
+        batch.action_populate_lines()
+        ts_ids = set(batch.line_ids.mapped("timesheet_line_id").ids)
+        self.assertIn(jan14.id, ts_ids)
+        self.assertIn(jan21.id, ts_ids)
+        self.assertNotIn(feb01.id, ts_ids)
 
 
 @tagged("post_install", "-at_install")
