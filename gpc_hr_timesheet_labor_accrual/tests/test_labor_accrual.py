@@ -244,6 +244,85 @@ class TestLaborAccrualPhase1(TransactionCase):
                 }
             )
 
+    def test_generate_blocks_foreign_company_journal(self):
+        """Generate JE must refuse a journal owned by another company (SQL bypass of ORM)."""
+        other = self.env["res.company"].create({"name": "Labor Accrual Foreign Co J"})
+        foreign_journal = _make_journal(self.env, "Foreign Labor Journal", "FXLJ", other)
+        self._create_ts_line()
+        batch = self._batch(period_key="2025-06-cxj")
+        batch.action_populate_lines()
+        if not batch.line_ids:
+            self.skipTest("No batch line created.")
+        bak = self.company.labor_accrual_journal_id
+        self.env.cr.execute(
+            "UPDATE res_company SET labor_accrual_journal_id = %s WHERE id = %s",
+            (foreign_journal.id, self.company.id),
+        )
+        self.company.invalidate_recordset(["labor_accrual_journal_id"])
+        try:
+            with self.assertRaises(UserError) as ctx:
+                batch.action_generate_draft_move()
+            self.assertIn("cross-company journal", str(ctx.exception).lower())
+            self.assertFalse(batch.move_id)
+        finally:
+            self.env.cr.execute(
+                "UPDATE res_company SET labor_accrual_journal_id = %s WHERE id = %s",
+                (bak.id, self.company.id),
+            )
+            self.company.invalidate_recordset(["labor_accrual_journal_id"])
+
+    def test_generate_blocks_foreign_company_debit_account(self):
+        """Generate JE must refuse a debit account that is not on the batch company."""
+        other = self.env["res.company"].create({"name": "Labor Accrual Foreign Co A"})
+        foreign_debit = _make_account(
+            self.env, "Foreign Labor Dr", "FXDR99", "expense", other
+        )
+        self._create_ts_line()
+        batch = self._batch(period_key="2025-06-cxa")
+        batch.action_populate_lines()
+        if not batch.line_ids:
+            self.skipTest("No batch line created.")
+        bak = self.company.labor_accrual_debit_account_id
+        self.env.cr.execute(
+            "UPDATE res_company SET labor_accrual_debit_account_id = %s WHERE id = %s",
+            (foreign_debit.id, self.company.id),
+        )
+        self.company.invalidate_recordset(["labor_accrual_debit_account_id"])
+        try:
+            with self.assertRaises(UserError) as ctx:
+                batch.action_generate_draft_move()
+            msg = str(ctx.exception).lower()
+            self.assertTrue(
+                "cross-company debit" in msg or "does not belong" in msg,
+                msg,
+            )
+            self.assertFalse(batch.move_id)
+        finally:
+            self.env.cr.execute(
+                "UPDATE res_company SET labor_accrual_debit_account_id = %s WHERE id = %s",
+                (bak.id, self.company.id),
+            )
+            self.company.invalidate_recordset(["labor_accrual_debit_account_id"])
+
+    def test_generate_blocks_timesheet_from_other_company(self):
+        """A batch line pointing at another company's timesheet must not generate a JE."""
+        other = self.env["res.company"].create({"name": "Labor Accrual Foreign Co T"})
+        self._create_ts_line()
+        batch = self._batch(period_key="2025-06-cxt")
+        batch.action_populate_lines()
+        if not batch.line_ids:
+            self.skipTest("No batch line created.")
+        ts = batch.line_ids[0].timesheet_line_id
+        self.env.cr.execute(
+            "UPDATE account_analytic_line SET company_id = %s WHERE id = %s",
+            (other.id, ts.id),
+        )
+        ts.invalidate_recordset(["company_id"])
+        with self.assertRaises(UserError) as ctx:
+            batch.action_generate_draft_move()
+        self.assertIn("another company", str(ctx.exception).lower())
+        self.assertFalse(batch.move_id)
+
     def test_domain_includes_company_period_validated_non_mo_rules(self):
         """Eligible domain encodes company, date range, and Non-MO; validated when the field exists."""
         batch = self._batch()
