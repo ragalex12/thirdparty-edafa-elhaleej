@@ -450,6 +450,46 @@ class TestAnalyticProjectStatementPhase1(TransactionCase):
         self.assertTrue(content)
         self.assertGreater(len(content), 500)
 
+    def test_xlsx_values_match_phase1_rows_no_pnl_columns(self):
+        """Styled XLSX must reprint Phase-1 rows; no Industrial P&L columns."""
+        import io
+        import zipfile
+        from xml.etree import ElementTree as ET
+
+        self._post_balanced_move(
+            self.journal_a,
+            fields.Date.from_string("2020-12-02"),
+            15.0,
+            {str(self.analytic_aa.id): 100.0},
+        )
+        wizard = self._wizard()
+        expected = wizard._get_report_phase1_rows()
+        self.assertTrue(expected)
+        xlsx_model = self.env["report.gpc_aps.proj_stmt_xlsx"].with_context(
+            active_model="analytic.project.statement.wizard"
+        )
+        content, ext = xlsx_model.create_xlsx_report(wizard.ids, {})
+        self.assertEqual(ext, "xlsx")
+        ns = {"m": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"}
+        with zipfile.ZipFile(io.BytesIO(content)) as zf:
+            sheet_xml = zf.read("xl/worksheets/sheet1.xml")
+            root = ET.fromstring(sheet_xml)
+            view = root.find("m:sheetViews/m:sheetView", ns)
+            self.assertEqual(view.get("rightToLeft"), "1")
+            shared = []
+            if "xl/sharedStrings.xml" in zf.namelist():
+                ss_root = ET.fromstring(zf.read("xl/sharedStrings.xml"))
+                for si in ss_root.findall("m:si", ns):
+                    shared.append("".join(t.text or "" for t in si.findall(".//m:t", ns)))
+        blob = sheet_xml.decode("utf-8", errors="ignore") + "\n".join(shared)
+        for forbidden in ("مواد", "أجور مباشرة", "اجور مباشرة", "تكاليف صناعية", "المبيعات", "صافي الربح"):
+            self.assertNotIn(forbidden, blob)
+        for rec in expected:
+            if rec.get("move_name"):
+                self.assertIn(rec["move_name"], blob)
+            if rec.get("account"):
+                self.assertIn(rec["account"], blob)
+
     def test_timesheet_without_gl_uses_label(self):
         employee = self.env["hr.employee"].create({"name": "Stmt TS Emp"})
         self.env["account.analytic.line"].create(

@@ -2,8 +2,8 @@
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl-3.0.html).
 {
     "name": "GPC Analytic Project Statement",
-    "summary": "Custom analytic / project statement export (Phase 1: XLSX scaffold)",
-    "version": "19.0.1.7.0",
+    "summary": "Analytic / project statement XLSX (AAL-primary; Excel template style only)",
+    "version": "19.0.1.8.0",
     "category": "Accounting/Reporting",
     "author": "GPC",
     "license": "LGPL-3",
