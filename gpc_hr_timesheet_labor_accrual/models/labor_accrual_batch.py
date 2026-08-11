@@ -280,8 +280,24 @@ class LaborAccrualBatch(models.Model):
             )
         return True
 
+    def _account_belongs_to_company(self, account, company):
+        """Whether ``account`` may be used on ``company`` (Odoo 19 ``company_ids``)."""
+        if not account or not company:
+            return False
+        if "company_ids" in account._fields:
+            if not account.company_ids:
+                return True
+            return company in account.company_ids
+        if "company_id" in account._fields:
+            return not account.company_id or account.company_id == company
+        return True
+
     def _get_company_labor_accrual_config(self):
-        """Return (debit_account, credit_account, journal) or raise UserError if incomplete."""
+        """Return (debit_account, credit_account, journal) or raise UserError if incomplete.
+
+        Accounts and journal must belong to **this batch's company**. UI domains are not
+        enough: XML-RPC / sudo / a mis-set M2O must not silently post on another company.
+        """
         self.ensure_one()
         company = self.company_id
         debit = company.labor_accrual_debit_account_id
@@ -301,6 +317,34 @@ class LaborAccrualBatch(models.Model):
                     "a labor accrual entry: %(fields)s."
                 )
                 % {"company": company.display_name, "fields": ", ".join(missing)}
+            )
+        if journal.company_id != company:
+            raise UserError(
+                _(
+                    "Labor accrual journal '%(journal)s' belongs to company '%(jco)s', "
+                    "not batch company '%(bco)s'. Refusing cross-company journal."
+                )
+                % {
+                    "journal": journal.display_name,
+                    "jco": journal.company_id.display_name,
+                    "bco": company.display_name,
+                }
+            )
+        if not self._account_belongs_to_company(debit, company):
+            raise UserError(
+                _(
+                    "Labor accrual debit account '%(acc)s' does not belong to company "
+                    "'%(company)s'. Refusing cross-company debit account."
+                )
+                % {"acc": debit.display_name, "company": company.display_name}
+            )
+        if not self._account_belongs_to_company(credit, company):
+            raise UserError(
+                _(
+                    "Labor accrual credit account '%(acc)s' does not belong to company "
+                    "'%(company)s'. Refusing cross-company credit account."
+                )
+                % {"acc": credit.display_name, "company": company.display_name}
             )
         return debit, credit, journal
 
@@ -626,6 +670,22 @@ class LaborAccrualBatch(models.Model):
             )
 
         debit_account, credit_account, journal = self._get_company_labor_accrual_config()
+        foreign = self.line_ids.filtered(
+            lambda l: l.timesheet_line_id
+            and l.timesheet_line_id.company_id
+            and l.timesheet_line_id.company_id != self.company_id
+        )
+        if foreign:
+            raise UserError(
+                _(
+                    "Batch company '%(bco)s' cannot accrue timesheets from another company "
+                    "(timesheet ids: %(ids)s)."
+                )
+                % {
+                    "bco": self.company_id.display_name,
+                    "ids": ", ".join(str(i) for i in foreign.mapped("timesheet_line_id").ids),
+                }
+            )
 
         if self.move_id:
             move = self.move_id
