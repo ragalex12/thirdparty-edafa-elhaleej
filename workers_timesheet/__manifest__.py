@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Workers Timesheet',
-    'version': '19.0.1.0.0',
+    'version': '19.0.1.1.0',
     'category': 'Human Resources',
     'summary': 'Timesheet management for construction workers',
     'description': """
@@ -25,6 +25,7 @@ This module provides timesheet management specifically for construction workers:
     'data': [
         'security/ir.model.access.csv',
         'views/hr_timesheet_views.xml',
+        'views/project_views.xml',
         'views/menu_views.xml',
     ],
     'installable': True,

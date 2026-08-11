@@ -87,17 +87,42 @@ class AccountAnalyticLine(models.Model):
                 line.work_date_month = 0
                 line.work_date_year = 0
     
-    @api.onchange('project_id')
-    def _onchange_project_id(self):
-        """Auto-set include_in_payroll based on project setting.
+    def _include_in_payroll_from_project(self, project):
+        """Default payroll flag: eligible unless the project explicitly opts out.
 
-        Uses getattr() so this works regardless of whether workers_project_sheets
-        is installed, the DB column exists, or the field is accessible.
+        Do **not** copy ``project.use_for_payroll`` (that field defaults False and
+        would silently uncheck Include in Payroll when selecting a normal project).
         """
+        if not project:
+            return True
+        return not bool(getattr(project, "exclude_from_payroll", False))
+
+    @api.onchange("project_id")
+    def _onchange_project_id(self):
+        """Keep timesheets payroll-eligible unless the project opts out."""
         for rec in self:
-            rec.include_in_payroll = bool(
-                getattr(rec.project_id, 'use_for_payroll', False)
-            )
+            rec.include_in_payroll = rec._include_in_payroll_from_project(rec.project_id)
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        Project = self.env["project.project"]
+        for vals in vals_list:
+            if "include_in_payroll" not in vals:
+                project = (
+                    Project.browse(vals["project_id"])
+                    if vals.get("project_id")
+                    else Project.browse()
+                )
+                vals["include_in_payroll"] = self._include_in_payroll_from_project(project)
+        return super().create(vals_list)
+
+    def write(self, vals):
+        vals = dict(vals)
+        res = super().write(vals)
+        if "project_id" in vals and "include_in_payroll" not in vals:
+            for rec in self:
+                rec.include_in_payroll = rec._include_in_payroll_from_project(rec.project_id)
+        return res
     
     @api.onchange('worker_sheet_code')
     def _onchange_worker_sheet_code(self):

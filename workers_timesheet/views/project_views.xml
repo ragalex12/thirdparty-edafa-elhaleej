@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="workers_timesheet_view_project_form_payroll" model="ir.ui.view">
+        <field name="name">project.project.form.workers.timesheet.payroll</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <group string="Payroll eligibility" name="workers_payroll">
+                    <field name="exclude_from_payroll"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
