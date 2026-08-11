@@ -45,9 +45,9 @@ class TestWorkerLaborAccrualBridgeAmount(TransactionCase):
             {
                 "name": "Bridge amount batch",
                 "company_id": self.company.id,
-                "period_start": fields.Date.from_string("2026-05-01"),
-                "period_end": fields.Date.from_string("2026-05-31"),
-                "period_key": "2026-05-amt",
+                "period_start": fields.Date.from_string("2024-03-01"),
+                "period_end": fields.Date.from_string("2024-03-31"),
+                "period_key": "2024-03-amt",
                 "state": "draft",
             }
         )
@@ -59,7 +59,7 @@ class TestWorkerLaborAccrualBridgeAmount(TransactionCase):
             "employee_id": self.employee.id,
             "project_id": self.project.id,
             "unit_amount": 4.0,
-            "date": fields.Date.from_string("2026-05-10"),
+            "date": fields.Date.from_string("2024-03-10"),
         }
         if "validated" in self.AAL._fields and "validated" not in kwargs:
             vals["validated"] = True

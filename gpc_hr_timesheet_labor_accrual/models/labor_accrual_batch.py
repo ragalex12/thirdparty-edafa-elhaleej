@@ -3,13 +3,21 @@
 
 import logging
 
+from collections import defaultdict
+
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
+from odoo.tools import float_compare
 
 _logger = logging.getLogger(__name__)
 
 # Set ir.config_parameter key to "1" to log per-line analytic resolution when generating draft moves.
 _DEBUG_ANALYTIC_PARAM = "gpc_hr_timesheet_labor_accrual.debug_analytic"
+
+# Hard production-safety cap: one calendar day cannot exceed 24 hours.
+# Timesheets over the cap stay in the database for review; they are not accrued.
+MAX_TIMESHEET_HOURS_PER_DAY = 24.0
+_HOURS_PRECISION = 2
 
 
 class LaborAccrualBatch(models.Model):
@@ -225,6 +233,7 @@ class LaborAccrualBatch(models.Model):
             ("employee_id", "!=", False),
             ("project_id", "!=", False),
             ("unit_amount", ">", 0),
+            ("unit_amount", "<=", MAX_TIMESHEET_HOURS_PER_DAY),
         ]
         if "validated" in AAL._fields:
             domain.append(("validated", "=", True))
@@ -237,6 +246,91 @@ class LaborAccrualBatch(models.Model):
         if "mrp_production_id" in AAL._fields:
             domain.append(("mrp_production_id", "=", False))
         return domain
+
+    def _timesheet_hours(self, analytic_line):
+        return float(getattr(analytic_line, "unit_amount", 0.0) or 0.0)
+
+    def _hours_exceed_daily_cap(self, hours):
+        return float_compare(hours, MAX_TIMESHEET_HOURS_PER_DAY, _HOURS_PRECISION) > 0
+
+    def _filter_timesheets_for_daily_hours(self, analytic_lines):
+        """Keep reviewable timesheets; drop anomalous hours from accrual only.
+
+        Single line ``unit_amount > 24`` is excluded.
+        Multiple lines for the same employee and date whose hours sum to more
+        than 24 are all excluded (do not silently accrue a subset).
+
+        Timesheet records are never deleted or rewritten.
+        """
+        skipped = []
+        after_line = self.env["account.analytic.line"]
+        for aal in analytic_lines:
+            hours = self._timesheet_hours(aal)
+            if self._hours_exceed_daily_cap(hours):
+                skipped.append(
+                    {
+                        "timesheet_line_id": aal.id,
+                        "employee_id": aal.employee_id.id,
+                        "date": aal.date,
+                        "hours": hours,
+                        "reason": "anomalous_single_line_hours_over_24",
+                    }
+                )
+                continue
+            after_line |= aal
+
+        groups = defaultdict(lambda: self.env["account.analytic.line"])
+        for aal in after_line:
+            groups[(aal.employee_id.id, aal.date)] |= aal
+
+        kept = self.env["account.analytic.line"]
+        for (employee_id, day), lines in groups.items():
+            total = sum(self._timesheet_hours(aal) for aal in lines)
+            if self._hours_exceed_daily_cap(total):
+                for aal in lines:
+                    skipped.append(
+                        {
+                            "timesheet_line_id": aal.id,
+                            "employee_id": employee_id,
+                            "date": day,
+                            "hours": self._timesheet_hours(aal),
+                            "day_total": total,
+                            "reason": "anomalous_cumulative_same_day_hours_over_24",
+                        }
+                    )
+                continue
+            kept |= lines
+        return kept, skipped
+
+    def _assert_batch_lines_hours_safe(self):
+        """Refuse JE generation if a batch line still points at anomalous hours."""
+        self.ensure_one()
+        timesheets = self.line_ids.mapped("timesheet_line_id")
+        _kept, skipped = self._filter_timesheets_for_daily_hours(timesheets)
+        if not skipped:
+            return
+        parts = []
+        for item in skipped:
+            ts = self.env["account.analytic.line"].browse(item["timesheet_line_id"])
+            emp = ts.employee_id.display_name or ts.employee_id.id
+            parts.append(
+                _("%(emp)s on %(date)s (timesheet %(id)s, %(hours)s h, %(reason)s)")
+                % {
+                    "emp": emp,
+                    "date": item.get("date"),
+                    "id": item["timesheet_line_id"],
+                    "hours": item.get("hours"),
+                    "reason": item.get("reason"),
+                }
+            )
+        raise UserError(
+            _(
+                "Labor accrual cannot include timesheets over 24 hours per employee "
+                "per day. Review the timesheets (they were not changed). Offending "
+                "rows: %s"
+            )
+            % "; ".join(parts)
+        )
 
     def _get_labor_amount_for_line(self, analytic_line):
         """Resolve monetary amount from mrp_timesheet labor_cost when present."""
@@ -262,6 +356,14 @@ class LaborAccrualBatch(models.Model):
         self.line_ids.unlink()
         domain = self._get_eligible_timesheet_domain()
         analytic_lines = self.env["account.analytic.line"].search(domain)
+        analytic_lines, hour_skips = self._filter_timesheets_for_daily_hours(analytic_lines)
+        if hour_skips:
+            _logger.info(
+                "Labor accrual skipped anomalous hours | batch_id=%s | skipped=%s | samples=%s",
+                self.id,
+                len(hour_skips),
+                hour_skips[:25],
+            )
         BatchLine = self.env["labor.accrual.batch.line"]
 
         for aal in analytic_lines:
@@ -663,6 +765,7 @@ class LaborAccrualBatch(models.Model):
             raise UserError(
                 _("Populate batch lines first (there must be at least one line with a positive amount).")
             )
+        self._assert_batch_lines_hours_safe()
         total = self._get_labor_accrual_move_total()
         if total <= 0.0:
             raise UserError(

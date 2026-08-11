@@ -3,7 +3,7 @@
 {
     "name": "GPC Worker Timesheet Labor Accrual Bridge",
     "summary": "Bridge workers_timesheet fields into labor accrual population",
-    "version": "19.0.1.0.0",
+    "version": "19.0.1.0.1",
     "category": "Human Resources/Accounting",
     "author": "GPC",
     "license": "LGPL-3",

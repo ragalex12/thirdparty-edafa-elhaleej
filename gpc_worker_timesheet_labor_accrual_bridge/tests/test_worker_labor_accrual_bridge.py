@@ -43,13 +43,13 @@ class TestWorkerLaborAccrualBridge(TransactionCase):
             }
         )
 
-    def _batch(self, period_key="2026-05"):
+    def _batch(self, period_key="2024-02"):
         return self.Batch.create(
             {
                 "name": "Bridge batch %s" % period_key,
                 "company_id": self.company.id,
-                "period_start": fields.Date.from_string("2026-05-01"),
-                "period_end": fields.Date.from_string("2026-05-31"),
+                "period_start": fields.Date.from_string("2024-02-01"),
+                "period_end": fields.Date.from_string("2024-02-29"),
                 "period_key": period_key,
                 "state": "draft",
             }
@@ -62,7 +62,7 @@ class TestWorkerLaborAccrualBridge(TransactionCase):
             "employee_id": self.employee.id,
             "project_id": self.project.id,
             "unit_amount": 2.0,
-            "date": fields.Date.from_string("2026-05-15"),
+            "date": fields.Date.from_string("2024-02-15"),
         }
         if "validated" in self.AAL._fields and "validated" not in kwargs:
             vals["validated"] = True
@@ -105,7 +105,7 @@ class TestWorkerLaborAccrualBridge(TransactionCase):
     def test_date_or_company_mismatch_skipped(self):
         outside = self._create_line(
             include_in_payroll=True,
-            date=fields.Date.from_string("2026-06-05"),
+            date=fields.Date.from_string("2024-03-05"),
             unit_amount=2.0,
         )
         vals = self._line_vals(
@@ -137,7 +137,7 @@ class TestWorkerLaborAccrualBridge(TransactionCase):
         line2 = self._create_line(
             include_in_payroll=True,
             unit_amount=3.0,
-            date=fields.Date.from_string("2026-05-20"),
+            date=fields.Date.from_string("2024-02-20"),
         )
         if not self._line_has_positive_amount(batch, line2):
             self.skipTest("No confirmed positive amount source for second line.")

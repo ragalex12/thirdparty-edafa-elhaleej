@@ -92,13 +92,14 @@ class LaborAccrualBatch(models.Model):
         eligible_domain = self._get_eligible_timesheet_domain()
         analytic_lines = AAL.search(eligible_domain)
         eligible_count = len(analytic_lines)
+        analytic_lines, hour_skips = self._filter_timesheets_for_daily_hours(analytic_lines)
 
         replaced_count = len(self.line_ids)
         self.line_ids.unlink()
 
         BatchLine = self.env["labor.accrual.batch.line"]
         skipped_zero_amount = 0
-        skipped_reasons = []
+        skipped_reasons = list(hour_skips)
         created_count = 0
 
         for aal in analytic_lines:
@@ -127,13 +128,15 @@ class LaborAccrualBatch(models.Model):
         _logger.info(
             (
                 "Worker accrual populate summary | batch_id=%s | replaced=%s | "
-                "candidates=%s | eligible=%s | skipped_zero_amount=%s | created=%s"
+                "candidates=%s | eligible=%s | skipped_zero_amount=%s | "
+                "skipped_anomalous_hours=%s | created=%s"
             ),
             self.id,
             replaced_count,
             candidate_count,
             eligible_count,
             skipped_zero_amount,
+            len(hour_skips),
             created_count,
         )
         if skipped_reasons:

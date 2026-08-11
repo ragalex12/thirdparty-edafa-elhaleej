@@ -159,13 +159,14 @@ class TestLaborAccrualExtended(TransactionCase):
         batch.action_populate_lines()
         self.assertFalse(batch.line_ids)
 
-    def test_populate_includes_anomaly_hours_when_amount_positive(self):
-        """Current domain does not exclude >24h; amount still accrues if rate exists."""
+    def test_populate_excludes_anomaly_hours_even_when_amount_positive(self):
+        """Single-line >24h must not enter populate even if hourly_cost would yield an amount."""
         ts = self._ts(name="anom-25", unit_amount=25.0)
         batch = self._batch()
         batch.action_populate_lines()
-        self.assertIn(ts.id, batch.line_ids.mapped("timesheet_line_id").ids)
-        self.assertAlmostEqual(batch.line_ids.amount, 25.0 * 50.0, places=2)
+        self.assertNotIn(ts.id, batch.line_ids.mapped("timesheet_line_id").ids)
+        self.assertTrue(ts.exists())
+        self.assertEqual(ts.unit_amount, 25.0)
 
     def test_mixed_eligible_ineligible_counts(self):
         a = self._ts(name="mix-a", unit_amount=8.0)
