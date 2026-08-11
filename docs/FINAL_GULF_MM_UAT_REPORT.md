@@ -309,7 +309,7 @@ Sept (unchanged): Timesheet/no GL + `SLR/2026/09/0001` once per project debit.
 
 # Final Automated Tests
 
-`trgcc_mm_uat`: **0 failed, 0 error(s) of 65 tests.**
+`trgcc_mm_uat`: **0 failed, 0 error(s) of 103 tests.**
 
 Justified SKIP (2): AAL journal date vs AML line_date; no `mrp_production_id`.
 
@@ -349,6 +349,30 @@ See `docs/EXCEL_TEMPLATE_VISUAL_COMPARISON.md` and screenshots 43–47.
 Industrial P&L **calculations / new fields / account mappings** remain refused.
 
 Visual reuse of the Excel file: **`EXCEL_TEMPLATE_STYLE_ONLY_APPROVED`**
+
+# Extended UAT dataset
+
+Marker `gulf.mm.uat.extended_dataset.v1` on `trgcc_mm_uat` only.
+
+| Item | Count |
+|------|------:|
+| MM-UAT projects | 11 (10 GCC + WRONGCO) |
+| MM-UAT employees | 12 |
+| MM-UAT timesheets | 124 |
+| Payroll eligible | 121 |
+| Payroll excluded | 3 |
+| Anomalies >24h | 5 |
+| Posted labor JEs | 3 (Apr/May/Jun) |
+| Draft labor JE | 1 (Oct) |
+| Material MISC | 3 |
+| Statement rows Apr–Oct | 154 |
+| Automated tests | 103 |
+| Manual scenarios | 35 PASS |
+| Meeting points mapped | 15 testable + 3 NOT_TESTABLE |
+
+Docs: `MEETING_REQUIREMENTS_TRACEABILITY.md`, `GULF_MM_MANUAL_UAT_SCENARIOS.md`, `UAT_TEST_DATA_INVENTORY.md`, `ANALYTICAL_VS_JOURNAL_PROOF.md`.
+
+`Accounting/business logic changes from Excel template: NONE`
 
 # Known Limitations
 
