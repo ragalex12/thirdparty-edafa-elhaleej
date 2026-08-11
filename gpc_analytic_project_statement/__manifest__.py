@@ -3,7 +3,7 @@
 {
     "name": "GPC Analytic Project Statement",
     "summary": "Custom analytic / project statement export (Phase 1: XLSX scaffold)",
-    "version": "19.0.1.6.0",
+    "version": "19.0.1.7.0",
     "category": "Accounting/Reporting",
     "author": "GPC",
     "license": "LGPL-3",

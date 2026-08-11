@@ -1,7 +1,7 @@
 # Copyright 2026
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl-3.0.html).
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.tools import float_compare
 
 
@@ -147,12 +147,20 @@ class AnalyticProjectStatementWizard(models.TransientModel):
         return aml
 
     def _aal_matches_wizard_filters(self, aal):
-        """Whether an analytic line passes optional wizard filters."""
+        """Whether an analytic line passes optional wizard filters.
+
+        Timesheets and other operational AAL have no ``move_line_id``. They are
+        included when no journal filter is set; a journal filter still applies
+        to AAL that are linked to a journal item.
+        """
         self.ensure_one()
         ml = aal.move_line_id
-        if self.journal_ids:
-            if not ml or ml.journal_id not in self.journal_ids:
-                return False
+        if self.journal_ids and ml and ml.journal_id not in self.journal_ids:
+            return False
+        if self.journal_ids and not ml:
+            # Operational/timesheet lines have no journal; keep them unless a
+            # financial-account filter is also applied below.
+            pass
         if self.account_ids:
             gacc = aal.general_account_id
             if not gacc or gacc not in self.account_ids:
@@ -162,6 +170,15 @@ class AnalyticProjectStatementWizard(models.TransientModel):
         if self.target_move == "all" and ml and ml.move_id.state not in ("draft", "posted"):
             return False
         return True
+
+    def _aal_account_label(self, aal):
+        """Financial account column; never blank for timesheets without GL."""
+        gacc = aal.general_account_id
+        if gacc:
+            return gacc.display_name or ""
+        if aal.employee_id:
+            return _("Timesheet / no GL")
+        return _("Analytic / no GL")
 
     def _aal_amount_to_debit_credit(self, amount, currency):
         """Map ``account.analytic.line`` ``amount`` to debit/credit columns.
@@ -177,12 +194,11 @@ class AnalyticProjectStatementWizard(models.TransientModel):
         return 0.0, currency.round(amount)
 
     def _get_aal_source_recordset(self):
-        """``account.analytic.line`` rows that are not already covered by AML explosion.
+        """Primary ``account.analytic.line`` rows for the statement.
 
-        Many databases post journal lines **without** ``analytic_distribution`` on
-        ``account.move.line`` while analytic planning exists only on analytic
-        lines (often with no ``move_line_id``). Those lines would otherwise
-        yield an empty export for an otherwise active project/company.
+        Includes timesheets, material analytic entries, and JE-derived analytic
+        lines. Journal-item explosion is a fallback only (see
+        :meth:`_get_report_phase1_rows`).
         """
         self.ensure_one()
         Aal = self.env["account.analytic.line"]
@@ -194,14 +210,7 @@ class AnalyticProjectStatementWizard(models.TransientModel):
         if self.analytic_account_ids:
             domain.append(("account_id", "in", self.analytic_account_ids.ids))
         lines = Aal.search(domain)
-        kept_ids = []
-        for aal in lines:
-            if not self._aal_matches_wizard_filters(aal):
-                continue
-            ml = aal.move_line_id
-            if ml and ml.analytic_distribution:
-                continue
-            kept_ids.append(aal.id)
+        kept_ids = [aal.id for aal in lines if self._aal_matches_wizard_filters(aal)]
         return Aal.browse(kept_ids)
 
     def _line_currency(self, line):
@@ -352,50 +361,60 @@ class AnalyticProjectStatementWizard(models.TransientModel):
             distribution_key,
         )
 
-    def _get_report_phase1_rows(self):
-        """Ordered list of Phase 1 row dicts (six columns), one per slice.
+    def _aal_to_row_dict(self, aal, currency):
+        debit, credit = self._aal_amount_to_debit_credit(aal.amount, currency)
+        if aal.move_line_id and aal.move_line_id.move_id:
+            move_name = aal.move_line_id.move_id.name or ""
+        elif aal.name:
+            move_name = aal.name
+        else:
+            move_name = ""
+        return {
+            "date": aal.date,
+            "move_name": move_name,
+            "project": aal.account_id.display_name if aal.account_id else "",
+            "account": self._aal_account_label(aal),
+            "debit": debit,
+            "credit": credit,
+            "source": "aal",
+            "aal_id": aal.id,
+            "aml_id": aal.move_line_id.id if aal.move_line_id else False,
+        }
 
-        Combines exploded ``account.move.line`` rows (analytic distribution) with
-        supplementary ``account.analytic.line`` rows when journal items carry no
-        distribution map. Each dict has keys: ``date``, ``move_name``,
-        ``project``, ``account``, ``debit``, ``credit``.
+    def _get_report_phase1_rows(self):
+        """Ordered Phase 1 rows: analytic lines primary, AML explosion fallback.
+
+        Each dict has keys: ``date``, ``move_name``, ``project``, ``account``,
+        ``debit``, ``credit``. AML slices are added only when no AAL already
+        represents that journal item (``move_line_id``).
         """
         self.ensure_one()
-        aml = self._get_aml_source_recordset().sorted(
-            lambda l: (l.date, l.move_id.id, l.id)
-        )
-        staged = []
-        for line in aml:
-            for dist_key, row in self._explode_line_to_row_dicts(line):
-                staged.append((self._report_row_sort_key(line, dist_key), row))
         currency = self.company_id.currency_id
+        staged = []
+        represented_aml_ids = set()
         for aal in self._get_aal_source_recordset().sorted(lambda a: (a.date, a.id)):
-            debit, credit = self._aal_amount_to_debit_credit(aal.amount, currency)
-            gacc = aal.general_account_id
-            account_label = gacc.display_name if gacc else ""
-            project_label = aal.account_id.display_name if aal.account_id else ""
-            if aal.move_line_id and aal.move_line_id.move_id:
-                move_name = aal.move_line_id.move_id.name or ""
-            elif aal.name:
-                move_name = aal.name
-            else:
-                move_name = ""
-            row = {
-                "date": aal.date,
-                "move_name": move_name,
-                "project": project_label,
-                "account": account_label,
-                "debit": debit,
-                "credit": credit,
-            }
-            # Sort after AML rows on the same day (AML keys use move_id as 2nd part).
+            if aal.move_line_id:
+                represented_aml_ids.add(aal.move_line_id.id)
+            row = self._aal_to_row_dict(aal, currency)
             sort_key = (
                 aal.date or fields.Date.from_string("1900-01-01"),
-                10**9,
+                aal.move_line_id.move_id.id if aal.move_line_id else 10**9,
                 aal.id,
                 "",
             )
             staged.append((sort_key, row))
+
+        aml = self._get_aml_source_recordset().sorted(
+            lambda l: (l.date, l.move_id.id, l.id)
+        )
+        for line in aml:
+            if line.id in represented_aml_ids:
+                continue
+            for dist_key, row in self._explode_line_to_row_dicts(line):
+                row = dict(row)
+                row["source"] = "aml"
+                row["aml_id"] = line.id
+                staged.append((self._report_row_sort_key(line, dist_key), row))
         staged.sort(key=lambda t: t[0])
         return [t[1] for t in staged]
 
