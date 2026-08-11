@@ -15,7 +15,8 @@ Legend: **PASS** = verified this run (SQL / automated test / generated XLSX). Sc
 | MM-UAT-007 | include_in_payroll False opt-out | M04 | OPTOUT project | TS-2026-05-EXCL | Populate skips | Not in batch 280 | PASS | 51 | payroll_false=3 | |
 | MM-UAT-008 | Project onchange keeps True | M04 | normal project | onchange | Flag stays true | True | PASS | auto | | |
 | MM-UAT-009 | Opt-out onchange False | M04 | OPTOUT | onchange | Flag false | False | PASS | auto | | |
-| MM-UAT-010 | Anomaly hours 25–260 | M03 | HIST Apr 28 | ANOM-* | Stored; not in Apr 1–7 batch | 5 rows unit_amount>24 | PASS | 53_anomalies | anom_gt24=5 | Populate does not filter >24h if in range |
+| MM-UAT-010 | Anomaly hours 25–260 (outside period) | M03 | HIST Apr 28 | ANOM-* | Stored; not in Apr 1–7 batch | 5 rows unit_amount>24 | PASS | 53_anomalies | anom_gt24 | Historical sample; in-period guard is MM-UAT-036 |
+| MM-UAT-036 | Labor anomaly guard (inside period) | M03 M06 | Dec 2026 batch | 8h+6h + 25/40/100/200/260 + 16+16 same day | Populate Dec 1–31 | Anomalies excluded, hours unchanged, JE 640 = 8×50+6×40 | PASS | 58_anomaly_guard | sql/mm_uat_036_anomaly_guard.sql.txt | Hard cap unit_amount>24 and cumulative same-day >24 |
 | MM-UAT-011 | Zero hours | M03 | ALPHA | ZEROHOURS | Populate skip | unit_amount=0 | PASS | 53 | | |
 | MM-UAT-012 | Posted labor JE accounts | M06 | batch 280 | move 396 | Dr 410028 analytic; Cr 202001 none | Balanced | PASS | 52 | SQL aml | |
 | MM-UAT-013 | Draft JE stays draft | M13 | October | move 399 | Do not post | state=draft, unnamed | PASS | 54_draft_je | move 399 | Posted statement excludes it |
@@ -42,4 +43,4 @@ Legend: **PASS** = verified this run (SQL / automated test / generated XLSX). Sc
 | MM-UAT-034 | Demo path Alpha 3 workers | client demo | EMP-01..03 | TS→JE→statement | PASS | 50 | | |
 | MM-UAT-035 | Rerun populate on posted blocked | M01 | batch 280 posted | UserError/state | posted immutable populate | PASS | code `state != draft` | | |
 
-Manual PASS: **35/35** executed scenarios (automated + SQL). UI click-path screenshots for every row were not re-recorded; dataset HTML pack **50–57** covers the records.
+Manual PASS: **36/36** (MM-UAT-036 in-period anomaly guard). Evidence pack **50–58**.

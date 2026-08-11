@@ -309,7 +309,7 @@ Sept (unchanged): Timesheet/no GL + `SLR/2026/09/0001` once per project debit.
 
 # Final Automated Tests
 
-`trgcc_mm_uat`: **0 failed, 0 error(s) of 103 tests.**
+`trgcc_mm_uat`: **0 failed, 0 error(s) of 110 tests.**
 
 Justified SKIP (2): AAL journal date vs AML line_date; no `mrp_production_id`.
 
@@ -362,17 +362,28 @@ Marker `gulf.mm.uat.extended_dataset.v1` on `trgcc_mm_uat` only.
 | Payroll eligible | 121 |
 | Payroll excluded | 3 |
 | Anomalies >24h | 5 |
-| Posted labor JEs | 3 (Apr/May/Jun) |
+| Posted labor JEs | 4 (Apr/May/Jun/Dec guard) |
 | Draft labor JE | 1 (Oct) |
 | Material MISC | 3 |
 | Statement rows Apr–Oct | 154 |
-| Automated tests | 103 |
-| Manual scenarios | 35 PASS |
+| Automated tests | 110 |
+| Manual scenarios | 36 PASS |
 | Meeting points mapped | 15 testable + 3 NOT_TESTABLE |
 
 Docs: `MEETING_REQUIREMENTS_TRACEABILITY.md`, `GULF_MM_MANUAL_UAT_SCENARIOS.md`, `UAT_TEST_DATA_INVENTORY.md`, `ANALYTICAL_VS_JOURNAL_PROOF.md`.
 
 `Accounting/business logic changes from Excel template: NONE`
+
+# Labor anomaly hours guard
+
+Populate **excludes** (does not delete or rewrite) timesheets when:
+
+- a single line has `unit_amount > 24` (24.00 is allowed)
+- multiple lines for the same employee + date sum to more than 24 hours (all lines in that group are excluded)
+
+`action_generate_draft_move` also refuses any injected batch line that still points at anomalous hours.
+
+UAT MM-UAT-036 (`2026-12` inside the batch period): 25/40/100/200/260h and 16+16 cumulative were **not** accrued. Normal 8h+6h posted as `SLR/2026/12/0001` **640.00**. Anomalous rows still exist with original hours.
 
 # Known Limitations
 
@@ -390,7 +401,7 @@ WAIT FOR SABRY **EXPLICIT** APPROVAL. Do not deploy yet.
 2. Deploy branch modules to `/opt/localaddons`.
 3. `-i` on a **new** clone first.
 4. Configure company labor accounts (131 / 57 / SLR) only after Finance confirms.
-5. Do **not** populate 200h/260h/anomalous lines. Do **not** invent hourly_cost.
+5. Anomalous `unit_amount > 24` and same-day cumulative `> 24` are excluded by populate. Do **not** invent hourly_cost.
 
 # Rollback Plan
 
@@ -411,6 +422,6 @@ https://github.com/sabryyoussef/edafa_elhaleej/tree/gulf-mm-uat-20260811
 
 # Final Verdict
 
-`GULF_MM_UAT_COMPLETE_READY_FOR_PROD_APPROVAL`
+`GULF_MM_EXTENDED_UAT_FINAL_PASS_READY_FOR_PROD_APPROVAL`
 
 Production recommendation: **do not deploy** until Sabry gives explicit production approval.
