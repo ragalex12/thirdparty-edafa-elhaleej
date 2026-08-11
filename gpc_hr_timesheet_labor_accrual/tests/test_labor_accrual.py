@@ -43,6 +43,48 @@ def _analytic_account_vals(env, company, name):
     return vals
 
 
+def _sql_columns(env, table):
+    env.cr.execute(
+        "SELECT column_name FROM information_schema.columns WHERE table_name = %s",
+        (table,),
+    )
+    return {row[0] for row in env.cr.fetchall()}
+
+
+def _null_stored_plan_columns(env, record):
+    """Null real SQL plan columns only.
+
+    Odoo 19 exposes ``analytic_distribution`` on ``account.analytic.line`` in
+    the ORM (``_fields`` / ``_get_plan_fnames``) but that JSON lives on
+    ``account.move.line``, not as a column on ``account_analytic_line``.
+    """
+    cols = _sql_columns(env, record._table)
+    fnames = []
+    if hasattr(record, "_get_plan_fnames"):
+        fnames.extend(record._get_plan_fnames())
+    if "account_id" in record._fields:
+        fnames.append("account_id")
+    seen = set()
+    for fname in fnames:
+        if fname in seen:
+            continue
+        seen.add(fname)
+        field = record._fields.get(fname)
+        if not field or fname not in cols:
+            continue
+        if not getattr(field, "store", False):
+            continue
+        env.cr.execute(
+            SQL(
+                "UPDATE %s SET %s = NULL WHERE id = %s",
+                SQL.identifier(record._table),
+                SQL.identifier(fname),
+                record.id,
+            )
+        )
+    record.invalidate_recordset()
+
+
 @tagged("post_install", "-at_install")
 class TestLaborAccrualScaffold(TransactionCase):
     """Minimal model/field registration checks."""
@@ -525,15 +567,7 @@ class TestLaborAccrualAnalyticDistribution(TransactionCase):
             self.skipTest("No batch line created.")
         bl = batch.line_ids[0]
         ts = bl.timesheet_line_id
-        for fname in ts._get_plan_fnames():
-            self.env.cr.execute(
-                SQL(
-                    "UPDATE account_analytic_line SET %s = NULL WHERE id = %s",
-                    SQL.identifier(fname),
-                    ts.id,
-                )
-            )
-        ts.invalidate_recordset()
+        _null_stored_plan_columns(self.env, ts)
         dist = batch._get_analytic_distribution_for_batch_line(bl)
         if not self.project_a.account_id:
             self.skipTest("Project has no account_id for fallback.")
@@ -548,29 +582,8 @@ class TestLaborAccrualAnalyticDistribution(TransactionCase):
             self.skipTest("No batch line created.")
         bl = batch.line_ids[0]
         ts = bl.timesheet_line_id
-        for fname in ts._get_plan_fnames():
-            self.env.cr.execute(
-                SQL(
-                    "UPDATE account_analytic_line SET %s = NULL WHERE id = %s",
-                    SQL.identifier(fname),
-                    ts.id,
-                )
-            )
-        if "analytic_distribution" in ts._fields:
-            self.env.cr.execute(
-                "UPDATE account_analytic_line SET analytic_distribution = NULL WHERE id = %s",
-                (ts.id,),
-            )
-        ts.invalidate_recordset()
-        for fname in self.project_a._get_plan_fnames():
-            self.env.cr.execute(
-                SQL(
-                    "UPDATE project_project SET %s = NULL WHERE id = %s",
-                    SQL.identifier(fname),
-                    self.project_a.id,
-                )
-            )
-        self.project_a.invalidate_recordset()
+        _null_stored_plan_columns(self.env, ts)
+        _null_stored_plan_columns(self.env, self.project_a)
         with self.assertRaises(UserError):
             batch._get_analytic_distribution_for_batch_line(bl)
 
@@ -584,6 +597,11 @@ class TestLaborAccrualAnalyticDistribution(TransactionCase):
             self.skipTest("Only one analytic plan column on analytic lines in this DB.")
         ts = self._ts(self.project_a)
         second_f = plan_fnames[0]
+        cols = _sql_columns(self.env, ts._table)
+        if second_f not in cols:
+            self.skipTest(
+                "Plan field %s is not a SQL column on account_analytic_line." % second_f
+            )
         self.env.cr.execute(
             SQL(
                 "UPDATE account_analytic_line SET %s = %s WHERE id = %s",
@@ -641,6 +659,36 @@ class TestLaborAccrualAnalyticDistribution(TransactionCase):
             debit_lines.analytic_distribution,
             {str(ts_accs.id): 100.0},
         )
+        # analytic_distribution is an AML field in Odoo 19 — not an AAL column.
+        self.assertIn("analytic_distribution", debit_lines._fields)
+        self.assertNotIn(
+            "analytic_distribution",
+            _sql_columns(self.env, "account_analytic_line"),
+        )
+
+        batch.action_post_move()
+        move.invalidate_recordset()
+        self.assertEqual(move.state, "posted")
+        posted_aal = self.env["account.analytic.line"].search(
+            [("move_line_id", "in", debit_lines.ids)]
+        )
+        self.assertTrue(
+            posted_aal,
+            "Posted labor JE debit must create account.analytic.line via move_line_id.",
+        )
+        for aal in posted_aal:
+            self.assertTrue(aal.account_id, "Posted AAL missing analytic account_id")
+            self.assertEqual(aal.account_id, ts_accs)
+            self.assertEqual(
+                aal.general_account_id,
+                self.debit_acc,
+                "Posted AAL general_account_id must be the labor expense account",
+            )
+            self.assertIn(aal.move_line_id, debit_lines)
+            # Project linkage is the analytic account copied from the timesheet.
+            self.assertEqual(aal.account_id, ts.project_id.account_id or ts_accs)
+            if aal.employee_id:
+                self.assertEqual(aal.employee_id, self.employee)
 
     def test_no_analytic_raises_user_error(self):
         """Missing analytic must raise UserError — never post JE without analytic."""
