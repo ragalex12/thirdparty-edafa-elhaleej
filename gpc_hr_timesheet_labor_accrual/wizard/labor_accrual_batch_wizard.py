@@ -29,6 +29,16 @@ class LaborAccrualBatchWizard(models.TransientModel):
         self.ensure_one()
         if self.period_start > self.period_end:
             raise UserError(_("Period start must be on or before period end."))
+        if (self.period_start.year, self.period_start.month) != (
+            self.period_end.year,
+            self.period_end.month,
+        ):
+            raise UserError(
+                _(
+                    "Period start and end must be in the same calendar month so the "
+                    "batch period key matches the populate date range."
+                )
+            )
         period_key = self.period_start.strftime("%Y-%m").strip()
         blocked = self.env["labor.accrual.batch"]._blocking_batch_for_period(
             self.company_id.id, period_key

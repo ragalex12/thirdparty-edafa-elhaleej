@@ -121,20 +121,69 @@ class LaborAccrualBatch(models.Model):
         store=True,
     )
 
+    @api.model
+    def _period_key_from_start(self, period_start):
+        """Stable YYYY-MM key from period_start so labels cannot drift from dates."""
+        if not period_start:
+            return False
+        if isinstance(period_start, str):
+            period_start = fields.Date.from_string(period_start)
+        return period_start.strftime("%Y-%m")
+
+    def _sync_period_key_vals(self, vals):
+        """Force period_key from period_start when dates are written (WP #405)."""
+        vals = dict(vals)
+        if vals.get("period_start"):
+            vals["period_key"] = self._period_key_from_start(vals["period_start"])
+        elif isinstance(vals.get("period_key"), str):
+            vals["period_key"] = vals["period_key"].strip()
+        return vals
+
     @api.model_create_multi
     def create(self, vals_list):
-        for vals in vals_list:
-            pk = vals.get("period_key")
-            if isinstance(pk, str):
-                vals["period_key"] = pk.strip()
+        vals_list = [self._sync_period_key_vals(vals) for vals in vals_list]
         return super().create(vals_list)
 
     def write(self, vals):
-        vals = dict(vals)
-        pk = vals.get("period_key")
-        if isinstance(pk, str):
-            vals["period_key"] = pk.strip()
+        vals = self._sync_period_key_vals(vals)
         return super().write(vals)
+
+    @api.onchange("period_start")
+    def _onchange_period_start_sync_key(self):
+        for rec in self:
+            if rec.period_start:
+                rec.period_key = rec._period_key_from_start(rec.period_start)
+
+    @api.constrains("period_start", "period_end", "period_key")
+    def _check_period_dates_match_key(self):
+        for rec in self:
+            if rec.period_start and rec.period_end:
+                if (rec.period_start.year, rec.period_start.month) != (
+                    rec.period_end.year,
+                    rec.period_end.month,
+                ):
+                    raise ValidationError(
+                        _(
+                            "Period start and end must be in the same calendar month "
+                            "(%(start)s → %(end)s). Split cross-month ranges into "
+                            "separate batches so period_key stays aligned with dates."
+                        )
+                        % {"start": rec.period_start, "end": rec.period_end}
+                    )
+            if rec.period_start and rec.period_key:
+                expected = rec._period_key_from_start(rec.period_start)
+                if rec.period_key != expected:
+                    raise ValidationError(
+                        _(
+                            "Period key %(key)s does not match period start %(start)s "
+                            "(expected %(expected)s)."
+                        )
+                        % {
+                            "key": rec.period_key,
+                            "start": rec.period_start,
+                            "expected": expected,
+                        }
+                    )
 
     @api.constrains("company_id", "period_key", "state")
     def _check_at_most_one_active_batch_per_period(self):
@@ -619,9 +668,14 @@ class LaborAccrualBatch(models.Model):
                 % (move.state,)
             )
 
-        move.with_context(
+        posted_moves = move.with_context(
             skip_tier_validation_state_on_write=True,
-        )._post()
+        )._post(soft=False)
+        if not posted_moves or any(m.state != "posted" for m in posted_moves):
+            raise UserError(
+                _("The journal entry could not be posted (current state: %s).")
+                % (move.state,)
+            )
 
         self.write(
             {
@@ -667,7 +721,7 @@ class LaborAccrualBatch(models.Model):
             raise UserError(_("The reversal entry could not be created."))
         reversals.with_context(
             skip_tier_validation_state_on_write=True,
-        )._post()
+        )._post(soft=False)
 
         self.write(
             {
