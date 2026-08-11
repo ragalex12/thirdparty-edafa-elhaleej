@@ -313,11 +313,42 @@ Sept (unchanged): Timesheet/no GL + `SLR/2026/09/0001` once per project debit.
 
 Justified SKIP (2): AAL journal date vs AML line_date; no `mrp_production_id`.
 
+# Excel Template Styling
+
+Mohammad’s `تقرير الصناعي.xlsx` is used as **visual/layout template only**.
+
+Status: **`EXCEL_TEMPLATE_STYLE_ONLY_APPROVED`**
+
+Not implemented: Industrial P&L calculations, new GL mappings, مواد / أجور / overhead / مبيعات / صافي الربح columns.
+
+XLSX (`gpc_aps.proj_stmt_xlsx` v19.0.1.8.0): RTL, Arabic headers on the **existing** six fields, blue header, borders, alt rows, frozen header, landscape fit-to-width, totals = sum of shown debit/credit.
+
+UAT export: `xlsx/gulf_mm_analytic_statement.xlsx` (26 rows, debit 7700, credit 106000 = Phase-1 JSON).
+
+# Existing Field Mapping
+
+| Report key | XLSX header |
+|------------|-------------|
+| date | التاريخ / Date |
+| move_name | رقم الحركة / Transaction / Move Number |
+| project | المشروع / Project |
+| account | الحساب / Account |
+| debit | مدين / Debit |
+| credit | دائن / Credit |
+
+# Visual Comparison
+
+See `docs/EXCEL_TEMPLATE_VISUAL_COMPARISON.md` and screenshots 43–47.
+
+# Accounting Logic Impact
+
+`Accounting/business logic changes from Excel template: NONE`
+
 # Explicitly Refused Scope
 
-Industrial P&L Excel Report — **`REFUSED_BY_CLIENT_FOR_CURRENT_SCOPE`**
+Industrial P&L **calculations / new fields / account mappings** remain refused.
 
-Not implemented: Materials / Direct Labor / Overhead / Sales / Net Profit columns, Mohammad’s XLSX, account-code mappings for that report.
+Visual reuse of the Excel file: **`EXCEL_TEMPLATE_STYLE_ONLY_APPROVED`**
 
 # Known Limitations
 
