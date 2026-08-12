@@ -3,7 +3,7 @@
 {
     "name": "GPC Analytic Project Statement",
     "summary": "Analytic / project statement XLSX (AAL-primary; Excel template style only)",
-    "version": "19.0.1.8.0",
+    "version": "19.0.1.9.2",
     "category": "Accounting/Reporting",
     "author": "GPC",
     "license": "LGPL-3",

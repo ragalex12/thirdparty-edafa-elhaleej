@@ -87,6 +87,17 @@ class LaborAccrualBatch(models.Model):
         copy=False,
         help="Draft or posted journal entry for this batch, once generated.",
     )
+    move_ids = fields.Many2many(
+        comodel_name="account.move",
+        relation="labor_accrual_batch_account_move_rel",
+        column1="batch_id",
+        column2="move_id",
+        string="Journal Entries",
+        copy=False,
+        readonly=True,
+        help="One miscellaneous entry per timesheet date (line_date). "
+        "move_id points to the first entry for backward compatibility.",
+    )
     reversal_move_id = fields.Many2one(
         comodel_name="account.move",
         string="Reversal entry",
@@ -647,19 +658,25 @@ class LaborAccrualBatch(models.Model):
             }
         )
 
-    def _prepare_labor_accrual_move_vals(self, debit_account, credit_account, journal, total):
+    def _prepare_labor_accrual_move_vals(self, debit_account, credit_account, journal, total, lines=None, move_date=None):
         """Build vals for one miscellaneous entry.
 
         Debit side: one line per unique analytic distribution group (grouped from batch lines).
         Credit side: one aggregated offset line without analytic (clearing/WIP account).
         Rounding: last debit group absorbs any cent difference so debit total == credit total.
+
+        ``lines`` defaults to all batch lines. ``move_date`` defaults to period_end
+        (legacy); callers that split by timesheet date must pass the real line_date.
         """
         self.ensure_one()
         company = self.company_id
         currency = company.currency_id
-        ref = _("Labor accrual - %(name)s (%(period)s)") % {
+        lines = lines if lines is not None else self.line_ids
+        move_date = move_date or self.period_end
+        ref = _("Labor accrual - %(name)s (%(period)s / %(day)s)") % {
             "name": self.name,
             "period": self.period_key or self.period_start,
+            "day": move_date,
         }
         narration = _(
             "Labor accrual batch %(batch_id)s.\n"
@@ -696,7 +713,7 @@ class LaborAccrualBatch(models.Model):
         # key: tuple of sorted distribution items (hashable) → [running_amount, dist_dict]
         # Missing analytic raises UserError inside _get_analytic_distribution_for_batch_line.
         analytic_groups = {}
-        for batch_line in self.line_ids:
+        for batch_line in lines:
             dist = self._get_analytic_distribution_for_batch_line(batch_line)
             group_key = tuple(sorted(dist.items()))
             if group_key not in analytic_groups:
@@ -750,7 +767,7 @@ class LaborAccrualBatch(models.Model):
             "journal_id": journal.id,
             "company_id": company.id,
             "currency_id": currency.id if currency else False,
-            "date": self.period_end,
+            "date": move_date,
             "ref": ref[:256] if len(ref) > 256 else ref,
             "narration": narration,
             "line_ids": line_ids,
@@ -790,54 +807,87 @@ class LaborAccrualBatch(models.Model):
                 }
             )
 
-        if self.move_id:
-            move = self.move_id
+        existing = self.move_ids | self.move_id
+        for move in existing:
             if move.state != "draft":
                 raise UserError(
                     _("This batch already has a journal entry that is not in draft. Remove or reverse it before generating a new one.")
                 )
-            self.move_id = False
-            move.unlink()
+        if existing:
+            self.write({"move_id": False, "move_ids": [(5, 0, 0)]})
+            existing.unlink()
 
-        vals = self._prepare_labor_accrual_move_vals(
-            debit_account, credit_account, journal, total
-        )
-        if self._labor_accrual_analytic_debug_enabled():
-            _logger.info(
-                "Labor accrual draft move vals preview | batch_id=%s total=%s line_commands=%s",
-                self.id,
-                total,
-                [
-                    (cmd[2].get("debit"), cmd[2].get("credit"), cmd[2].get("analytic_distribution"))
-                    for cmd in vals.get("line_ids", [])
-                    if cmd[0] == 0 and isinstance(cmd[2], dict)
-                ],
+        # One JE per distinct timesheet date (line_date) so accounting dates
+        # match the real source days instead of period_end.
+        by_date = {}
+        for bl in self.line_ids:
+            day = bl.line_date or self.period_end
+            by_date.setdefault(day, self.env["labor.accrual.batch.line"])
+            by_date[day] |= bl
+
+        created = self.env["account.move"]
+        for day in sorted(by_date.keys()):
+            day_lines = by_date[day]
+            day_total = sum(day_lines.mapped("amount"))
+            if currency := self.company_id.currency_id:
+                day_total = currency.round(day_total)
+            if day_total <= 0.0:
+                continue
+            vals = self._prepare_labor_accrual_move_vals(
+                debit_account,
+                credit_account,
+                journal,
+                day_total,
+                lines=day_lines,
+                move_date=day,
             )
-        move = self.env["account.move"].create(vals)
-        self.move_id = move
+            if self._labor_accrual_analytic_debug_enabled():
+                _logger.info(
+                    "Labor accrual draft move vals preview | batch_id=%s day=%s total=%s",
+                    self.id,
+                    day,
+                    day_total,
+                )
+            created |= self.env["account.move"].create(vals)
+
+        if not created:
+            raise UserError(
+                _("No journal entry could be generated (all day totals were zero).")
+            )
+        self.write(
+            {
+                "move_ids": [(6, 0, created.ids)],
+                "move_id": created.sorted("date")[0].id,
+            }
+        )
         return True
 
     def action_post_move(self):
-        """Post the batch journal entry and mark the batch as posted."""
+        """Post all batch journal entries (one per timesheet date) and mark posted."""
         self.ensure_one()
         if self.state != "draft":
             raise UserError(_("Only draft batches can post their journal entry."))
-        move = self.move_id
-        if not move:
+        moves = self.move_ids or self.move_id
+        if not moves:
             raise UserError(_("Generate a draft journal entry before posting."))
-        if move.state != "draft":
+        draft = moves.filtered(lambda m: m.state == "draft")
+        if not draft:
             raise UserError(
                 _("The journal entry is not in draft (current state: %s). It cannot be posted from this batch.")
-                % (move.state,)
+                % (", ".join(sorted(set(moves.mapped("state")))) ,)
+            )
+        if len(draft) != len(moves):
+            raise UserError(
+                _("Some journal entries are not in draft and cannot be posted from this batch.")
             )
 
-        posted_moves = move.with_context(
+        posted_moves = draft.with_context(
             skip_tier_validation_state_on_write=True,
         )._post(soft=False)
         if not posted_moves or any(m.state != "posted" for m in posted_moves):
             raise UserError(
-                _("The journal entry could not be posted (current state: %s).")
-                % (move.state,)
+                _("The journal entry could not be posted (current states: %s).")
+                % (", ".join(draft.mapped("state")),)
             )
 
         self.write(
@@ -856,40 +906,43 @@ class LaborAccrualBatch(models.Model):
             raise UserError(_("Only posted batches can be reversed to release the period."))
         if self.reversal_move_id:
             raise UserError(_("This batch was already reversed."))
-        move = self.move_id
-        if not move:
+        moves = (self.move_ids or self.move_id).filtered(lambda m: m.state == "posted")
+        if not moves:
             raise UserError(_("No journal entry to reverse."))
-        if move.state != "posted":
-            raise UserError(
-                _("The journal entry must be posted to be reversed (current state: %s).")
-                % (move.state,)
-            )
 
         caller = "%s (uid=%s)" % (self.env.user.display_name, self.env.user.id)
-        ref = (_("REV: labor accrual batch %s") % self.id)[:256]
-        narration = _(
-            "Standard reversal for labor accrual batch %(id)s, period %(period)s. %(caller)s"
-        ) % {"id": self.id, "period": self.period_key or "", "caller": caller}
-
-        reversals = move._reverse_moves(
-            default_values_list=[
-                {
-                    "date": fields.Date.context_today(self),
-                    "ref": ref,
-                    "narration": narration,
-                }
-            ]
-        )
-        if not reversals:
-            raise UserError(_("The reversal entry could not be created."))
-        reversals.with_context(
-            skip_tier_validation_state_on_write=True,
-        )._post(soft=False)
+        all_reversals = self.env["account.move"]
+        for move in moves.sorted("date"):
+            ref = (_("REV: labor accrual batch %s / %s") % (self.id, move.date))[:256]
+            narration = _(
+                "Standard reversal for labor accrual batch %(id)s, period %(period)s, "
+                "source move %(move)s. %(caller)s"
+            ) % {
+                "id": self.id,
+                "period": self.period_key or "",
+                "move": move.display_name,
+                "caller": caller,
+            }
+            reversals = move._reverse_moves(
+                default_values_list=[
+                    {
+                        "date": fields.Date.context_today(self),
+                        "ref": ref,
+                        "narration": narration,
+                    }
+                ]
+            )
+            if not reversals:
+                raise UserError(_("The reversal entry could not be created."))
+            reversals.with_context(
+                skip_tier_validation_state_on_write=True,
+            )._post(soft=False)
+            all_reversals |= reversals
 
         self.write(
             {
                 "state": "cancelled",
-                "reversal_move_id": reversals[0].id,
+                "reversal_move_id": all_reversals[0].id,
                 "reversed_at": fields.Datetime.now(),
                 "reversed_by": self.env.user.id,
             }

@@ -193,12 +193,69 @@ class AnalyticProjectStatementWizard(models.TransientModel):
             return currency.round(-amount), 0.0
         return 0.0, currency.round(amount)
 
+    def _labor_accrual_inactive_move_ids(self):
+        """Moves belonging to cancelled labor batches (original + reversals).
+
+        After reverse-and-regenerate, the original period-end JE stays posted in
+        Odoo, but its batch is cancelled. Those analytic lines must not inflate
+        the statement once a new posted batch exists for the same period.
+        """
+        self.ensure_one()
+        if "labor.accrual.batch" not in self.env:
+            return frozenset()
+        Batch = self.env["labor.accrual.batch"]
+        cancelled = Batch.search(
+            [("state", "=", "cancelled"), ("company_id", "=", self.company_id.id)]
+        )
+        moves = cancelled.mapped("move_id") | cancelled.mapped("reversal_move_id")
+        if "move_ids" in Batch._fields:
+            moves |= cancelled.mapped("move_ids")
+        return frozenset(moves.ids)
+
+    def _accrued_timesheet_aal_ids(self):
+        """Timesheet AAL ids already represented by an active labor-accrual JE.
+
+        Dedup rule (economic source of truth):
+        If a timesheet line is linked on labor.accrual.batch.line to a
+        draft/posted batch that has an account.move, the timesheet AAL must
+        not also appear on the statement. The JE-backed analytic line (with
+        financial account, e.g. 430002) is the single cost row.
+
+        Unaccrued timesheets (no active batch move) still appear as
+        Timesheet / no GL.
+        """
+        self.ensure_one()
+        if "labor.accrual.batch.line" not in self.env:
+            return frozenset()
+        BatchLine = self.env["labor.accrual.batch.line"]
+        domain = [
+            ("timesheet_line_id", "!=", False),
+            ("batch_id.state", "in", ("draft", "posted")),
+            ("timesheet_line_id.company_id", "=", self.company_id.id),
+            ("timesheet_line_id.date", ">=", self.date_from),
+            ("timesheet_line_id.date", "<=", self.date_to),
+        ]
+        lines = BatchLine.search(domain)
+
+        def _batch_has_move(bl):
+            batch = bl.batch_id
+            if batch.move_id:
+                return True
+            if "move_ids" in batch._fields and batch.move_ids:
+                return True
+            return False
+
+        return frozenset(lines.filtered(_batch_has_move).mapped("timesheet_line_id").ids)
+
     def _get_aal_source_recordset(self):
         """Primary ``account.analytic.line`` rows for the statement.
 
         Includes timesheets, material analytic entries, and JE-derived analytic
         lines. Journal-item explosion is a fallback only (see
         :meth:`_get_report_phase1_rows`).
+
+        Accrued timesheets are omitted when a labor-accrual JE already carries
+        the same economic cost (see :meth:`_accrued_timesheet_aal_ids`).
         """
         self.ensure_one()
         Aal = self.env["account.analytic.line"]
@@ -210,7 +267,20 @@ class AnalyticProjectStatementWizard(models.TransientModel):
         if self.analytic_account_ids:
             domain.append(("account_id", "in", self.analytic_account_ids.ids))
         lines = Aal.search(domain)
-        kept_ids = [aal.id for aal in lines if self._aal_matches_wizard_filters(aal)]
+        accrued_ts = self._accrued_timesheet_aal_ids()
+        inactive_moves = self._labor_accrual_inactive_move_ids()
+        kept_ids = []
+        for aal in lines:
+            if not self._aal_matches_wizard_filters(aal):
+                continue
+            # Skip timesheet AAL already accrued into an active labor JE.
+            if aal.id in accrued_ts and not aal.move_line_id:
+                continue
+            # Skip JE analytic lines from cancelled labor batches (and reversals).
+            ml = aal.move_line_id
+            if ml and ml.move_id and ml.move_id.id in inactive_moves:
+                continue
+            kept_ids.append(aal.id)
         return Aal.browse(kept_ids)
 
     def _line_currency(self, line):
@@ -404,11 +474,15 @@ class AnalyticProjectStatementWizard(models.TransientModel):
             )
             staged.append((sort_key, row))
 
+        inactive_moves = self._labor_accrual_inactive_move_ids()
         aml = self._get_aml_source_recordset().sorted(
             lambda l: (l.date, l.move_id.id, l.id)
         )
         for line in aml:
             if line.id in represented_aml_ids:
+                continue
+            # Do not explode AMLs from cancelled labor-accrual JEs (would undo AAL skip).
+            if line.move_id and line.move_id.id in inactive_moves:
                 continue
             for dist_key, row in self._explode_line_to_row_dicts(line):
                 row = dict(row)
