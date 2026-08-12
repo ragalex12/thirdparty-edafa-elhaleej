@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gulf / MM — Timesheet, Labor Accrual & Analytic Reporting UAT</title>
+  <meta name="description" content="Requirement-to-proof UAT case study for Gulf / MM timesheets, labor accrual, and analytic reporting on an isolated production clone." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="site-nav" aria-label="Primary">
+    <div class="wrap">
+      <a class="brand" href="#top">Gulf / MM · UAT Proof</a>
+      <div class="nav-links">
+        <a href="#requests">Requests</a>
+        <a href="#findings">Findings</a>
+        <a href="#changes">Changes</a>
+        <a href="#matrix">Matrix</a>
+        <a href="#flow">Flow</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#excel">Excel</a>
+        <a href="#safety">Safety</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero" id="top">
+    <div class="wrap">
+      <div class="badge-row">
+        <span class="badge">UAT PASSED</span>
+        <span class="badge gold">Production unchanged</span>
+        <span class="badge gold">Test database clone</span>
+      </div>
+      <h1>Gulf / MM — Timesheet, Labor Accrual &amp; Analytic Reporting UAT</h1>
+      <p class="sub">Requirement-to-proof validation on an isolated clone of production</p>
+      <div class="kpis">
+        <div class="kpi"><b>0</b><span>Production writes</span></div>
+        <div class="kpi"><b>110</b><span>Automated Odoo tests</span></div>
+        <div class="kpi"><b>16</b><span>Playwright browser scenarios</span></div>
+        <div class="kpi"><b>36+</b><span>Manual UAT scenarios</span></div>
+      </div>
+    </div>
+  </header>
+
+  <section id="requests">
+    <div class="wrap">
+      <h2>What the meeting requested</h2>
+      <p class="lede">Eight request themes from the discussion — mapped to proof, not internal tickets.</p>
+      <div class="cards">
+        <article class="card"><div class="num">1</div><h3>Create timesheets and generate journal</h3><p class="meta">Prove the full labor accrual path from eligible timesheets to a posted Salaries journal.</p></article>
+        <article class="card"><div class="num">2</div><h3>Why some Analytical Items have no Financial Account</h3><p class="meta">Explain source timesheets vs GL-backed analytic lines after labor JE.</p></article>
+        <article class="card"><div class="num">3</div><h3>Report from Analytical Items, not Journal Items alone</h3><p class="meta">Statement must show timesheets that never become AMLs by themselves.</p></article>
+        <article class="card"><div class="num">4</div><h3>Review Include in Payroll</h3><p class="meta">Normal projects stay eligible; explicit opt-out projects remain unchecked.</p></article>
+        <article class="card"><div class="num">5</div><h3>Prevent recurrence in code</h3><p class="meta">Guards for payroll flag, multi-company, and &gt;24h anomalies.</p></article>
+        <article class="card"><div class="num">6</div><h3>Retroactive remediation for valid old data</h3><p class="meta">Validated workflow on clone for periods that never received a labor JE.</p></article>
+        <article class="card"><div class="num">7</div><h3>Correct company / account / journal context</h3><p class="meta">GCC debit 410028, credit 202001, journal Salaries — foreign company blocked.</p></article>
+        <article class="card"><div class="num">8</div><h3>Excel visual design / template</h3><p class="meta"><strong>Visual template only.</strong> No Industrial P&amp;L fields or accounting logic from Excel.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="findings" style="background:#efe9dd;">
+    <div class="wrap">
+      <h2>What we found</h2>
+      <p class="lede">Business-friendly root causes — without exposing internals.</p>
+      <div class="cards">
+        <article class="card"><h3>Timesheets are analytic first</h3><p class="meta">A timesheet creates an Analytic Item. It does not automatically create a Financial Account / Journal Item.</p></article>
+        <article class="card"><h3>Labor Accrual was not on production</h3><p class="meta">The meeting path “timesheet → journal” required modules that existed in source but were not deployed on production.</p></article>
+        <article class="card"><h3>Include in Payroll could reset</h3><p class="meta">Project onchange could clear eligibility unintentionally; opt-out projects must remain explicit.</p></article>
+        <article class="card"><h3>Old lines had multiple causes</h3><p class="meta">Anomalous hours, zero cost, payroll false, missing JE, or source timesheet with no GL by design.</p></article>
+        <article class="card"><h3>Journal Items alone are incomplete</h3><p class="meta">Timesheets without GL never appear as AMLs; the statement must be Analytic-line primary.</p></article>
+        <article class="card"><h3>Safety needed company + hours guards</h3><p class="meta">Wrong company configuration and &gt;24h day totals must not silently enter accrual.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="changes">
+    <div class="wrap">
+      <h2>What we changed</h2>
+      <p class="lede">Implemented and validated on the isolated test database only.</p>
+      <div class="cards">
+        <article class="card"><h3>Include in Payroll logic</h3><p class="meta">Preserve eligibility; explicit project opt-out only.</p></article>
+        <article class="card"><h3>Labor Accrual flow</h3><p class="meta">Populate → draft JE → post, with debit analytic / credit clearing.</p></article>
+        <article class="card"><h3>period_key / date sync</h3><p class="meta">Batch period keys stay aligned with start/end dates.</p></article>
+        <article class="card"><h3>AAL-primary statement</h3><p class="meta">Timesheet / no GL + JE-backed rows; no AML duplicates.</p></article>
+        <article class="card"><h3>Historical remediation workflow</h3><p class="meta">Retro batches proven on clone for valid old periods.</p></article>
+        <article class="card"><h3>Multi-company guards</h3><p class="meta">Labor accounts/journal must belong to the batch company.</p></article>
+        <article class="card"><h3>&gt;24h anomaly guard</h3><p class="meta">Exclude single-line and cumulative same-day anomalies; never delete hours.</p></article>
+        <article class="card"><h3>XLSX template styling</h3><p class="meta">RTL, Arabic headers, existing columns only — STYLE ONLY.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="matrix" style="background:#efe9dd;">
+    <div class="wrap">
+      <h2>Request → solution matrix</h2>
+      <p class="lede">Meeting ask, finding, solution, status, and proof artifact.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Meeting request</th><th>Finding</th><th>Solution</th><th>Status</th><th>Proof</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Generate Journal</td><td>Labor modules absent on production</td><td>Install/test on clone; populate → post SLR</td><td><span class="status pass">PASS</span></td><td>09–11 batch &amp; JE</td></tr>
+            <tr><td>Missing Financial Account</td><td>Source timesheet has no GL by design</td><td>Document + JE-backed AAL after accrual</td><td><span class="status validated">VALIDATED</span></td><td>14 vs 15</td></tr>
+            <tr><td>Analytical Items report</td><td>AML-primary gap</td><td>AAL-primary statement</td><td><span class="status fixed">FIXED</span></td><td>18–21</td></tr>
+            <tr><td>Include in Payroll</td><td>Onchange could reset</td><td>Preserve + explicit opt-out</td><td><span class="status fixed">FIXED</span></td><td>04–05</td></tr>
+            <tr><td>Prevent recurrence</td><td>Guards missing</td><td>Company + hours + payroll guards</td><td><span class="status fixed">FIXED</span></td><td>02, 06–07, 09</td></tr>
+            <tr><td>Retroactive remediation</td><td>Valid old periods never accrued</td><td>Retro batch workflow on clone</td><td><span class="status pass">PASS</span></td><td>manual 32–34</td></tr>
+            <tr><td>Company / accounts / journal</td><td>Context must be GCC-safe</td><td>410028 / 202001 / Salaries</td><td><span class="status pass">PASS</span></td><td>02, 08</td></tr>
+            <tr><td>Excel design</td><td>Visual template request</td><td>Style existing columns only</td><td><span class="status style">STYLE ONLY</span></td><td>Excel gallery</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="flow">
+    <div class="wrap">
+      <h2>Visual end-to-end flow</h2>
+      <p class="lede">Timesheet → payroll flag → labor batch → journal → GL-backed analytic → statement → XLSX.</p>
+      <div class="flow">
+        <article><b>Timesheet</b><img data-lightbox src="assets/playwright/03_timesheet_8h.png" alt="8h timesheet" /><span>8h validated</span></article>
+        <article><b>Include in Payroll</b><img data-lightbox src="assets/playwright/04_include_payroll.png" alt="Include in Payroll checked" /><span>Eligible</span></article>
+        <article><b>Labor Batch</b><img data-lightbox src="assets/playwright/09_batch_population.png" alt="Labor accrual batch" /><span>Normals only</span></article>
+        <article><b>Journal Entry</b><img data-lightbox src="assets/playwright/11_posted_je.png" alt="Posted labor JE" /><span>Posted SLR</span></article>
+        <article><b>Analytic + GL</b><img data-lightbox src="assets/playwright/15_resulting_aal_gl.png" alt="GL-backed analytic item" /><span>Financial Account</span></article>
+        <article><b>Statement</b><img data-lightbox src="assets/playwright/18_statement_wizard.png" alt="Analytic project statement" /><span>AAL-primary</span></article>
+        <article><b>XLSX</b><img data-lightbox src="assets/playwright/22_xlsx_export.png" alt="XLSX export styling" /><span>Style only</span></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="before-after" style="background:#efe9dd;">
+    <div class="wrap">
+      <h2>Before / after</h2>
+      <div class="ba">
+        <article class="card before"><h3>Before</h3><p class="meta">Timesheet appears as Analytic Item with blank Financial Account — looks “missing”.</p></article>
+        <article class="card after"><h3>After</h3><p class="meta">Posted Labor Accrual creates a separate GL-backed Analytic Item linked to the JE.</p></article>
+        <article class="card before"><h3>Before</h3><p class="meta">Report depended on Journal Items and missed timesheets without GL.</p></article>
+        <article class="card after"><h3>After</h3><p class="meta">Report is AAL-primary: Timesheet / no GL + JE-backed rows, no AML duplicate.</p></article>
+        <article class="card before"><h3>Before</h3><p class="meta">&gt;24h lines could enter a batch period silently.</p></article>
+        <article class="card after"><h3>After</h3><p class="meta">Anomaly excluded from populate; original hours preserved for review.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="history">
+    <div class="wrap">
+      <h2>Historical root causes</h2>
+      <p class="lede">Why older Analytical Items looked incomplete — without employee names.</p>
+      <div class="cards">
+        <article class="card"><h3>Anomalous hours</h3><p class="meta">Single-line or same-day totals above 24h must not accrue.</p></article>
+        <article class="card"><h3>Zero cost</h3><p class="meta">No monetary amount source → skipped from populate.</p></article>
+        <article class="card"><h3>Include in Payroll false</h3><p class="meta">Explicit opt-out or prior onchange reset.</p></article>
+        <article class="card"><h3>JE never generated</h3><p class="meta">Labor Accrual path was not available on production.</p></article>
+        <article class="card"><h3>Source timesheet no GL</h3><p class="meta">By design until a JE posts a related analytic representation.</p></article>
+        <article class="card"><h3>Zero hours</h3><p class="meta">Non-positive quantity excluded from eligibility.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="coverage" style="background:#efe9dd;">
+    <div class="wrap">
+      <h2>Test coverage</h2>
+      <div class="cards">
+        <article class="card"><h3>Automated Odoo tests</h3><p class="meta"><strong>110 passed</strong> · 2 justified skips</p></article>
+        <article class="card"><h3>Extended manual UAT</h3><p class="meta"><strong>35 + MM-UAT-036</strong> anomaly guard scenario</p></article>
+        <article class="card"><h3>Playwright browser UAT</h3><p class="meta"><strong>16 / 16 passed</strong> · 0 failed · 0 errors · DB guard abort on production</p></article>
+        <article class="card"><h3>Large UAT dataset</h3><p class="meta">11+ projects · 12 employees · 120+ timesheets · posted batches · statement rows</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="gallery">
+    <div class="wrap">
+      <h2>Screenshot gallery</h2>
+      <p class="lede">Click any image to enlarge. Credentials and tokens are never shown.</p>
+
+      <h3 class="group-title">1. Timesheets</h3>
+      <div class="gallery">
+        <figure><img data-lightbox src="assets/playwright/01_test_db.png" alt="Test database selector" /><figcaption>Test DB entry</figcaption></figure>
+        <figure><img data-lightbox src="assets/playwright/03_timesheet_8h.png" alt="8 hour timesheet" /><figcaption>8h timesheet</figcaption></figure>
+        <figure><img data-lightbox src="assets/playwright/pw_001_test_db_login.png" alt="Logged into test database" /><figcaption>Session on test DB</figcaption></figure>
+      </div>
+
+      <h3 class="group-title">2. Payroll eligibility</h3>
+      <div class="gallery">
+        <figure><img data-lightbox src="assets/playwright/04_include_payroll.png" alt="Include in Payroll checked" /><figcaption>Include in Payroll</figcaption></figure>
+        <figure><img data-lightbox src="assets/playwright/05_payroll_optout.png" alt="Payroll opt-out timesheet" /><figcaption>Explicit opt-out</figcaption></figure>
+        <figure><img data-lightbox src="assets/manual/22_project_onchange_optout_payroll_false.png" alt="Opt-out project onchange" /><figcaption>Opt-out onchange</figcaption></figure>
+      </div>
+
+      <h3 class="group-title">3. Labor accrual</h3>
+      <div class="gallery">
+        <figure><img data-lightbox src="assets/playwright/08_labor_config.png" alt="Labor accrual configuration" /><figcaption>Company labor config</figcaption></figure>
+        <figure><img data-lightbox src="assets/playwright/09_batch_population.png" alt="Batch population" /><figcaption>Batch population</figcaption></figure>
+        <figure><img data-lightbox src="assets/manual/58_anomaly_guard.png" alt="Anomaly guard evidence" /><figcaption>Anomaly guard</figcaption></figure>
+      </div>
+
+      <h3 class="group-title">4. Journal entries</h3>
+      <div class="gallery">
+        <figure><img data-lightbox src="assets/playwright/10_draft_je.png" alt="Draft journal entry" /><figcaption>Draft JE</figcaption></figure>
+        <figure><img data-lightbox src="assets/playwright/11_posted_je.png" alt="Posted journal entry" /><figcaption>Posted JE</figcaption></figure>
+        <figure><img data-lightbox src="assets/playwright/12_debit_analytic.png" alt="Debit with analytic" /><figcaption>Debit + analytic</figcaption></figure>
+        <figure><img data-lightbox src="assets/playwright/13_credit_no_analytic.png" alt="Credit without analytic" /><figcaption>Credit clearing</figcaption></figure>
+      </div>
+
+      <h3 class="group-title">5. Analytical items</h3>
+      <div class="gallery">
+        <figure><img data-lightbox src="assets/playwright/14_source_timesheet_no_gl.png" alt="Source timesheet without GL" /><figcaption>Source · no GL</figcaption></figure>
+        <figure><img data-lightbox src="assets/playwright/15_resulting_aal_gl.png" alt="Resulting analytic with GL" /><figcaption>Resulting · with GL</figcaption></figure>
+        <figure><img data-lightbox src="assets/playwright/16_analytic_items.png" alt="Material analytic item" /><figcaption>Material / financial AAL</figcaption></figure>
+      </div>
+
+      <h3 class="group-title">6. Reporting</h3>
+      <div class="gallery">
+        <figure><img data-lightbox src="assets/playwright/18_statement_wizard.png" alt="Statement wizard" /><figcaption>Statement wizard</figcaption></figure>
+        <figure><img data-lightbox src="assets/manual/17_statement_timesheet_row.png" alt="Timesheet no GL row" /><figcaption>Timesheet / no GL</figcaption></figure>
+        <figure><img data-lightbox src="assets/manual/18_statement_financial_row.png" alt="GL-backed statement row" /><figcaption>GL-backed row</figcaption></figure>
+        <figure><img data-lightbox src="assets/playwright/21_statement_mixed.png" alt="Mixed statement rows" /><figcaption>Mixed project rows</figcaption></figure>
+      </div>
+
+      <h3 class="group-title">7. Anomaly guards</h3>
+      <div class="gallery">
+        <figure><img data-lightbox src="assets/playwright/06_anomaly_25h.png" alt="25 hour anomaly timesheet" /><figcaption>25h preserved</figcaption></figure>
+        <figure><img data-lightbox src="assets/playwright/07_anomaly_cumulative.png" alt="Cumulative 16+16 anomaly" /><figcaption>16+16 cumulative</figcaption></figure>
+        <figure><img data-lightbox src="assets/manual/53_anomalies.png" alt="Anomaly dataset overview" /><figcaption>Anomaly dataset</figcaption></figure>
+      </div>
+
+      <h3 class="group-title">8. XLSX output</h3>
+      <div class="gallery">
+        <figure><img data-lightbox src="assets/excel/43_original_excel_template.png" alt="Original Excel template" /><figcaption>Original template</figcaption></figure>
+        <figure><img data-lightbox src="assets/excel/44_odoo_xlsx_new_design.png" alt="Odoo XLSX redesign" /><figcaption>Odoo redesign</figcaption></figure>
+        <figure><img data-lightbox src="assets/excel/47_excel_visual_comparison.png" alt="Excel visual comparison" /><figcaption>Visual comparison</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="excel" style="background:#efe9dd;">
+    <div class="wrap">
+      <h2>Excel template comparison</h2>
+      <p class="lede"><strong>Template / design reused only.</strong> New accounting logic from Excel: <strong>0</strong>. Forbidden Industrial P&amp;L headers remain absent.</p>
+      <div class="ba">
+        <article class="card"><h3>Original</h3><img data-lightbox src="assets/excel/43_original_excel_template.png" alt="Original industrial Excel template" /></article>
+        <article class="card"><h3>Odoo statement XLSX</h3><img data-lightbox src="assets/excel/44_odoo_xlsx_new_design.png" alt="Styled Odoo analytic statement XLSX" /></article>
+      </div>
+      <p class="lede" style="margin-top:18px;">Existing columns only: Date · Move · Project · Account · Debit · Credit. No مواد / أجور مباشرة / تكاليف صناعية / المبيعات / صافي الربح.</p>
+    </div>
+  </section>
+
+  <section class="safety" id="safety">
+    <div class="wrap">
+      <h2>Production safety</h2>
+      <p class="lede">Isolated test database. Production not upgraded. Production journals not generated. Deployment requires separate approval.</p>
+      <p class="giant">Production changes during UAT: 0</p>
+      <div class="safety-grid" style="margin-top:24px;">
+        <div><h3>Test DB</h3><p>Isolated production clone used for all browser and automated proof.</p></div>
+        <div><h3>Production</h3><p>No module installs, no journals, no SQL remediation.</p></div>
+        <div><h3>Secrets</h3><p>No passwords, tokens, or private URLs on this page.</p></div>
+        <div><h3>Next step</h3><p>Await explicit production deployment approval.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="final" id="status">
+    <div class="wrap">
+      <div class="badge-row" style="justify-content:center;">
+        <span class="badge">UAT COMPLETE</span>
+        <span class="badge gold">NOT DEPLOYED</span>
+      </div>
+      <h2>UAT COMPLETE — READY FOR PRODUCTION DEPLOYMENT APPROVAL</h2>
+      <p class="lede" style="margin-left:auto;margin-right:auto;">This page is proof for client review. It does not mean production has been changed.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      Gulf / MM client demo · Playwright browser UAT · Automated Odoo tests 110 · Manual UAT 36+ · Production writes 0
+    </div>
+  </footer>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button data-close style="position:absolute;top:18px;right:18px;background:#fff;border:0;border-radius:999px;padding:8px 14px;cursor:pointer;">Close</button>
+    <div>
+      <img id="lightbox-img" alt="" />
+      <p id="lightbox-cap"></p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
