@@ -74,6 +74,17 @@ export default defineConfig({
       },
       testMatch: /gulf_mm_page\.spec\.ts/,
     },
+    {
+      name: "fix-shots",
+      dependencies: ["setup"],
+      use: {
+        ...devices["Desktop Chrome"],
+        baseURL,
+        storageState: path.join(__dirname, "playwright/.auth/user.json"),
+        viewport: { width: 1440, height: 900 },
+      },
+      testMatch: /gulf_mm_fix_je_shots\.spec\.ts/,
+    },
   ],
   metadata: { shotsDir: shots, allowedDb: ALLOWED_DB, pageRoot },
 });
