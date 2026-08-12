@@ -22,7 +22,7 @@ test.beforeAll(() => {
 });
 
 test("homepage loads with key sections", async ({ page }) => {
-  await page.goto("index.html");
+  await page.goto("./", { waitUntil: "domcontentloaded" });
   await expect(page.locator("h1")).toContainText(/Gulf \/ MM/i);
   await expect(page.getByText("UAT PASSED")).toBeVisible();
   await expect(page.locator("#matrix")).toBeVisible();
@@ -40,7 +40,7 @@ test("homepage loads with key sections", async ({ page }) => {
 });
 
 test("all gallery assets load and lightbox works", async ({ page }) => {
-  await page.goto("index.html");
+  await page.goto("./", { waitUntil: "domcontentloaded" });
   const imgs = page.locator("img[src]");
   const count = await imgs.count();
   expect(count).toBeGreaterThan(10);
@@ -60,7 +60,7 @@ test("all gallery assets load and lightbox works", async ({ page }) => {
 
 test("mobile viewport and no horizontal overflow", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("index.html");
+  await page.goto("./", { waitUntil: "domcontentloaded" });
   const overflow = await page.evaluate(() => {
     return document.documentElement.scrollWidth > document.documentElement.clientWidth + 2;
   });
@@ -70,7 +70,7 @@ test("mobile viewport and no horizontal overflow", async ({ page }) => {
 });
 
 test("no forbidden secrets in page text", async ({ page }) => {
-  await page.goto("index.html");
+  await page.goto("./", { waitUntil: "domcontentloaded" });
   const text = await page.locator("body").innerText();
   const html = await page.content();
   for (const re of FORBIDDEN) {
@@ -81,7 +81,7 @@ test("no forbidden secrets in page text", async ({ page }) => {
 });
 
 test("navigation anchors work", async ({ page }) => {
-  await page.goto("index.html");
+  await page.goto("./", { waitUntil: "domcontentloaded" });
   await page.locator('.nav-links a[href="#matrix"]').click();
   await expect(page.locator("#matrix")).toBeInViewport();
 });
