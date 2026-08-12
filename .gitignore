@@ -17,3 +17,7 @@ __pycache__/
 # Local / env
 .env
 *.log
+tests/playwright/gulf_mm/.env
+tests/playwright/gulf_mm/node_modules/
+tests/playwright/gulf_mm/test-results/
+tests/playwright/gulf_mm/playwright-report/

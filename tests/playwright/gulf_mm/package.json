@@ -1,0 +1,15 @@
+{
+  "name": "gulf-mm-playwright-uat",
+  "private": true,
+  "scripts": {
+    "test": "playwright test --project=odoo-uat",
+    "test:odoo": "playwright test --project=odoo-uat",
+    "test:page": "playwright test --project=case-study-page",
+    "test:all": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "dotenv": "^16.4.5",
+    "xlsx": "^0.18.5"
+  }
+}
