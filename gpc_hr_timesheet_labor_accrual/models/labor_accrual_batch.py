@@ -244,7 +244,8 @@ class LaborAccrualBatch(models.Model):
             ("employee_id", "!=", False),
             ("project_id", "!=", False),
             ("unit_amount", ">", 0),
-            ("unit_amount", "<=", MAX_TIMESHEET_HOURS_PER_DAY),
+            # Disabled per client request — 2026-08-15
+            # ("unit_amount", "<=", MAX_TIMESHEET_HOURS_PER_DAY),
         ]
         if "validated" in AAL._fields:
             domain.append(("validated", "=", True))
@@ -273,6 +274,10 @@ class LaborAccrualBatch(models.Model):
 
         Timesheet records are never deleted or rewritten.
         """
+        # Disabled per client request — 2026-08-15
+        # Client asked to include >24h/day and duplicate timesheet rows in labor accrual.
+        # Underlying skip logic below is kept; it is not executed.
+        return analytic_lines, []
         skipped = []
         after_line = self.env["account.analytic.line"]
         for aal in analytic_lines:
@@ -315,6 +320,8 @@ class LaborAccrualBatch(models.Model):
 
     def _assert_batch_lines_hours_safe(self):
         """Refuse JE generation if a batch line still points at anomalous hours."""
+        # Disabled per client request — 2026-08-15
+        return
         self.ensure_one()
         timesheets = self.line_ids.mapped("timesheet_line_id")
         _kept, skipped = self._filter_timesheets_for_daily_hours(timesheets)
@@ -367,14 +374,16 @@ class LaborAccrualBatch(models.Model):
         self.line_ids.unlink()
         domain = self._get_eligible_timesheet_domain()
         analytic_lines = self.env["account.analytic.line"].search(domain)
-        analytic_lines, hour_skips = self._filter_timesheets_for_daily_hours(analytic_lines)
-        if hour_skips:
-            _logger.info(
-                "Labor accrual skipped anomalous hours | batch_id=%s | skipped=%s | samples=%s",
-                self.id,
-                len(hour_skips),
-                hour_skips[:25],
-            )
+        # Disabled per client request — 2026-08-15
+        # analytic_lines, hour_skips = self._filter_timesheets_for_daily_hours(analytic_lines)
+        # if hour_skips:
+        #     _logger.info(
+        #         "Labor accrual skipped anomalous hours | batch_id=%s | skipped=%s | samples=%s",
+        #         self.id,
+        #         len(hour_skips),
+        #         hour_skips[:25],
+        #     )
+        hour_skips = []
         BatchLine = self.env["labor.accrual.batch.line"]
 
         for aal in analytic_lines:
@@ -782,7 +791,8 @@ class LaborAccrualBatch(models.Model):
             raise UserError(
                 _("Populate batch lines first (there must be at least one line with a positive amount).")
             )
-        self._assert_batch_lines_hours_safe()
+        # Disabled per client request — 2026-08-15
+        # self._assert_batch_lines_hours_safe()
         total = self._get_labor_accrual_move_total()
         if total <= 0.0:
             raise UserError(

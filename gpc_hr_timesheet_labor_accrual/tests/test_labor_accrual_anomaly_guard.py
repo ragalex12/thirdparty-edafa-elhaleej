@@ -3,6 +3,8 @@
 
 """Hard hours guard: do not accrue >24h per line or per employee/day."""
 
+import unittest
+
 from odoo import fields
 from odoo.exceptions import UserError
 from odoo.tests.common import TransactionCase, tagged
@@ -15,6 +17,7 @@ from odoo.addons.gpc_hr_timesheet_labor_accrual.tests.test_labor_accrual import 
 
 
 @tagged("post_install", "-at_install")
+@unittest.skip("Disabled per client request — 2026-08-15")
 class TestLaborAccrualAnomalyGuard(TransactionCase):
     @classmethod
     def setUpClass(cls):

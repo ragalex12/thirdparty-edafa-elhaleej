@@ -3,6 +3,7 @@
 
 """Extended labor-accrual UAT: journals, company guards, no-GL source AAL."""
 
+import unittest
 from odoo import fields
 from odoo.exceptions import UserError, ValidationError
 from odoo.tests.common import TransactionCase, tagged
@@ -159,6 +160,7 @@ class TestLaborAccrualExtended(TransactionCase):
         batch.action_populate_lines()
         self.assertFalse(batch.line_ids)
 
+    @unittest.skip("Disabled per client request — 2026-08-15")
     def test_populate_excludes_anomaly_hours_even_when_amount_positive(self):
         """Single-line >24h must not enter populate even if hourly_cost would yield an amount."""
         ts = self._ts(name="anom-25", unit_amount=25.0)

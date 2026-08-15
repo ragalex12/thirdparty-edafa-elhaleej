@@ -92,7 +92,9 @@ class LaborAccrualBatch(models.Model):
         eligible_domain = self._get_eligible_timesheet_domain()
         analytic_lines = AAL.search(eligible_domain)
         eligible_count = len(analytic_lines)
-        analytic_lines, hour_skips = self._filter_timesheets_for_daily_hours(analytic_lines)
+        # Disabled per client request — 2026-08-15
+        # analytic_lines, hour_skips = self._filter_timesheets_for_daily_hours(analytic_lines)
+        hour_skips = []
 
         replaced_count = len(self.line_ids)
         self.line_ids.unlink()
