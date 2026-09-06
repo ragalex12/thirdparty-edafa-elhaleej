@@ -11,9 +11,9 @@
                     <field name="account_stock_journal_id"
                            string="Stock Journal"
                            options="{'no_create': True}"
-                           domain="[('company_id', '=', id), ('type', '=', 'general')]"
+                           domain="[('company_id', 'parent_of', id), ('type', '=', 'general')]"
                            groups="base.group_system"
-                           help="Journal used for automated inventory valuation entries (e.g. when completing a Manufacturing Order or processing stock moves with perpetual valuation)."/>
+                           help="Journal used for automated inventory valuation entries (e.g. when completing a Manufacturing Order or processing stock moves with perpetual valuation). Includes journals from parent companies, so branches without their own journal can reuse the parent's (same pattern as bank journals in Odoo's account.journal)."/>
                 </xpath>
             </field>
         </record>
